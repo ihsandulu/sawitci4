@@ -734,6 +734,25 @@ class api extends baseController
         return $this->response->setContentType('application/json')->setJSON($data);
     }
 
+    public function datatrukpenerimaan(){
+        header('Access-Control-Allow-Origin: *');
+        header('Access-Control-Allow-Headers: Content-Type');
+        $usr = $this->db
+        ->table("t_trukpenerimaan")
+        ->where("status","Aktif")
+        ->orderBy("no_polisi ", "ASC")
+        ->get();
+        //echo $this->db->getLastQuery();  
+        $data=array();      
+        foreach ($usr->getResult() as $usr) {
+            $usrData = array(
+                "no_polisi" => $usr->no_polisi
+            ); 
+            $data[] = $usrData;
+        } 
+        return $this->response->setContentType('application/json')->setJSON($data);
+    }
+
     public function tp(){
         header('Access-Control-Allow-Origin: *');
         header('Access-Control-Allow-Headers: Content-Type');
@@ -751,7 +770,8 @@ class api extends baseController
                 "position_id" => $usr->position_id,
                 "panen_tpname" => $usr->nama,
                 "panen_tpnik" => $usr->user_nik,
-                "divisi_id" => $usr->divisi_id
+                "divisi_id" => $usr->divisi_id,
+                "panen_placement" => $usr->placement_name
             ); 
             $data[] = $usrData;
         } 
