@@ -777,4 +777,40 @@ class api extends baseController
         } 
         return $this->response->setContentType('application/json')->setJSON($data);
     }
+
+    public function tphnumber(){
+        header('Access-Control-Allow-Origin: *');
+        header('Access-Control-Allow-Headers: Content-Type');
+        $usr = $this->db
+        ->table("tphnumber")
+        ->orderBy("tphnumber.tphnumber_card", "ASC")
+        ->get();
+        //echo $this->db->getLastQuery();  
+        $data=array();      
+        foreach ($usr->getResult() as $usr) {
+            $usrData = array(
+                "tphnumber_card" => $usr->tphnumber_card
+            ); 
+            $data[] = $usrData;
+        } 
+        return $this->response->setContentType('application/json')->setJSON($data);
+    }
+
+    public function sptbsnumber(){
+        header('Access-Control-Allow-Origin: *');
+        header('Access-Control-Allow-Headers: Content-Type');
+        $usr = $this->db
+        ->table("sptbsnumber")
+        ->orderBy("sptbsnumber.sptbsnumber_card", "ASC")
+        ->get();
+        //echo $this->db->getLastQuery();  
+        $data=array();      
+        foreach ($usr->getResult() as $usr) {
+            $usrData = array(
+                "sptbsnumber_card" => $usr->sptbsnumber_card
+            ); 
+            $data[] = $usrData;
+        } 
+        return $this->response->setContentType('application/json')->setJSON($data);
+    }
 }
