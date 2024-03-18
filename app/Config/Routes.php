@@ -24,3 +24,6 @@ $routes->add('/mblok', 'master\mblok::index');
 $routes->add('/mtph', 'master\mtph::index');
 $routes->add('/rkh', 'transaction\rkh::index');
 $routes->add('/mplacement', 'master\mplacement::index');
+$routes->add('/synchron', 'transaction\synchron::index');
+$routes->add('/mtphnumber', 'master\mtphnumber::index');
+$routes->add('/msptbsnumber', 'master\msptbsnumber::index');

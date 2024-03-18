@@ -206,7 +206,43 @@
                 <li> 
                     <a class="  " href="<?= base_url("mplacement"); ?>" aria-expanded="false"><i class="fa fa-pagelines"></i><span class="hide-menu">Placement</span></a>
                 </li>
-                <?php }?>   
+                <?php }?>    
+                <?php 
+                if (
+                    (
+                        isset(session()->get("position_id")[0][0]) 
+                        && (
+                            session()->get("position_id") == "1" 
+                            || session()->get("position_id") == "2"
+                        )
+                    ) ||
+                    (
+                        isset(session()->get("halaman")['56']['act_read']) 
+                        && session()->get("halaman")['56']['act_read'] == "1"
+                    )
+                ) { ?>
+                <li> 
+                    <a class="  " href="<?= base_url("mtphnumber"); ?>" aria-expanded="false"><i class="fa fa-id-card"></i><span class="hide-menu">TPH Card</span></a>
+                </li>
+                <?php }?>    
+                <?php 
+                if (
+                    (
+                        isset(session()->get("position_id")[0][0]) 
+                        && (
+                            session()->get("position_id") == "1" 
+                            || session()->get("position_id") == "2"
+                        )
+                    ) ||
+                    (
+                        isset(session()->get("halaman")['57']['act_read']) 
+                        && session()->get("halaman")['57']['act_read'] == "1"
+                    )
+                ) { ?>
+                <li> 
+                    <a class="  " href="<?= base_url("msptbsnumber"); ?>" aria-expanded="false"><i class="fa fa-id-card"></i><span class="hide-menu">SPTBS Card</span></a>
+                </li>
+                <?php }?>  
                 
 
                 
@@ -255,6 +291,24 @@
                 ) { ?>
                 <li> 
                     <a class="  " href="<?= base_url("rkh"); ?>" aria-expanded="false"><i class="fa fa-pagelines"></i><span class="hide-menu">RKH</span></a>
+                </li>
+                <?php }?>
+                <?php 
+                if (
+                    (
+                        isset(session()->get("position_id")[0][0]) 
+                        && (
+                            session()->get("position_id") == "1" 
+                            || session()->get("position_id") == "2"
+                        )
+                    ) ||
+                    (
+                        isset(session()->get("halaman")['55']['act_read']) 
+                        && session()->get("halaman")['55']['act_read'] == "1"
+                    )
+                ) { ?>
+                <li> 
+                    <a class="  " href="<?= base_url("synchron"); ?>" aria-expanded="false"><i class="fa fa-pagelines"></i><span class="hide-menu">Synchronization</span></a>
                 </li>
                 <?php }?>
 
