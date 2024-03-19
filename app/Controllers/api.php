@@ -815,6 +815,6 @@ class api extends baseController
     }
 
     public function test1(){
-        echo 1234;
+        echo request()->getGet("datanya");
     }
 }
