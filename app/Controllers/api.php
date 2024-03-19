@@ -815,6 +815,37 @@ class api extends baseController
     }
 
     public function test1(){
-        echo request()->getGet("datanya");
+        $inpututama = request()->getGet("datanya");
+        $bintang = explode("*", $inpututama);
+
+        //sptbs
+        $pisah = $bintang[0];
+        $koma = explode(",", $pisah);
+        foreach ($koma as $isikoma) {
+            $data = explode("=", $isikoma);
+            $input[$data[0]] = $data[1];
+        }
+        $builder = $this->db->table('sptbs');
+        $builder->insert($input);            
+        /* echo $this->db->getLastQuery();
+        die; */
+        $sptbs_id = $this->db->insertID();
+
+        //panen
+        $panjangBintang = count($bintang);
+        for ($i = 1; $i < $panjangBintang; $i++) {
+            $pisah = $bintang[$i];
+            $koma = explode(",", $pisah);
+            foreach ($koma as $isikoma) {
+                $data = explode("=", $isikoma);
+                $inputpanen[$data[0]] = $data[1];
+            }
+            $builder = $this->db->table('panen');
+            $builder->insert($inputpanen);            
+            /* echo $this->db->getLastQuery();
+            die; */
+            $panen_id = $this->db->insertID();
+        }
+        echo "Insert Data Success";
     }
 }
