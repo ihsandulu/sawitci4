@@ -813,4 +813,8 @@ class api extends baseController
         } 
         return $this->response->setContentType('application/json')->setJSON($data);
     }
+
+    public function test1(){
+        echo 1234;
+    }
 }
