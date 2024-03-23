@@ -3,7 +3,6 @@
 namespace App\Controllers;
 
 use phpDocumentor\Reflection\Types\Null_;
-use CodeIgniter\API\ResponseTrait;
 
 class api extends baseController
 {
@@ -855,7 +854,11 @@ class api extends baseController
         $where["sptbs_card"] = request()->getGet("sptbs_card");
         $builder = $this->db->table('sptbs');
         $builder->update($input, $where); 
-        return $this->respond($input);
+        $jsonResponse = json_encode($input);
+
+        // Mengembalikan respons JSON
+        return $this->response->setContentType('application/json')
+        ->setBody($jsonResponse);
     }
 
     public function apinetto(){
@@ -865,6 +868,10 @@ class api extends baseController
         $where["sptbs_card"] = request()->getGet("sptbs_card");
         $builder = $this->db->table('sptbs');
         $builder->update($input, $where); 
-        return $this->respond($input);
+        $jsonResponse = json_encode($input);
+
+        // Mengembalikan respons JSON
+        return $this->response->setContentType('application/json')
+        ->setBody($jsonResponse);
     }
 }
