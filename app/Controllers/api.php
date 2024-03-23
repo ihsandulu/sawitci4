@@ -852,7 +852,7 @@ class api extends baseController
 
     public function apibrutto(){
         $input["sptbs_kgbruto"] = request()->getGet("sptbs_kgbruto");
-        $where = request()->getGet("where");
+        $where["sptbs_card"] = request()->getGet("sptbs_card");
         $builder = $this->db->table('sptbs');
         $builder->update($input, $where); 
         return $this->respond($input);
@@ -862,7 +862,7 @@ class api extends baseController
         $input["sptbs_kgtruk"] = request()->getGet("sptbs_kgtruk");
         $input["sptbs_kgsampah"] = request()->getGet("sptbs_kgsampah");
         $input["sptbs_kgnetto"] = request()->getGet("sptbs_kgnetto");
-        $where = request()->getGet("where");
+        $where["sptbs_card"] = request()->getGet("sptbs_card");
         $builder = $this->db->table('sptbs');
         $builder->update($input, $where); 
         return $this->respond($input);
