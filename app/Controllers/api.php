@@ -3,6 +3,7 @@
 namespace App\Controllers;
 
 use phpDocumentor\Reflection\Types\Null_;
+use CodeIgniter\API\ResponseTrait;
 
 class api extends baseController
 {
@@ -847,5 +848,23 @@ class api extends baseController
             $panen_id = $this->db->insertID();
         }
         echo "Insert Data Success";
+    }
+
+    public function apibrutto(){
+        $input["sptbs_kgbruto"] = request()->getGet("sptbs_kgbruto");
+        $where = request()->getGet("where");
+        $builder = $this->db->table('sptbs');
+        $builder->update($input, $where); 
+        return $this->respond($input);
+    }
+
+    public function apinetto(){
+        $input["sptbs_kgtruk"] = request()->getGet("sptbs_kgtruk");
+        $input["sptbs_kgsampah"] = request()->getGet("sptbs_kgsampah");
+        $input["sptbs_kgnetto"] = request()->getGet("sptbs_kgnetto");
+        $where = request()->getGet("where");
+        $builder = $this->db->table('sptbs');
+        $builder->update($input, $where); 
+        return $this->respond($input);
     }
 }
