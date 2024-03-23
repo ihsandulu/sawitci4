@@ -814,7 +814,7 @@ class api extends baseController
         return $this->response->setContentType('application/json')->setJSON($data);
     }
 
-    public function test1(){
+    public function datamentah(){
         $inpututama = request()->getGet("datanya");
         $bintang = explode("*", $inpututama);
 
