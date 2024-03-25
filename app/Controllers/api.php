@@ -874,4 +874,23 @@ class api extends baseController
         return $this->response->setContentType('application/json')
         ->setBody($jsonResponse);
     }
+
+    public function gradingtype(){
+        header('Access-Control-Allow-Origin: *');
+        header('Access-Control-Allow-Headers: Content-Type');
+        $usr = $this->db
+        ->table("gradingtype")
+        ->orderBy("gradingtype.gradingtype_id", "ASC")
+        ->get();
+        //echo $this->db->getLastQuery();  
+        $data=array();      
+        foreach ($usr->getResult() as $usr) {
+            $usrData = array(
+                "gradingtype_id " => $usr->gradingtype_id ,
+                "gradingtype_name" => $usr->gradingtype_name
+            ); 
+            $data[] = $usrData;
+        } 
+        return $this->response->setContentType('application/json')->setJSON($data);
+    }
 }
