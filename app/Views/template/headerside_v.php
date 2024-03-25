@@ -258,7 +258,7 @@
                     )
                 ) { ?>
                 <li> 
-                    <a class="  " href="<?= base_url("mgrading"); ?>" aria-expanded="false"><i class="fa fa-cogs"></i><span class="hide-menu">Tipe Grading</span></a>
+                    <a class="  " href="<?= base_url("mgradingtype"); ?>" aria-expanded="false"><i class="fa fa-cogs"></i><span class="hide-menu">Tipe Grading</span></a>
                 </li>
                 <?php }?>    
                 

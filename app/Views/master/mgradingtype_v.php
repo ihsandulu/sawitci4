@@ -41,7 +41,7 @@
                             <form method="post" class="col-md-2">
                                 <h1 class="page-header col-md-12">
                                     <button name="new" class="btn btn-info btn-block btn-lg" value="OK" style="">New</button>
-                                    <input type="hidden" name="grading_id" />
+                                    <input type="hidden" name="gradingtype_id" />
                                 </h1>
                             </form>
                             <?php } ?>
@@ -52,46 +52,27 @@
                         <div class="">
                             <?php if (isset($_POST['edit'])) {
                                 $namabutton = 'name="change"';
-                                $judul = "Update grading";
+                                $judul = "Update Grading Type";
                             } else {
                                 $namabutton = 'name="create"';
-                                $judul = "Tambah grading";
+                                $judul = "Tambah Grading Type";
                             } ?>
                             <div class="lead">
                                 <h3><?= $judul; ?></h3>
                             </div>
-                            <form class="form-horizontal" method="post" enctype="multipart/form-data">     
+                            <form class="form-horizontal" method="post" enctype="multipart/form-data"> 
                                 <div class="form-group">
-                                    <label class="control-label col-sm-2" for="estate_id">Estate:</label>
+                                    <label class="control-label col-sm-2" for="gradingtype_name">Type Grading:</label>
                                     <div class="col-sm-10">
-                                        <?php
-                                        $estate = $this->db->table("estate")
-                                            ->orderBy("estate_name", "ASC")
-                                            ->get();
-                                        //echo $this->db->getLastQuery();
-                                        ?>
-                                        <select required class="form-control select" id="estate_id" name="estate_id">
-                                            <option value="" <?= ($estate_id == "") ? "selected" : ""; ?>>Pilih Estate</option>
-                                            <?php
-                                            foreach ($estate->getResult() as $estate) { ?>
-                                                <option value="<?= $estate->estate_id; ?>" <?= ($estate_id == $estate->estate_id) ? "selected" : ""; ?>><?= $estate->estate_name; ?></option>
-                                            <?php } ?>
-                                        </select>
-
-                                    </div>
-                                </div>                                                
-                                <div class="form-group">
-                                    <label class="control-label col-sm-2" for="grading_name">Nama grading:</label>
-                                    <div class="col-sm-10">
-                                        <input required type="text" autofocus class="form-control" id="grading_name" name="grading_name" placeholder="" value="<?= $grading_name; ?>">
+                                        <input required type="text" autofocus class="form-control" id="gradingtype_name" name="gradingtype_name" placeholder="" value="<?= $gradingtype_name; ?>">
                                     </div>
                                 </div>  
 
-                                <input type="hidden" name="grading_id" value="<?= $grading_id; ?>" />
+                                <input type="hidden" name="gradingtype_id" value="<?= $gradingtype_id; ?>" />
                                 <div class="form-group">
                                     <div class="col-sm-offset-2 col-sm-10">
                                         <button type="submit" id="submit" class="btn btn-primary col-md-5" <?= $namabutton; ?> value="OK">Submit</button>
-                                        <a class="btn btn-warning col-md-offset-1 col-md-5" href="<?= base_url("mgrading"); ?>">Back</a>
+                                        <a class="btn btn-warning col-md-offset-1 col-md-5" href="<?= base_url("mgradingtype"); ?>">Back</a>
                                     </div>
                                 </div>
                             </form>
@@ -114,17 +95,14 @@
                                         <?php } ?>
                                         <!-- <th>No.</th> -->
                                         <th>ID</th>
-                                        <th>Estate</th>
-                                        <th>grading</th>
+                                        <th>Grading Type</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     <?php
                                     $usr = $this->db
-                                        ->table("grading")
-                                        ->join("estate","estate.estate_id=grading.estate_id","left")
-                                        ->orderBy("estate_name", "ASC")
-                                        ->orderBy("grading_name", "ASC")
+                                        ->table("gradingtype")
+                                        ->orderBy("gradingtype_name", "ASC")
                                         ->get();
                                     // echo $this->db->getLastquery();
                                     $no = 1;
@@ -148,7 +126,7 @@
                                                     ) { ?>
                                                     <form method="post" class="btn-action" style="">
                                                         <button class="btn btn-sm btn-warning " name="edit" value="OK"><span class="fa fa-edit" style="color:white;"></span> </button>
-                                                        <input type="hidden" name="grading_id" value="<?= $usr->grading_id; ?>" />
+                                                        <input type="hidden" name="gradingtype_id" value="<?= $usr->gradingtype_id; ?>" />
                                                     </form>
                                                     <?php }?>
                                                     
@@ -168,15 +146,14 @@
                                                     ) { ?>
                                                     <form method="post" class="btn-action" style="">
                                                         <button class="btn btn-sm btn-danger delete" onclick="return confirm(' you want to delete?');" name="delete" value="OK"><span class="fa fa-close" style="color:white;"></span> </button>
-                                                        <input type="hidden" name="grading_id" value="<?= $usr->grading_id; ?>" />
+                                                        <input type="hidden" name="gradingtype_id" value="<?= $usr->gradingtype_id; ?>" />
                                                     </form>
                                                     <?php }?>
                                                 </td>
                                             <?php } ?>
                                             <!-- <td><?= $no++; ?></td> -->
-                                            <td><?= $usr->grading_id; ?></td>
-                                            <td><?= $usr->estate_name; ?></td>
-                                            <td><?= $usr->grading_name; ?></td>
+                                            <td><?= $usr->gradingtype_id; ?></td>
+                                            <td><?= $usr->gradingtype_name; ?></td>
                                         </tr>
                                     <?php } ?>
                                 </tbody>
@@ -190,7 +167,7 @@
 </div>
 <script>
     $('.select').select2();
-    var title = "Master grading";
+    var title = "Master Grading Type";
     $("title").text(title);
     $(".card-title").text(title);
     $("#page-title").text(title);

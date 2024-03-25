@@ -4,34 +4,34 @@ namespace App\Models\master;
 
 use App\Models\core_m;
 
-class mgrading_m extends core_m
+class mgradingtype_m extends core_m
 {
     public function data()
     {
         $data = array();
         $data["message"] = "";
-        //cek grading
-        if ($this->request->getVar("grading_id")) {
-            $gradingd["grading_id"] = $this->request->getVar("grading_id");
+        //cek gradingtype
+        if ($this->request->getVar("gradingtype_id")) {
+            $gradingtyped["gradingtype_id"] = $this->request->getVar("gradingtype_id");
         } else {
-            $gradingd["grading_id"] = -1;
+            $gradingtyped["gradingtype_id"] = -1;
         }
         $us = $this->db
-            ->table("grading")
-            ->getWhere($gradingd);
+            ->table("gradingtype")
+            ->getWhere($gradingtyped);
         /* echo $this->db->getLastquery();
         die; */
-        $larang = array("log_id", "id", "user_id", "action", "data", "grading_id_dep", "trx_id", "trx_code");
+        $larang = array("log_id", "id", "user_id", "action", "data", "gradingtype_id_dep", "trx_id", "trx_code");
         if ($us->getNumRows() > 0) {
-            foreach ($us->getResult() as $grading) {
-                foreach ($this->db->getFieldNames('grading') as $field) {
+            foreach ($us->getResult() as $gradingtype) {
+                foreach ($this->db->getFieldNames('gradingtype') as $field) {
                     if (!in_array($field, $larang)) {
-                        $data[$field] = $grading->$field;
+                        $data[$field] = $gradingtype->$field;
                     }
                 }
             }
         } else {
-            foreach ($this->db->getFieldNames('grading') as $field) {
+            foreach ($this->db->getFieldNames('gradingtype') as $field) {
                 $data[$field] = "";
             }
         }
@@ -40,17 +40,17 @@ class mgrading_m extends core_m
 
         //delete
         if ($this->request->getPost("delete") == "OK") { 
-            $grading_id=$this->request->getPost("grading_id");
+            $gradingtype_id=$this->request->getPost("gradingtype_id");
             $cek=$this->db->table("seksi")
-            ->where("grading_id", $grading_id) 
+            ->where("gradingtype_id", $gradingtype_id) 
             ->get()
             ->getNumRows();
             if($cek>0){
-                $data["message"] = "grading masih dipakai di data blok!";
+                $data["message"] = "gradingtype masih dipakai di data blok!";
             } else{    
                 $this->db
-                ->table("grading")
-                ->delete(array("grading_id" =>  $grading_id));
+                ->table("gradingtype")
+                ->delete(array("gradingtype_id" =>  $gradingtype_id));
                 $data["message"] = "Delete Success";
             }
         }
@@ -58,16 +58,16 @@ class mgrading_m extends core_m
         //insert
         if ($this->request->getPost("create") == "OK") {
             foreach ($this->request->getPost() as $e => $f) {
-                if ($e != 'create' && $e != 'grading_id') {
+                if ($e != 'create' && $e != 'gradingtype_id') {
                     $input[$e] = $this->request->getPost($e);
                 }
             }
 
-            $builder = $this->db->table('grading');
+            $builder = $this->db->table('gradingtype');
             $builder->insert($input);
             /* echo $this->db->getLastQuery();
             die; */
-            $grading_id = $this->db->insertID();
+            $gradingtype_id = $this->db->insertID();
 
             $data["message"] = "Insert Data Success";
         }
@@ -76,11 +76,11 @@ class mgrading_m extends core_m
         //update
         if ($this->request->getPost("change") == "OK") {
             foreach ($this->request->getPost() as $e => $f) {
-                if ($e != 'change' && $e != 'grading_picture') {
+                if ($e != 'change' && $e != 'gradingtype_picture') {
                     $input[$e] = $this->request->getPost($e);
                 }
             }
-            $this->db->table('grading')->update($input, array("grading_id" => $this->request->getPost("grading_id")));
+            $this->db->table('gradingtype')->update($input, array("gradingtype_id" => $this->request->getPost("gradingtype_id")));
             $data["message"] = "Update Success";
             //echo $this->db->last_query();die;
         }

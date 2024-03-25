@@ -5,7 +5,7 @@ namespace App\Controllers\master;
 
 use App\Controllers\baseController;
 
-class mgrading extends baseController
+class mgradingtype extends baseController
 {
 
     protected $sesi_user;
@@ -18,8 +18,8 @@ class mgrading extends baseController
 
     public function index()
     {
-        $data = new \App\Models\master\mgrading_m();
+        $data = new \App\Models\master\mgradingtype_m();
         $data = $data->data();
-        return view('master/mgrading_v', $data);
+        return view('master/mgradingtype_v', $data);
     }
 }
