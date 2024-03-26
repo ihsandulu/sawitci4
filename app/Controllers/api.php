@@ -886,7 +886,7 @@ class api extends baseController
         $data=array();      
         foreach ($usr->getResult() as $usr) {
             $usrData = array(
-                "gradingtype_id " => $usr->gradingtype_id ,
+                "gradingtype_id" => $usr->gradingtype_id,
                 "gradingtype_name" => $usr->gradingtype_name
             ); 
             $data[] = $usrData;
