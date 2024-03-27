@@ -856,12 +856,13 @@ class api extends baseController
         for ($i = 0; $i < $panjangBintang; $i++) {
             $pisah = $bintang[$i];
             $koma = explode(",", $pisah);
+            dd($koma);
             foreach ($koma as $isikoma) {
                 $data = explode("=", $isikoma);
-                $inputpanen[$data[0]] = $data[1];
+                $input[$data[0]] = $data[1];
             }
             $builder = $this->db->table('panen');
-            $builder->insert($inputpanen);            
+            $builder->insert($input);            
             /* echo $this->db->getLastQuery();
             die; */
             $panen_id = $this->db->insertID();
