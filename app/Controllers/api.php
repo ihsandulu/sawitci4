@@ -814,7 +814,7 @@ class api extends baseController
         return $this->response->setContentType('application/json')->setJSON($data);
     }
 
-    public function datamentah(){
+    public function datasptbsmentah(){
         $inpututama = request()->getGet("datanya");
         $bintang = explode("*", $inpututama);
 
@@ -834,6 +834,26 @@ class api extends baseController
         //panen
         $panjangBintang = count($bintang);
         for ($i = 1; $i < $panjangBintang; $i++) {
+            $pisah = $bintang[$i];
+            $koma = explode(",", $pisah);
+            foreach ($koma as $isikoma) {
+                $data = explode("=", $isikoma);
+                $inputpanen[$data[0]] = $data[1];
+            }
+            $builder = $this->db->table('panen');
+            $builder->insert($inputpanen);            
+            /* echo $this->db->getLastQuery();
+            die; */
+            $panen_id = $this->db->insertID();
+        }
+        echo "Insert Data Success";
+    }
+
+    public function datagradingmentah(){
+        $inpututama = request()->getGet("datanya");
+        $bintang = explode("*", $inpututama);
+        $panjangBintang = count($bintang);
+        for ($i = 0; $i < $panjangBintang; $i++) {
             $pisah = $bintang[$i];
             $koma = explode(",", $pisah);
             foreach ($koma as $isikoma) {
