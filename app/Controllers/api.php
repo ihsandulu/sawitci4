@@ -860,8 +860,17 @@ class api extends baseController
             foreach ($koma as $isikoma) {
                 $data = explode("=", $isikoma);
                 $input[$data[0]] = $data[1];
+                if($data[0]=="grading_tp"){                    
+                    $where[$data[0]] = $data[1];
+                }
+                if($data[0]=="gradingtype_id"){                    
+                    $where[$data[0]] = $data[1];
+                }
             }
             // dd($input);
+            $builder = $this->db->table('grading');
+            $builder->delete($where); 
+
             $builder = $this->db->table('grading');
             $builder->insert($input);            
             /* echo $this->db->getLastQuery();

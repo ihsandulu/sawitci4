@@ -28,3 +28,4 @@ $routes->add('/synchron', 'transaction\synchron::index');
 $routes->add('/mtphnumber', 'master\mtphnumber::index');
 $routes->add('/msptbsnumber', 'master\msptbsnumber::index');
 $routes->add('/mgradingtype', 'master\mgradingtype::index');
+$routes->add('/grading', 'transaction\grading::index');
