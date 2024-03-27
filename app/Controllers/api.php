@@ -863,8 +863,8 @@ class api extends baseController
             }
             $builder = $this->db->table('panen');
             $builder->insert($input);            
-            /* echo $this->db->getLastQuery();
-            die; */
+            echo $this->db->getLastQuery();
+            die;
             $panen_id = $this->db->insertID();
         }
         echo "Insert Data Success";
