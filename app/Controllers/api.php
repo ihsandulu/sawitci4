@@ -856,7 +856,7 @@ class api extends baseController
         for ($i = 0; $i < $panjangBintang; $i++) {
             $pisah = $bintang[$i];
             $koma = explode(",", $pisah);
-            dd($koma);
+            // dd($koma);
             foreach ($koma as $isikoma) {
                 $data = explode("=", $isikoma);
                 $input[$data[0]] = $data[1];
