@@ -861,10 +861,11 @@ class api extends baseController
                 $data = explode("=", $isikoma);
                 $input[$data[0]] = $data[1];
             }
-            $builder = $this->db->table('panen');
+            // dd($input);
+            $builder = $this->db->table('grading');
             $builder->insert($input);            
-            echo $this->db->getLastQuery();
-            die;
+            /* echo $this->db->getLastQuery();
+            die; */
             $panen_id = $this->db->insertID();
         }
         echo "Insert Data Success";
