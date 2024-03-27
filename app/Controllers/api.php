@@ -868,11 +868,9 @@ class api extends baseController
                 }
             }
             // dd($input);
-            $builder = $this->db->table('grading');
-            $builder->delete($where); 
+            $this->db->table('grading')->delete($where); 
 
-            $builder = $this->db->table('grading');
-            $builder->insert($input);            
+            $this->db->table('grading')->insert($input);            
             /* echo $this->db->getLastQuery();
             die; */
             $panen_id = $this->db->insertID();
