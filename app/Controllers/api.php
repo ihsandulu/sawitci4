@@ -759,7 +759,11 @@ class api extends baseController
         $usr = $this->db
         ->table("placement")
         ->join("t_user","t_user.user_id=placement.user_id","left")
-        ->where("placement.position_id","4")
+        ->join("position","position.position_id=placement.position_id","left")
+        // ->where("placement.position_id","4")
+        ->like("position.position_name","checker","BOTH")
+        ->orLike("position.position_name","mandor","BOTH")
+        ->orLike("position.position_name","tenaga panen","BOTH")
         ->orderBy("t_user.nama", "ASC")
         ->get();
         //echo $this->db->getLastQuery();  
