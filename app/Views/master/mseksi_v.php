@@ -123,7 +123,7 @@
                         <?php } ?>
 
                         <div class="table-responsive m-t-40">
-                            <table id="example23" class="display nowrap table table-hover table-striped table-bordered" cellspacing="0" width="100%">
+                            <table id="table1" class="display nowrap table table-hover table-striped table-bordered" cellspacing="0" width="100%">
                                 <!-- <table id="dataTable" class="table table-condensed table-hover w-auto dtable"> -->
                                 <thead class="">
                                     <tr>
@@ -131,7 +131,7 @@
                                             <th>Action</th>
                                         <?php } ?>
                                         <!-- <th>No.</th> -->
-                                        <th>ID</th>
+                                        <!-- <th>ID</th> -->
                                         <th>Estate</th>
                                         <th>Divisi</th>
                                         <th>Seksi</th>
@@ -143,7 +143,9 @@
                                         ->table("seksi")
                                         ->join("divisi","divisi.divisi_id=seksi.divisi_id","left")
                                         ->join("estate","estate.estate_id=divisi.estate_id","left")
-                                        ->orderBy("seksi_name", "ASC")
+                                        // ->orderBy("estate_name", "ASC")
+                                        // ->orderBy("divisi_name", "ASC")
+                                        // ->orderBy("seksi_name", "ASC")
                                         ->get();
                                     //echo $this->db->getLastquery();
                                     $no = 1;
@@ -193,7 +195,7 @@
                                                 </td>
                                             <?php } ?>
                                             <!-- <td><?= $no++; ?></td> -->
-                                            <td><?= $usr->seksi_id; ?></td>
+                                            <!-- <td><?= $usr->seksi_id; ?></td> -->
                                             <td><?= $usr->estate_name; ?></td>
                                             <td><?= $usr->divisi_name; ?></td>
                                             <td><?= $usr->seksi_name; ?></td>
@@ -215,6 +217,15 @@
     $(".card-title").text(title);
     $("#page-title").text(title);
     $("#page-title-link").text(title);
+    $(document).ready(function() {
+        $('#table1').DataTable({
+            "order": [
+                [1, 'asc'], // Estate Name
+                [2, 'asc'], // Divisi Name
+                [3, 'asc', 'num']  // Seksi Name (numeric)
+            ]
+        });
+    });
 </script>
 
 <?php echo  $this->include("template/footer_v"); ?>

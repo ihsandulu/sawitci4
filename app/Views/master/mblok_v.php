@@ -155,7 +155,7 @@
                         <?php } ?>
 
                         <div class="table-responsive m-t-40">
-                            <table id="example23" class="display nowrap table table-hover table-striped table-bordered" cellspacing="0" width="100%">
+                            <table id="table1" class="display nowrap table table-hover table-striped table-bordered" cellspacing="0" width="100%">
                                 <!-- <table id="dataTable" class="table table-condensed table-hover w-auto dtable"> -->
                                 <thead class="">
                                     <tr>
@@ -163,7 +163,7 @@
                                             <th>Action</th>
                                         <?php } ?>
                                         <!-- <th>No.</th> -->
-                                        <th>ID</th>
+                                        <!-- <th>ID</th> -->
                                         <th>Estate</th>
                                         <th>Divisi</th>
                                         <th>Seksi</th>
@@ -229,7 +229,7 @@
                                                 </td>
                                             <?php } ?>
                                             <!-- <td><?= $no++; ?></td> -->
-                                            <td><?= $usr->blok_id; ?></td>
+                                            <!-- <td><?= $usr->blok_id; ?></td> -->
                                             <td><?= $usr->estate_name; ?></td>
                                             <td><?= $usr->divisi_name; ?></td>
                                             <td><?= $usr->seksi_name; ?></td>
@@ -254,6 +254,15 @@
     $(".card-title").text(title);
     $("#page-title").text(title);
     $("#page-title-link").text(title);
+    $(document).ready(function() {
+        $('#table1').DataTable({
+            "order": [
+                [1, 'asc'], 
+                [2, 'asc'], 
+                [3, 'asc', 'num'], 
+                [4, 'asc']
+        });
+    });
 </script>
 
 <?php echo  $this->include("template/footer_v"); ?>
