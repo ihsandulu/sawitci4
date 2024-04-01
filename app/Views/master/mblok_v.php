@@ -261,7 +261,8 @@
                 [2, 'asc'], 
                 [3, 'asc', 'num'], 
                 [4, 'asc']
-            ]
+            ],
+            "pageLength": 50 
         });
     });
 </script>

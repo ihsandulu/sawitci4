@@ -223,7 +223,8 @@
                 [1, 'asc'], // Estate Name
                 [2, 'asc'], // Divisi Name
                 [3, 'asc', 'num']  // Seksi Name (numeric)
-            ]
+            ],
+            "pageLength": 50 
         });
     });
 </script>
