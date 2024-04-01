@@ -3,9 +3,11 @@
 namespace App\Controllers;
 
 use phpDocumentor\Reflection\Types\Null_;
+use CodeIgniter\API\ResponseTrait;
 
 class api extends baseController
 {
+    use ResponseTrait;
 
     protected $sesi_user;
     protected $db;
@@ -925,5 +927,35 @@ class api extends baseController
             $data[] = $usrData;
         } 
         return $this->response->setContentType('application/json')->setJSON($data);
+    }
+
+    public function absen(){
+        helper(['form', 'url']);
+
+        // Validate file upload
+        if ($this->request->getFile('absen_picture')->isValid()) {
+            // Ambil file gambar dari request
+            $file = $this->request->getFile('absen_picture');
+
+            // Pindahkan file gambar ke direktori writable/uploads
+            $direktori = 'images/absen_picture';
+            $file->move(ROOTPATH . $direktori);
+
+            // Ambil data tambahan dari request
+            $divisiId = $this->request->getPost('divisi_id');
+            // $estateId = $this->request->getPost('estate_id');
+
+            // Proses data tambahan jika diperlukan
+            // Misalnya: Simpan data tambahan ke database
+
+            // Berikan respons sukses
+            return $this->respondCreated([
+                'status' => 'success',
+                'message' => 'File uploaded successfully'
+            ]);
+        } else {
+            // Jika validasi gagal, berikan respons error
+            return $this->failValidationError('File upload failed');
+        }
     }
 }
