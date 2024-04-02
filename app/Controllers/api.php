@@ -930,6 +930,8 @@ class api extends baseController
     }
 
     public function absen(){
+        header('Access-Control-Allow-Origin: *');
+        header('Access-Control-Allow-Headers: Content-Type');
         helper(['form', 'url']);
 
         // Validate file upload
