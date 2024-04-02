@@ -930,27 +930,27 @@ class api extends baseController
     }
    
 
-    public function absen(){
+    public function absen()
+    {
         header('Access-Control-Allow-Origin: *');
         header('Access-Control-Allow-Headers: Content-Type');
+    
         helper(['form', 'url']);
-
+    
         // Validate file upload
-        if ($this->request->getFile('absen_picture')->isValid()) {
-            // Ambil file gambar dari request
-            $file = $this->request->getFile('absen_picture');
-
+        $file = $this->request->getFile('absen_picture');
+        if ($file && $file->isValid()) {
             // Pindahkan file gambar ke direktori writable/uploads
             $direktori = 'images/absen_picture';
             $file->move(ROOTPATH . $direktori);
-
+    
             // Ambil data tambahan dari request
             $divisiId = $this->request->getPost('divisi_id');
-            // $estateId = $this->request->getPost('estate_id');
-
+            $estateId = $this->request->getPost('estate_id');
+    
             // Proses data tambahan jika diperlukan
             // Misalnya: Simpan data tambahan ke database
-
+    
             // Berikan respons sukses
             return $this->respondCreated([
                 'status' => 'success',
@@ -961,4 +961,5 @@ class api extends baseController
             return $this->failValidationError('File upload failed');
         }
     }
+    
 }
