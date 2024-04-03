@@ -930,7 +930,7 @@ class api extends baseController
     }
    
 
-    public function absen()
+    public function absen1()
     {
         header('Access-Control-Allow-Origin: *');
         header('Access-Control-Allow-Headers: Content-Type');
@@ -960,6 +960,17 @@ class api extends baseController
             // Jika validasi gagal, berikan respons error
             return $this->failValidationError('File upload failed');
         }
+    }
+
+    public function absen(){
+        foreach ($this->request->getPost() as $e => $f) {
+            if ($e != 'create' ) {
+                $inputu[$e] = $this->request->getPost($e);
+            }
+        }
+        $this->db->table('t_user')->insert($inputu);
+        // echo $this->db->getLastQuery(); die;
+        $data["message"] = "Insert Data Success";
     }
     
 }
