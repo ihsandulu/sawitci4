@@ -968,7 +968,7 @@ class api extends baseController
                 $inputu[$e] = $this->request->getPost($e);
             }
         }
-        $this->db->table('t_user')->insert($inputu);
+        $this->db->table('absen')->insert($inputu);
         // echo $this->db->getLastQuery(); die;
         $data["message"] = "Insert Data Success";
     }
