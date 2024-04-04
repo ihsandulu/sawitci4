@@ -983,5 +983,32 @@ class api extends baseController
         }
 
     }
+
+    public function uploadtph(){
+        foreach ($this->request->getPost() as $e => $f) {
+            if ($e != 'create' ) {
+                $inputu[$e] = $this->request->getPost($e);
+            }
+        }
+        //cek
+        $cek=$this->db->table('panen')
+        ->where("panen_date",$inputu["panen_date"])
+        ->where("tph_id",$inputu["tph_id"])
+        ->where("panen_card",$inputu["panen_card"])
+        ->get();
+        if($cek->getNumRows()==0){
+            $this->db->table('restand')->insert($inputu);
+            // echo $this->db->getLastQuery(); die;
+            $data["message"] = "Insert Data Success!";
+        }else{
+            foreach ($cek->getResult() as $cek) {
+                $input["panen_picture"]=$this->request->getPost("panen_picture");
+                $where["panen_id"]=$cek->panen_id;
+                $this->db->table('panen')->update($input,$where);
+                $data["message"] = "Update Gambar Success!";
+            }
+        }
+
+    }
     
 }
