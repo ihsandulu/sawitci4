@@ -968,9 +968,20 @@ class api extends baseController
                 $inputu[$e] = $this->request->getPost($e);
             }
         }
-        $this->db->table('absen')->insert($inputu);
-        // echo $this->db->getLastQuery(); die;
-        $data["message"] = "Insert Data Success";
+        //cek
+        $cek=$this->db->table('absen')
+        ->where("absen_date",$inputu["absen_date"])
+        ->where("absen_type",$inputu["absen_type"])
+        ->where("absen_user",$inputu["absen_user"])
+        ->get();
+        if($cek->numRows()==0){
+            $this->db->table('absen')->insert($inputu);
+            // echo $this->db->getLastQuery(); die;
+            $data["message"] = "Insert Data Success!";
+        }else{
+            $data["message"] = "Data sudah ada!";
+        }
+
     }
     
 }
