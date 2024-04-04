@@ -974,7 +974,7 @@ class api extends baseController
         ->where("absen_type",$inputu["absen_type"])
         ->where("absen_user",$inputu["absen_user"])
         ->get();
-        if($cek->numRows()==0){
+        if($cek->getNumRows()==0){
             $this->db->table('absen')->insert($inputu);
             // echo $this->db->getLastQuery(); die;
             $data["message"] = "Insert Data Success!";
