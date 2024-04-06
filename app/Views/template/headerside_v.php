@@ -276,7 +276,25 @@
                     )
                 ) { ?>
                 <li> 
-                    <a class="  " href="<?= base_url("mwt"); ?>" aria-expanded="false"><i class="fa fa-cogs"></i><span class="hide-menu">Whell Tractor</span></a>
+                    <a class="  " href="<?= base_url("mwt"); ?>" aria-expanded="false"><i class="fa fa-truck"></i><span class="hide-menu">Whell Tractor</span></a>
+                </li>
+                <?php }?>  
+                <?php 
+                if (
+                    (
+                        isset(session()->get("position_id")[0][0]) 
+                        && (
+                            session()->get("position_id") == "1" 
+                            || session()->get("position_id") == "2"
+                        )
+                    ) ||
+                    (
+                        isset(session()->get("halaman")['62']['act_read']) 
+                        && session()->get("halaman")['62']['act_read'] == "1"
+                    )
+                ) { ?>
+                <li> 
+                    <a class="  " href="<?= base_url("mquarrytype"); ?>" aria-expanded="false"><i class="fa fa-cogs"></i><span class="hide-menu">Quarry Type</span></a>
                 </li>
                 <?php }?>    
                 
