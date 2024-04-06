@@ -34,14 +34,14 @@
                                     )
                                 ) ||
                                 (
-                                    isset(session()->get("halaman")['50']['act_create']) 
-                                    && session()->get("halaman")['50']['act_create'] == "1"
+                                    isset(session()->get("halaman")['49']['act_create']) 
+                                    && session()->get("halaman")['49']['act_create'] == "1"
                                 )
                             ) { ?>
                             <form method="post" class="col-md-2">
                                 <h1 class="page-header col-md-12">
                                     <button name="new" class="btn btn-info btn-block btn-lg" value="OK" style="">New</button>
-                                    <input type="hidden" name="grading_id" />
+                                    <input type="hidden" name="wt_id" />
                                 </h1>
                             </form>
                             <?php } ?>
@@ -52,96 +52,27 @@
                         <div class="">
                             <?php if (isset($_POST['edit'])) {
                                 $namabutton = 'name="change"';
-                                $judul = "Update Grading";
+                                $judul = "Update Whell Tractor";
                             } else {
                                 $namabutton = 'name="create"';
-                                $judul = "Tambah Grading";
+                                $judul = "Tambah Whell Tractor";
                             } ?>
                             <div class="lead">
                                 <h3><?= $judul; ?></h3>
                             </div>
-                            <form class="form-horizontal" method="post" enctype="multipart/form-data">     
+                            <form class="form-horizontal" method="post" enctype="multipart/form-data">                                                     
                                 <div class="form-group">
-                                    <label class="control-label col-sm-2" for="sptbs_card">SPTBS:</label>
+                                    <label class="control-label col-sm-2" for="wt_name">Nama Whell Tractor:</label>
                                     <div class="col-sm-10">
-                                        <?php
-                                        $sptbs = $this->db->table("sptbs")
-                                            ->orderBy("sptbs_card", "ASC")
-                                            ->get();
-                                        //echo $this->db->getLastQuery();
-                                        ?>
-                                        <select required class="form-control select" id="sptbs_card" name="sptbs_card">
-                                            <option value="" <?= ($sptbs_card == "") ? "selected" : ""; ?>>Pilih SPTBS</option>
-                                            <?php
-                                            foreach ($sptbs->getResult() as $sptbs) { ?>
-                                                <option value="<?= $sptbs->sptbs_card; ?>" <?= ($sptbs_card == $sptbs->sptbs_card) ? "selected" : ""; ?>><?= $sptbs->sptbs_card; ?></option>
-                                            <?php } ?>
-                                        </select>
-
-                                    </div>
-                                </div>                                                    
-                                <div class="form-group">
-                                    <label class="control-label col-sm-2" for="grading_tp">Tenaga Panen:</label>
-                                    <div class="col-sm-10">
-                                        <?php
-                                        $user = $this->db->table("t_user")
-                                            ->orderBy("nama", "ASC")
-                                            ->get();
-                                        //echo $this->db->getLastQuery();
-                                        ?>
-                                        <select onchange="tp()" required class="form-control select" id="grading_tp" name="grading_tp">
-                                            <option value="" <?= ($grading_tp == "") ? "selected" : ""; ?>>Pilih Tenaga Panen</option>
-                                            <?php
-                                            foreach ($user->getResult() as $user) { ?>
-                                                <option grading_tpname="<?= $user->nama; ?>" value="<?= $user->user_id; ?>" <?= ($grading_tp == $user->user_id) ? "selected" : ""; ?>><?= $user->username; ?></option>
-                                            <?php } ?>
-                                        </select>                                        
-                                        <input type="hidden" id="grading_tpname" name="grading_tpname" value="<?= $grading_tpname; ?>" />
-                                        <script>
-                                            function tp(){            
-                                                let grading_tpname = $("#grading_tp").find(':selected').attr('grading_tpname');
-                                                $("#grading_tpname").val(grading_tpname);
-                                            }
-                                        </script>
-                                    </div>
-                                </div>                                                     
-                                <div class="form-group">
-                                    <label class="control-label col-sm-2" for="gradingtype_id">Grading Type:</label>
-                                    <div class="col-sm-10">
-                                        <?php
-                                        $user = $this->db->table("gradingtype")
-                                            ->orderBy("gradingtype_name", "ASC")
-                                            ->get();
-                                        //echo $this->db->getLastQuery();
-                                        ?>
-                                        <select onchange="gtype()" required class="form-control select" id="gradingtype_id" name="gradingtype_id">
-                                            <option value="" <?= ($gradingtype_id == "") ? "selected" : ""; ?>>Pilih Grading Type</option>
-                                            <?php
-                                            foreach ($user->getResult() as $user) { ?>
-                                                <option gradingtype_name="<?= $user->gradingtype_name; ?>" value="<?= $user->gradingtype_id; ?>" <?= ($gradingtype_id == $user->gradingtype_id) ? "selected" : ""; ?>><?= $user->gradingtype_name; ?></option>
-                                            <?php } ?>
-                                        </select>                                        
-                                        <input type="hidden" id="gradingtype_name" name="gradingtype_name" value="<?= $gradingtype_name; ?>" />
-                                        <script>
-                                            function gtype(){            
-                                                let gradingtype_name = $("#gradingtype_id").find(':selected').attr('gradingtype_name');
-                                                $("#gradingtype_name").val(gradingtype_name);
-                                            }
-                                        </script>
-                                    </div>
-                                </div>                                                
-                                <div class="form-group">
-                                    <label class="control-label col-sm-2" for="grading_qty">Jumlah:</label>
-                                    <div class="col-sm-10">
-                                        <input required type="number" autofocus class="form-control" id="grading_qty" name="grading_qty" placeholder="" value="<?= $grading_qty; ?>">
+                                        <input required type="text" autofocus class="form-control" id="wt_name" name="wt_name" placeholder="" value="<?= $wt_name; ?>">
                                     </div>
                                 </div>  
 
-                                <input type="hidden" name="grading_id" value="<?= $grading_id; ?>" />
+                                <input type="hidden" name="wt_id" value="<?= $wt_id; ?>" />
                                 <div class="form-group">
                                     <div class="col-sm-offset-2 col-sm-10">
                                         <button type="submit" id="submit" class="btn btn-primary col-md-5" <?= $namabutton; ?> value="OK">Submit</button>
-                                        <a class="btn btn-warning col-md-offset-1 col-md-5" href="<?= base_url("grading"); ?>">Back</a>
+                                        <a class="btn btn-warning col-md-offset-1 col-md-5" href="<?= base_url("mwt"); ?>">Back</a>
                                     </div>
                                 </div>
                             </form>
@@ -163,20 +94,16 @@
                                             <th>Action</th>
                                         <?php } ?>
                                         <!-- <th>No.</th> -->
-                                        <th>Date</th>
-                                        <th>SPTBS</th>
-                                        <th>Tenaga Panen</th>
-                                        <th>Tipe Grading</th>
-                                        <th>Jumlah</th>
+                                        <th>Whell Tractor</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     <?php
                                     $usr = $this->db
-                                        ->table("grading")
-                                        ->orderBy("grading_id", "DESC")
+                                        ->table("wt")
+                                        ->orderBy("wt_name", "ASC")
                                         ->get();
-                                    // echo $this->db->getLastquery();
+                                    //echo $this->db->getLastquery();
                                     $no = 1;
                                     foreach ($usr->getResult() as $usr) { ?>
                                         <tr>
@@ -192,13 +119,13 @@
                                                             )
                                                         ) ||
                                                         (
-                                                            isset(session()->get("halaman")['50']['act_update']) 
-                                                            && session()->get("halaman")['50']['act_update'] == "1"
+                                                            isset(session()->get("halaman")['49']['act_update']) 
+                                                            && session()->get("halaman")['49']['act_update'] == "1"
                                                         )
                                                     ) { ?>
                                                     <form method="post" class="btn-action" style="">
                                                         <button class="btn btn-sm btn-warning " name="edit" value="OK"><span class="fa fa-edit" style="color:white;"></span> </button>
-                                                        <input type="hidden" name="grading_id" value="<?= $usr->grading_id; ?>" />
+                                                        <input type="hidden" name="wt_id" value="<?= $usr->wt_id; ?>" />
                                                     </form>
                                                     <?php }?>
                                                     
@@ -212,23 +139,19 @@
                                                             )
                                                         ) ||
                                                         (
-                                                            isset(session()->get("halaman")['50']['act_delete']) 
-                                                            && session()->get("halaman")['50']['act_delete'] == "1"
+                                                            isset(session()->get("halaman")['49']['act_delete']) 
+                                                            && session()->get("halaman")['49']['act_delete'] == "1"
                                                         )
                                                     ) { ?>
                                                     <form method="post" class="btn-action" style="">
                                                         <button class="btn btn-sm btn-danger delete" onclick="return confirm(' you want to delete?');" name="delete" value="OK"><span class="fa fa-close" style="color:white;"></span> </button>
-                                                        <input type="hidden" name="grading_id" value="<?= $usr->grading_id; ?>" />
+                                                        <input type="hidden" name="wt_id" value="<?= $usr->wt_id; ?>" />
                                                     </form>
                                                     <?php }?>
                                                 </td>
                                             <?php } ?>
                                             <!-- <td><?= $no++; ?></td> -->
-                                            <td><?= $usr->grading_date; ?></td>
-                                            <td><?= $usr->sptbs_card; ?></td>
-                                            <td><?= $usr->grading_tpname; ?></td>
-                                            <td><?= $usr->gradingtype_name; ?></td>
-                                            <td><?= $usr->grading_qty; ?></td>
+                                            <td><?= $usr->wt_name; ?></td>
                                         </tr>
                                     <?php } ?>
                                 </tbody>
@@ -242,7 +165,7 @@
 </div>
 <script>
     $('.select').select2();
-    var title = "Grading";
+    var title = "Master Whell Tractor";
     $("title").text(title);
     $(".card-title").text(title);
     $("#page-title").text(title);

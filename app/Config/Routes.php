@@ -30,3 +30,4 @@ $routes->add('/msptbsnumber', 'master\msptbsnumber::index');
 $routes->add('/mgradingtype', 'master\mgradingtype::index');
 $routes->add('/grading', 'transaction\grading::index');
 $routes->add('/absen', 'transaction\absen::index');
+$routes->add('/mwt', 'master\mwt::index');
