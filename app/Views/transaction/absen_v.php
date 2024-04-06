@@ -282,7 +282,7 @@
                                             <td><?= $usr->divisi_name; ?></td>
                                             <td><?= $usr->absen_username; ?></td>
                                             <td><?= $usr->absen_geo; ?></td>
-                                            <td><i class="fa fa-camera" data-toggle="modal" data-target="#exampleModal"></i></td>
+                                            <td><i class="fa fa-camera tunjuk" data-toggle="modal" data-target="#exampleModal"></i></td>
                                         </tr>
                                     <?php } ?>
                                 </tbody>

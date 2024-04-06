@@ -142,6 +142,9 @@ foreach($identity->getResult() as $identity){
         .page-titles{
             margin-bottom:-13px;
         }
+        .tunjuk{
+            cursor:pointer;
+        }
     </style>
     
 
