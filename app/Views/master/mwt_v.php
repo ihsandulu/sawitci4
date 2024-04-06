@@ -131,7 +131,7 @@
                                     //echo $this->db->getLastquery();
                                     $no = 1;
                                     foreach ($usr->getResult() as $usr) {                                  
-                                        $vendor =array("","DT PAM","DT VF","Sewa Bulanan");
+                                        $vendor =array("","PAM","VF","Sewa Bulanan");
                                         ?>
                                         <tr>
                                             <?php if (!isset($_GET["report"])) { ?>
