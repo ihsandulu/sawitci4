@@ -62,7 +62,19 @@
                             </div>
                             <form class="form-horizontal" method="post" enctype="multipart/form-data">                                                  
                                 <div class="form-group">
-                                    <label class="control-label col-sm-2" for="quarrytype_name">Nama Quarry Type:</label>
+                                    <label class="control-label col-sm-2" for="quarrytype_sumber">Sumber:</label>
+                                    <div class="col-sm-10">
+                                        <input required type="text" autofocus class="form-control" id="quarrytype_sumber" name="quarrytype_sumber" placeholder="" value="<?= $quarrytype_sumber; ?>">
+                                    </div>
+                                </div>                                                  
+                                <div class="form-group">
+                                    <label class="control-label col-sm-2" for="quarrytype_jenis">Jenis:</label>
+                                    <div class="col-sm-10">
+                                        <input required type="text" autofocus class="form-control" id="quarrytype_jenis" name="quarrytype_jenis" placeholder="" value="<?= $quarrytype_jenis; ?>">
+                                    </div>
+                                </div>                                                  
+                                <div class="form-group">
+                                    <label class="control-label col-sm-2" for="quarrytype_name">Quarry Type:</label>
                                     <div class="col-sm-10">
                                         <input required type="text" autofocus class="form-control" id="quarrytype_name" name="quarrytype_name" placeholder="" value="<?= $quarrytype_name; ?>">
                                     </div>
@@ -94,7 +106,8 @@
                                             <th>Action</th>
                                         <?php } ?>
                                         <!-- <th>No.</th> -->
-                                        <th>Quarry Type</th>
+                                        <th>Sumber</th>
+                                        <th>Jenis</th>
                                         <th>Quarry Type</th>
                                     </tr>
                                 </thead>
@@ -154,8 +167,9 @@
                                                 </td>
                                             <?php } ?>
                                             <!-- <td><?= $no++; ?></td> -->
+                                            <td><?= $usr->quarrytype_sumber; ?></td>
+                                            <td><?= $usr->quarrytype_jenis; ?></td>
                                             <td><?= $usr->quarrytype_name; ?></td>
-                                            <td><?= $jenis[$usr->quarrytype_jenis]; ?></td>
                                         </tr>
                                     <?php } ?>
                                 </tbody>
