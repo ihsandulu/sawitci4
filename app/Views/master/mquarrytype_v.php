@@ -60,19 +60,7 @@
                             <div class="lead">
                                 <h3><?= $judul; ?></h3>
                             </div>
-                            <form class="form-horizontal" method="post" enctype="multipart/form-data">                                                     
-                                <div class="form-group">
-                                    <label class="control-label col-sm-2" for="quarrytype_jenis">Jenis Kendaraan:</label>
-                                    <div class="col-sm-10">
-                                        <select required class="form-control" id="quarrytype_jenis" name="quarrytype_jenis">
-                                            <option value="0" <?=($quarrytype_jenis=="0")?"selected":"";?>>Pilih Jenis Kendaraan</option>
-                                            <option value="1" <?=($quarrytype_jenis=="1")?"selected":"";?>>DT PAM</option>
-                                            <option value="2" <?=($quarrytype_jenis=="2")?"selected":"";?>>DT VF</option>
-                                            <option value="3" <?=($quarrytype_jenis=="3")?"selected":"";?>>Sewa Bulanan</option>
-
-                                        </select>
-                                    </div>
-                                </div>                                                    
+                            <form class="form-horizontal" method="post" enctype="multipart/form-data">                                                  
                                 <div class="form-group">
                                     <label class="control-label col-sm-2" for="quarrytype_name">Nama Quarry Type:</label>
                                     <div class="col-sm-10">

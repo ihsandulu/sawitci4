@@ -60,7 +60,30 @@
                             <div class="lead">
                                 <h3><?= $judul; ?></h3>
                             </div>
-                            <form class="form-horizontal" method="post" enctype="multipart/form-data">                                                     
+                            <form class="form-horizontal" method="post" enctype="multipart/form-data">                                                      
+                                <div class="form-group">
+                                    <label class="control-label col-sm-2" for="wt_jenis">Jenis Kendaraan:</label>
+                                    <div class="col-sm-10">
+                                        <select required class="form-control" id="wt_jenis" name="wt_jenis">
+                                            <option value="0" <?=($wt_jenis=="0")?"selected":"";?>>Pilih Jenis Kendaraan</option>
+                                            <option value="DT" <?=($wt_jenis=="DT")?"selected":"";?>>DT</option>
+                                            <option value="WT" <?=($wt_jenis=="WT")?"selected":"";?>>WT</option>
+
+                                        </select>
+                                    </div>
+                                </div>                                                                     
+                                <div class="form-group">
+                                    <label class="control-label col-sm-2" for="wt_vendor">Vendor:</label>
+                                    <div class="col-sm-10">
+                                        <select required class="form-control" id="wt_vendor" name="wt_vendor">
+                                            <option value="0" <?=($wt_vendor=="0")?"selected":"";?>>Pilih Vendor</option>
+                                            <option value="1" <?=($wt_vendor=="1")?"selected":"";?>>PAM</option>
+                                            <option value="2" <?=($wt_vendor=="2")?"selected":"";?>>VF</option>
+                                            <option value="3" <?=($wt_vendor=="3")?"selected":"";?>>Sewa Bulanan</option>
+
+                                        </select>
+                                    </div>
+                                </div>                                                      
                                 <div class="form-group">
                                     <label class="control-label col-sm-2" for="wt_name">Nama Whell Tractor:</label>
                                     <div class="col-sm-10">
@@ -94,6 +117,8 @@
                                             <th>Action</th>
                                         <?php } ?>
                                         <!-- <th>No.</th> -->
+                                        <th>Jenis Kendaraan</th>
+                                        <th>Vendor</th>
                                         <th>Whell Tractor</th>
                                     </tr>
                                 </thead>
@@ -105,7 +130,9 @@
                                         ->get();
                                     //echo $this->db->getLastquery();
                                     $no = 1;
-                                    foreach ($usr->getResult() as $usr) { ?>
+                                    foreach ($usr->getResult() as $usr) {                                  
+                                        $vendor =array("","DT PAM","DT VF","Sewa Bulanan");
+                                        ?>
                                         <tr>
                                             <?php if (!isset($_GET["report"])) { ?>
                                                 <td style="padding-left:0px; padding-right:0px;">
@@ -151,6 +178,8 @@
                                                 </td>
                                             <?php } ?>
                                             <!-- <td><?= $no++; ?></td> -->
+                                            <td><?= $usr->wt_jenis; ?></td>
+                                            <td><?= $vendor[$usr->wt_vendor]; ?></td>
                                             <td><?= $usr->wt_name; ?></td>
                                         </tr>
                                     <?php } ?>
