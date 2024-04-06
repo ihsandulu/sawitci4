@@ -62,6 +62,18 @@
                             </div>
                             <form class="form-horizontal" method="post" enctype="multipart/form-data">                                                     
                                 <div class="form-group">
+                                    <label class="control-label col-sm-2" for="quarrytype_jenis">Jenis Kendaraan:</label>
+                                    <div class="col-sm-10">
+                                        <select required class="form-control" id="quarrytype_jenis" name="quarrytype_jenis">
+                                            <option value="0" <?=($quarrytype_jenis=="0")?"selected":"";?>>Pilih Jenis Kendaraan</option>
+                                            <option value="1" <?=($quarrytype_jenis=="1")?"selected":"";?>>DT PAM</option>
+                                            <option value="2" <?=($quarrytype_jenis=="2")?"selected":"";?>>DT VF</option>
+                                            <option value="3" <?=($quarrytype_jenis=="3")?"selected":"";?>>Sewa Bulanan</option>
+
+                                        </select>
+                                    </div>
+                                </div>                                                    
+                                <div class="form-group">
                                     <label class="control-label col-sm-2" for="quarrytype_name">Nama Quarry Type:</label>
                                     <div class="col-sm-10">
                                         <input required type="text" autofocus class="form-control" id="quarrytype_name" name="quarrytype_name" placeholder="" value="<?= $quarrytype_name; ?>">
@@ -95,6 +107,7 @@
                                         <?php } ?>
                                         <!-- <th>No.</th> -->
                                         <th>Quarry Type</th>
+                                        <th>Quarry Type</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -105,7 +118,9 @@
                                         ->get();
                                     //echo $this->db->getLastquery();
                                     $no = 1;
-                                    foreach ($usr->getResult() as $usr) { ?>
+                                    foreach ($usr->getResult() as $usr) { 
+                                        $jenis =array("","DT PAM","DT VF","Sewa Bulanan");
+                                        ?>
                                         <tr>
                                             <?php if (!isset($_GET["report"])) { ?>
                                                 <td style="padding-left:0px; padding-right:0px;">
@@ -152,6 +167,7 @@
                                             <?php } ?>
                                             <!-- <td><?= $no++; ?></td> -->
                                             <td><?= $usr->quarrytype_name; ?></td>
+                                            <td><?= $jenis[$usr->quarrytype_jenis]; ?></td>
                                         </tr>
                                     <?php } ?>
                                 </tbody>
