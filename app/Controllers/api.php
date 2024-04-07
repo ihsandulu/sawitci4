@@ -1010,5 +1010,16 @@ class api extends baseController
         }
 
     }
+
+    public function gambarabsen(){
+        $id = $this->request->getGet("id");
+        $cek=$this->db->table('absen')
+        ->where("absen_id",$id)
+        ->get();
+        // echo $this->db->getLastQuery(); die;
+        foreach($cek->getResult() as $cek){
+            echo $cek->absen_picture;
+        }
+    }
     
 }

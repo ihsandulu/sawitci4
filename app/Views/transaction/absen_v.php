@@ -1,4 +1,24 @@
 <?php echo $this->include("template/header_v"); ?>
+<style>
+.modal-content {
+    background-color: transparent; /* Membuat latar belakang modal menjadi transparan */
+    border: none;
+}
+
+.modal-body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 80vh; /* Mengatur tinggi modal menjadi 80% tinggi layar */
+}
+
+.modal-body .gambar {
+    max-height: 100%; /* Membuat gambar tidak melebihi tinggi modal */
+    width: auto;
+    height: auto;
+}
+
+</style>
 
 <div class='container-fluid'>
     <div class='row'>
@@ -170,29 +190,29 @@
                             </div>
                         <?php } ?>
                         <div class="alert alert-success">
-                        <form>
-                            <div class="row">
-                                <?php 
-                                $dari=date("Y-m-d");
-                                $ke=date("Y-m-d");
-                                if(isset($_GET["dari"])){
-                                    $dari=$_GET["dari"];
-                                }
-                                if(isset($_GET["ke"])){
-                                    $ke=$_GET["ke"];
-                                }
-                                ?>
-                                <div class="col">
-                                    <label class="text-white">Dari :</label>
-                                    <input type="date" class="form-control" placeholder="Dari" name="dari" value="<?=$dari;?>">
+                            <form>
+                                <div class="row">
+                                    <?php 
+                                    $dari=date("Y-m-d");
+                                    $ke=date("Y-m-d");
+                                    if(isset($_GET["dari"])){
+                                        $dari=$_GET["dari"];
+                                    }
+                                    if(isset($_GET["ke"])){
+                                        $ke=$_GET["ke"];
+                                    }
+                                    ?>
+                                    <div class="col">
+                                        <label class="text-white">Dari :</label>
+                                        <input type="date" class="form-control" placeholder="Dari" name="dari" value="<?=$dari;?>">
+                                    </div>
+                                    <div class="col">
+                                        <label class="text-white">Ke :</label>
+                                        <input type="date" class="form-control" placeholder="Ke" name="ke" value="<?=$ke;?>">
+                                    </div>
+                                    <button type="submit" class="btn btn-primary">Submit</button>
                                 </div>
-                                <div class="col">
-                                    <label class="text-white">Ke :</label>
-                                    <input type="date" class="form-control" placeholder="Ke" name="ke" value="<?=$ke;?>">
-                                </div>
-                                <button type="submit" class="btn btn-primary">Submit</button>
-                            </div>
-                        </form>
+                            </form>
                         </div>
                         <div class="table-responsive m-t-40">
                             <table id="example23" class="display nowrap table table-hover table-striped table-bordered" cellspacing="0" width="100%">
@@ -282,30 +302,33 @@
                                             <td><?= $usr->divisi_name; ?></td>
                                             <td><?= $usr->absen_username; ?></td>
                                             <td><?= $usr->absen_geo; ?></td>
-                                            <td><i class="fa fa-camera tunjuk" data-toggle="modal" data-target="#exampleModal"></i></td>
+                                            <td><i class="fa fa-camera tunjuk" onclick="tampilgambar('<?= $usr->absen_id; ?>');"></i></td>
                                         </tr>
                                     <?php } ?>
                                 </tbody>
                             </table>
+                            <script>
+                                function tampilgambar(id){
+                                    $("#gambarabsen").hide();
+                                    $("#exampleModal").modal("show");
+                                    $.get("<?=base_url("api/gambarabsen");?>",{id:id})
+                                    .done(function(data){
+                                        $("#gambarabsen").attr("src",data);
+                                        $("#gambarabsen").fadeIn();
+                                    });
+                                }
+                            </script>
                             <!-- Picture -->
                             <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                                 <div class="modal-dialog" role="document">
                                     <div class="modal-content">
-                                    <div class="modal-header">
-                                        <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
-                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                        <span aria-hidden="true">&times;</span>
-                                        </button>
-                                    </div>
                                     <div class="modal-body">
-                                        ...
+                                       <img id="gambarabsen" src="<?=base_url("images/picture.png");?>" class="gambar"/>
                                     </div>
                                     <div class="modal-footer">
                                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                        <button type="button" class="btn btn-primary">Save changes</button>
                                     </div>
                                 </div>
-                            </div>
                             </div>
                         </div>
                     <?php } ?>
