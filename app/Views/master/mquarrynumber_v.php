@@ -52,10 +52,10 @@
                         <div class="">
                             <?php if (isset($_POST['edit'])) {
                                 $namabutton = 'name="change"';
-                                $judul = "Update quarry Card";
+                                $judul = "Update Quarry Card";
                             } else {
                                 $namabutton = 'name="create"';
-                                $judul = "Tambah quarry Card";
+                                $judul = "Tambah Quarry Card";
                             } ?>
                             <div class="lead">
                                 <h3><?= $judul; ?></h3>
@@ -189,7 +189,7 @@
 </div>
 <script>
     $('.select').select2();
-    var title = "quarry Card";
+    var title = "Quarry Card";
     $("title").text(title);
     $(".card-title").text(title);
     $("#page-title").text(title);
