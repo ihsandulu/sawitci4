@@ -721,16 +721,19 @@ class api extends baseController
         header('Access-Control-Allow-Origin: *');
         header('Access-Control-Allow-Headers: Content-Type');
         $usr = $this->db
-        ->table("user")
+        ->table("t_user")
+        ->join("position","position.position_id=t_user.position_id","left")
         ->where("position_id","7")
+        ->orWhere("position_id","59")
         ->orderBy("nama", "ASC")
         ->get();
         //echo $this->db->getLastQuery();  
         $data=array();      
         foreach ($usr->getResult() as $usr) {
             $usrData = array(
-                "driverdumptruck_id" => $usr->user_id ,
-                "driverdumptruck_name" => $usr->nama
+                "driverdumptruck_id" => $usr->user_id,
+                "driverdumptruck_name" => $usr->nama,
+                "driverdumptruck_position" => $usr->position_name
             ); 
             $data[] = $usrData;
         } 
