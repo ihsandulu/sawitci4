@@ -717,19 +717,40 @@ class api extends baseController
         return $this->response->setContentType('application/json')->setJSON($data);
     }
 
-    public function datadriver(){
+    public function driverdumptruck(){
         header('Access-Control-Allow-Origin: *');
         header('Access-Control-Allow-Headers: Content-Type');
         $usr = $this->db
-        ->table("t_driver")
-        ->orderBy("nama_driver", "ASC")
+        ->table("user")
+        ->where("position_id","7")
+        ->orderBy("nama", "ASC")
         ->get();
         //echo $this->db->getLastQuery();  
         $data=array();      
         foreach ($usr->getResult() as $usr) {
             $usrData = array(
-                "driver_id" => $usr->ID_driver,
-                "driver_name" => $usr->nama_driver
+                "driverdumptruck_id" => $usr->user_id ,
+                "driverdumptruck_name" => $usr->nama
+            ); 
+            $data[] = $usrData;
+        } 
+        return $this->response->setContentType('application/json')->setJSON($data);
+    }
+
+    public function operatortractor(){
+        header('Access-Control-Allow-Origin: *');
+        header('Access-Control-Allow-Headers: Content-Type');
+        $usr = $this->db
+        ->table("user")
+        ->where("position_id","68")
+        ->orderBy("nama", "ASC")
+        ->get();
+        //echo $this->db->getLastQuery();  
+        $data=array();      
+        foreach ($usr->getResult() as $usr) {
+            $usrData = array(
+                "operatortractor_id" => $usr->user_id ,
+                "operatortractor_name" => $usr->nama
             ); 
             $data[] = $usrData;
         } 
