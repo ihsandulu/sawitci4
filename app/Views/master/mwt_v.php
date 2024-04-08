@@ -75,18 +75,43 @@
                                 <div class="form-group">
                                     <label class="control-label col-sm-2" for="wt_vendor">Vendor:</label>
                                     <div class="col-sm-10">
-                                        <select required class="form-control" id="wt_vendor" name="wt_vendor">
+                                        <select onchange="sewab();" required class="form-control" id="wt_vendor" name="wt_vendor">
                                             <option value="0" <?=($wt_vendor=="0")?"selected":"";?>>Pilih Vendor</option>
                                             <option value="1" <?=($wt_vendor=="1")?"selected":"";?>>PAM</option>
                                             <option value="2" <?=($wt_vendor=="2")?"selected":"";?>>VF</option>
                                             <option value="3" <?=($wt_vendor=="3")?"selected":"";?>>Sewa Bulanan</option>
 
                                         </select>
+                                        <script>
+                                            function sewab(){
+                                                let wt_vendor = $("#wt_vendor").val();
+                                                // alert(wt_vendor);
+                                                if(wt_vendor==3){
+                                                    $(".sewa").show();
+                                                }else{
+                                                    $("#wt_sewa").val(0);
+                                                    $(".sewa").hide();
+                                                }
+                                                
+                                            }
+                                        </script>
+                                    </div>
+                                </div>                                                                    
+                                <div class="form-group sewa">
+                                    <label class="control-label col-sm-2" for="wt_sewa">Sewa Bulanan:</label>
+                                    <div class="col-sm-10">
+                                        <select required class="form-control" id="wt_sewa" name="wt_sewa">
+                                            <option value="0" <?=($wt_sewa=="0")?"selected":"";?>>Pilih Sewa Bulanan</option>
+                                            <option value="1" <?=($wt_sewa=="1")?"selected":"";?>>Wong Ganteng</option>
+                                            <option value="2" <?=($wt_sewa=="2")?"selected":"";?>>VF</option>
+                                            <option value="3" <?=($wt_sewa=="3")?"selected":"";?>>Putri Tunggal</option>
+                                            <option value="4" <?=($wt_sewa=="4")?"selected":"";?>>Surya Gemilang</option>
+                                        </select>
                                     </div>
                                 </div>                                                      
                                 <div class="form-group">
-                                    <label class="control-label col-sm-2" for="wt_name">Nama Whell Tractor:</label>
-                                    <div class="col-sm-10">
+                                    <label class="control-label col-sm-3" for="wt_name">Nama Whell Tractor:</label>
+                                    <div class="col-sm-9">
                                         <input required type="text" autofocus class="form-control" id="wt_name" name="wt_name" placeholder="" value="<?= $wt_name; ?>">
                                     </div>
                                 </div>  
@@ -119,6 +144,7 @@
                                         <!-- <th>No.</th> -->
                                         <th>Jenis Kendaraan</th>
                                         <th>Vendor</th>
+                                        <th>Sewa</th>
                                         <th>Whell Tractor</th>
                                     </tr>
                                 </thead>
@@ -131,7 +157,8 @@
                                     //echo $this->db->getLastquery();
                                     $no = 1;
                                     foreach ($usr->getResult() as $usr) {                                  
-                                        $vendor =array("","PAM","VF","Sewa Bulanan");
+                                        $vendor =array("","PAM","VF","Sewa Bulanan");                      
+                                        $sewa =array("","Wong Ganteng","VF","Putri Tunggal","Surya Gemilang");
                                         ?>
                                         <tr>
                                             <?php if (!isset($_GET["report"])) { ?>
@@ -180,6 +207,7 @@
                                             <!-- <td><?= $no++; ?></td> -->
                                             <td><?= $usr->wt_jenis; ?></td>
                                             <td><?= $vendor[$usr->wt_vendor]; ?></td>
+                                            <td><?= $sewa[$usr->wt_sewa]; ?></td>
                                             <td><?= $usr->wt_name; ?></td>
                                         </tr>
                                     <?php } ?>
@@ -199,6 +227,9 @@
     $(".card-title").text(title);
     $("#page-title").text(title);
     $("#page-title-link").text(title);
+    $(document).ready(function(){
+        sewab();
+    });
 </script>
 
 <?php echo  $this->include("template/footer_v"); ?>

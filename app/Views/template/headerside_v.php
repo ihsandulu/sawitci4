@@ -401,9 +401,37 @@
                     <a class="  " href="<?= base_url("absen"); ?>" aria-expanded="false"><i class="fa fa-users"></i><span class="hide-menu">Absensi</span></a>
                 </li>
                 <?php }?>
+                <?php 
+                if (
+                    (
+                        isset(session()->get("position_id")[0][0]) 
+                        && (
+                            session()->get("position_id") == "1" 
+                            || session()->get("position_id") == "2"
+                        )
+                    ) ||
+                    (
+                        isset(session()->get("halaman")['63']['act_read']) 
+                        && session()->get("halaman")['63']['act_read'] == "1"
+                    )
+                ) { ?>
+                <li> 
+                    <a class="  " href="<?= base_url("quarry"); ?>" aria-expanded="false"><i class="fa fa-truck"></i><span class="hide-menu">Quarry</span></a>
+                </li>
+                <?php }?>
 
 
                 <?php }?>
+
+
+
+
+
+
+
+
+
+
 
                 <!-- //Report// -->
                 <?php 

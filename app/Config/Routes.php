@@ -32,3 +32,4 @@ $routes->add('/grading', 'transaction\grading::index');
 $routes->add('/absen', 'transaction\absen::index');
 $routes->add('/mwt', 'master\mwt::index');
 $routes->add('/mquarrytype', 'master\mquarrytype::index');
+$routes->add('/quarry', 'transaction\quarry::index');
