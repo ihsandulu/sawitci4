@@ -242,6 +242,24 @@
                 <li> 
                     <a class="  " href="<?= base_url("msptbsnumber"); ?>" aria-expanded="false"><i class="fa fa-id-card"></i><span class="hide-menu">SPTBS Card</span></a>
                 </li>
+                <?php }?>    
+                <?php 
+                if (
+                    (
+                        isset(session()->get("position_id")[0][0]) 
+                        && (
+                            session()->get("position_id") == "1" 
+                            || session()->get("position_id") == "2"
+                        )
+                    ) ||
+                    (
+                        isset(session()->get("halaman")['64']['act_read']) 
+                        && session()->get("halaman")['64']['act_read'] == "1"
+                    )
+                ) { ?>
+                <li> 
+                    <a class="  " href="<?= base_url("mquarrynumber"); ?>" aria-expanded="false"><i class="fa fa-id-card"></i><span class="hide-menu">QUARRY Card</span></a>
+                </li>
                 <?php }?>   
                 <?php 
                 if (
