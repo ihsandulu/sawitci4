@@ -744,9 +744,9 @@ class api extends baseController
         header('Access-Control-Allow-Origin: *');
         header('Access-Control-Allow-Headers: Content-Type');
         $usr = $this->db
-        ->table("user")
-        ->where("position_id","68")
-        ->orderBy("nama", "ASC")
+        ->table("t_user")
+        ->where("t_user.position_id","68")
+        ->orderBy("t_user.nama", "ASC")
         ->get();
         //echo $this->db->getLastQuery();  
         $data=array();      
