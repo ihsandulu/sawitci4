@@ -1021,5 +1021,47 @@ class api extends baseController
             echo $cek->absen_picture;
         }
     }
+
+    public function wt(){
+        header('Access-Control-Allow-Origin: *');
+        header('Access-Control-Allow-Headers: Content-Type');
+        $usr = $this->db
+        ->table("wt")
+        ->orderBy("wt.wt_name", "ASC")
+        ->get();
+        //echo $this->db->getLastQuery();  
+        $data=array();      
+        foreach ($usr->getResult() as $usr) {
+            $usrData = array(
+                "wt_id" => $usr->wt_id,
+                "wt_name" => $usr->wt_name,
+                "wt_vendor" => $usr->wt_vendor,
+                "wt_jenis" => $usr->wt_jenis,
+                "wt_sewa" => $usr->wt_sewa
+            ); 
+            $data[] = $usrData;
+        } 
+        return $this->response->setContentType('application/json')->setJSON($data);
+    }
+
+    public function quarrytype(){
+        header('Access-Control-Allow-Origin: *');
+        header('Access-Control-Allow-Headers: Content-Type');
+        $usr = $this->db
+        ->table("quarrytype")
+        ->orderBy("quarrytype.quarrytype_name", "ASC")
+        ->get();
+        //echo $this->db->getLastQuery();  
+        $data=array();      
+        foreach ($usr->getResult() as $usr) {
+            $usrData = array(
+                "quarrytype_id" => $usr->quarrytype_id,
+                "quarrytype_sumber" => $usr->quarrytype_sumber,
+                "quarrytype_jenis" => $usr->quarrytype_jenis
+            ); 
+            $data[] = $usrData;
+        } 
+        return $this->response->setContentType('application/json')->setJSON($data);
+    }
     
 }
