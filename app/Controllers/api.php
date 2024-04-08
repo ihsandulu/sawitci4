@@ -1049,7 +1049,8 @@ class api extends baseController
         header('Access-Control-Allow-Headers: Content-Type');
         $usr = $this->db
         ->table("quarrytype")
-        ->orderBy("quarrytype.quarrytype_name", "ASC")
+        ->orderBy("quarrytype.quarrytype_sumber", "ASC")
+        ->orderBy("quarrytype.quarrytype_jenis", "ASC")
         ->get();
         //echo $this->db->getLastQuery();  
         $data=array();      
