@@ -723,9 +723,9 @@ class api extends baseController
         $usr = $this->db
         ->table("t_user")
         ->join("position","position.position_id=t_user.position_id","left")
-        ->where("position_id","7")
-        ->orWhere("position_id","59")
-        ->orderBy("nama", "ASC")
+        ->where("t_user.position_id","7")
+        ->orWhere("t_user.position_id","59")
+        ->orderBy("t_user.nama", "ASC")
         ->get();
         //echo $this->db->getLastQuery();  
         $data=array();      
