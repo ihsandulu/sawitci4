@@ -52,10 +52,10 @@
                         <div class="">
                             <?php if (isset($_POST['edit'])) {
                                 $namabutton = 'name="change"';
-                                $judul = "Update Whell Tractor";
+                                $judul = "Update Vehicle";
                             } else {
                                 $namabutton = 'name="create"';
-                                $judul = "Tambah Whell Tractor";
+                                $judul = "Tambah Vehicle";
                             } ?>
                             <div class="lead">
                                 <h3><?= $judul; ?></h3>
@@ -110,7 +110,7 @@
                                     </div>
                                 </div>                                                      
                                 <div class="form-group">
-                                    <label class="control-label col-sm-3" for="wt_name">Nama Whell Tractor:</label>
+                                    <label class="control-label col-sm-3" for="wt_name">Vehicle (Kendaraan):</label>
                                     <div class="col-sm-9">
                                         <input required type="text" autofocus class="form-control" id="wt_name" name="wt_name" placeholder="" value="<?= $wt_name; ?>">
                                     </div>
@@ -222,7 +222,7 @@
 </div>
 <script>
     $('.select').select2();
-    var title = "Master Whell Tractor";
+    var title = "Master Vehicle";
     $("title").text(title);
     $(".card-title").text(title);
     $("#page-title").text(title);

@@ -276,7 +276,7 @@
                     )
                 ) { ?>
                 <li> 
-                    <a class="  " href="<?= base_url("mwt"); ?>" aria-expanded="false"><i class="fa fa-truck"></i><span class="hide-menu">Whell Tractor</span></a>
+                    <a class="  " href="<?= base_url("mwt"); ?>" aria-expanded="false"><i class="fa fa-truck"></i><span class="hide-menu">Vehicle</span></a>
                 </li>
                 <?php }?>  
                 <?php 
