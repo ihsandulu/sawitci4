@@ -844,6 +844,24 @@ class api extends baseController
         return $this->response->setContentType('application/json')->setJSON($data);
     }
 
+    public function quarrynumber(){
+        header('Access-Control-Allow-Origin: *');
+        header('Access-Control-Allow-Headers: Content-Type');
+        $usr = $this->db
+        ->table("quarrynumber")
+        ->orderBy("quarrynumber.quarrynumber_card", "ASC")
+        ->get();
+        //echo $this->db->getLastQuery();  
+        $data=array();      
+        foreach ($usr->getResult() as $usr) {
+            $usrData = array(
+                "quarrynumber_card" => $usr->quarrynumber_card
+            ); 
+            $data[] = $usrData;
+        } 
+        return $this->response->setContentType('application/json')->setJSON($data);
+    }
+
     public function datasptbsmentah(){
         $inpututama = request()->getGet("datanya");
         $bintang = explode("*", $inpututama);
