@@ -156,10 +156,10 @@ foreach($identity->getResult() as $identity){
             font-size:30px!important;
         }
         .nav-link::after {
-            content: "<< Menu";
-            color: grey; 
+            content: "Menu";
+            color: rgba(128, 128, 128, 0.6); 
             font-weight: bold;
-            font-size:10px!important;
+            font-size:15px!important;
             position: absolute; 
             top: 50%; 
             transform: translate(10px,-50%); 
