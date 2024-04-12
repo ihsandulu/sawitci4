@@ -155,6 +155,15 @@ foreach($identity->getResult() as $identity){
             padding-left:10px !important;
             font-size:30px!important;
         }
+        .nav-link::after {
+            content: "<< Menu";
+            color: grey; 
+            font-weight: bold;
+            font-size:10px!important;
+            position: absolute; 
+            top: 50%; 
+            transform: translate(10px,-50%); 
+        }
     </style>
     
 
