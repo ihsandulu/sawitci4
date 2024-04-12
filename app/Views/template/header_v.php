@@ -145,6 +145,16 @@ foreach($identity->getResult() as $identity){
         .tunjuk{
             cursor:pointer;
         }
+        .nav-item{
+            padding:0px;
+            font-size:30px!important;
+        }
+        .nav-link{
+            margin:0px !important; 
+            padding:0px !important;
+            padding-left:10px !important;
+            font-size:30px!important;
+        }
     </style>
     
 
