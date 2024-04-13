@@ -616,7 +616,7 @@ class api extends baseController
         return $this->response->setContentType('application/json')->setJSON($data);
     }
 
-    public function datablok(){
+    /* public function datablok(){
         header('Access-Control-Allow-Origin: *');
         header('Access-Control-Allow-Headers: Content-Type');
         $usr = $this->db
@@ -631,6 +631,34 @@ class api extends baseController
             $usrData = array(
                 "divisi_id" => $usr->divisi_id,
                 "seksi_id" => $usr->seksi_id,
+                "blok_id" => $usr->blok_id,
+                "blok_name" => $usr->blok_name
+            ); 
+            $data[] = $usrData;
+        } 
+        return $this->response->setContentType('application/json')->setJSON($data);
+    } */
+
+    public function datablok(){
+        header('Access-Control-Allow-Origin: *');
+        header('Access-Control-Allow-Headers: Content-Type');
+        $usr = $this->db
+        ->table("blok")
+        ->join("seksi","seksi.seksi_id=blok.seksi_id","left")
+        ->join("divisi","divisi.divisi_id=seksi.divisi_id","left")
+        ->join("estate","estate.estate_id=divisi.estate_id","left")
+        ->orderBy("blok_name", "ASC")
+        ->get();
+        //echo $this->db->getLastQuery();  
+        $data=array();      
+        foreach ($usr->getResult() as $usr) {
+            $usrData = array(
+                "estate_id" => $usr->estate_id,
+                "estate_name" => $usr->estate_name,
+                "divisi_id" => $usr->divisi_id,
+                "divisi_name" => $usr->divisi_name,
+                "seksi_id" => $usr->seksi_id,
+                "seksi_name" => $usr->seksi_name,
                 "blok_id" => $usr->blok_id,
                 "blok_name" => $usr->blok_name
             ); 
