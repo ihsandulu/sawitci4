@@ -1134,5 +1134,32 @@ class api extends baseController
         } 
         return $this->response->setContentType('application/json')->setJSON($data);
     }
+
+    
+
+    public function uploadquarry(){
+        foreach ($this->request->getPost() as $e => $f) {
+            if ($e != 'create' ) {
+                $inputu[$e] = $this->request->getPost($e);
+            }
+        }
+        //cek
+        $cek=$this->db->table('quarry')
+        ->where("quarry_date",$inputu["quarry_date"])
+        ->where("quarry_card",$inputu["quarry_card"])
+        ->get();
+        if($cek->getNumRows()==0){
+            $this->db->table('quarry')->insert($inputu);
+            // echo $this->db->getLastQuery(); die;
+            $data["message"] = "Insert Data Success!";
+        }else{
+            foreach ($cek->getResult() as $cek) {
+                $where["quarry_id"]=$cek->quarry_id;
+                $this->db->table('quarry')->update($input,$where);
+                $data["message"] = "Data Diupdate!";
+            }
+        }
+
+    }
     
 }
