@@ -1143,8 +1143,10 @@ class api extends baseController
                 $inputu[$e] = $this->request->getPost($e);
             }
         }
+        
+        $this->db->table('quarry')->insert($inputu);
         //cek
-        $cek=$this->db->table('quarry')
+        /* $cek=$this->db->table('quarry')
         ->where("quarry_date",$inputu["quarry_date"])
         ->where("quarry_card",$inputu["quarry_card"])
         ->get();
@@ -1158,7 +1160,7 @@ class api extends baseController
                 $this->db->table('quarry')->update($input,$where);
                 $data["message"] = "Data Diupdate!";
             }
-        }
+        } */
 
     }
     
