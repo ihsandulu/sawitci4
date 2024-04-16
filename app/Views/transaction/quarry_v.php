@@ -72,110 +72,303 @@
                         <div class="">
                             <?php if (isset($_POST['edit'])) {
                                 $namabutton = 'name="change"';
-                                $judul = "Update quarrysi";
+                                $judul = "Update Quarry";
                             } else {
                                 $namabutton = 'name="create"';
-                                $judul = "Tambah quarrysi";
+                                $judul = "Tambah Quarry";
                             } ?>
                             <div class="lead">
                                 <h3><?= $judul; ?></h3>
                             </div>
-                            <form class="form-horizontal" method="post" enctype="multipart/form-data">  
+                            <form class="form-horizontal" method="post" enctype="multipart/form-data">
                                 <div class="form-group">
-                                    <label class="control-label col-sm-2" for="quarry_type">Type:</label>
-                                    <div class="col-sm-10">                                        
-                                        <select required class="form-control select" id="quarry_type" name="quarry_type">
-                                            <option value="" <?= ($quarry_type == "") ? "selected" : ""; ?>>Pilih Type</option>
-                                            <option value="Masuk" <?= ($quarry_type == "Masuk") ? "selected" : ""; ?>>Masuk</option>
-                                            <option value="Keluar" <?= ($quarry_type == "Keluar") ? "selected" : ""; ?>>Keluar</option>
-                                        </select>
-
+                                    <label class="control-label col-sm-12" for="quarry_date">Date:</label>
+                                    <div class="col-sm-12">
+                                        <input required type="date" autofocus class="form-control" id="quarry_date" name="quarry_date" placeholder="" value="<?= $quarry_date; ?>">
                                     </div>
-                                </div>                                                 
+                                </div>        
                                 <div class="form-group">
-                                    <label class="control-label col-sm-2" for="quarry_datetime">Date Time:</label>
-                                    <div class="col-sm-10">
-                                        <input onchange="rdate()" required type="datetime-local" autofocus class="form-control" id="quarry_datetime" name="quarry_datetime" placeholder="" value="<?= $quarry_datetime; ?>">
-                                                                 
-                                        <input type="hidden" id="quarry_date" name="quarry_date" value="<?= $quarry_date; ?>" />      
-                                        <input type="hidden" id="quarry_time" name="quarry_time" value="<?= $quarry_time; ?>" />
+                                    <label class="control-label col-sm-12" for="quarry_card">Kartu:</label>
+                                    <div class="col-sm-12">
+                                        <input required type="text" class="form-control" id="quarry_card" name="quarry_card" placeholder="" value="<?= $quarry_card; ?>">
+                                    </div>
+                                </div>           
+                                <div class="form-group">
+                                    <label class="control-label col-sm-12" for="quarry_kubikasi">Kubikasi:</label>
+                                    <div class="col-sm-12">
+                                        <input required type="number" class="form-control" id="quarry_kubikasi" name="quarry_kubikasi" placeholder="" value="<?= $quarry_kubikasi; ?>">
+                                    </div>
+                                </div>          
+                                <div class="form-group">
+                                    <label class="control-label col-sm-12" for="quarry_jarak">Jarak:</label>
+                                    <div class="col-sm-12">
+                                        <input required type="text" class="form-control" id="quarry_jarak" name="quarry_jarak" placeholder="" value="<?= $quarry_jarak; ?>">
+                                    </div>
+                                </div>       
+                                <h3>Pengirim</h3> 
+                                <div class="form-group">
+                                    <label class="control-label col-sm-12" for="quarry_checkerpengirim">Pengirim:</label>
+                                    <div class="col-sm-12">                                        
+                                        <select required class="form-control select" id="quarry_checkerpengirim" name="quarry_checkerpengirim">
+                                            <option value="" <?= ($quarry_checkerpengirim == "") ? "selected" : ""; ?>>Pilih Checker</option>
+                                            <?php
+                                            $usr = $this->db->table("t_user")
+                                            // ->select('t_user.*, CASE WHEN (SELECT COUNT(*) FROM placement WHERE placement.user_id = t_user.user_id) > 0 THEN GROUP_CONCAT(placement.divisi_id SEPARATOR ",") ELSE NULL END AS divisiid')
+                                            ->select("*, t_user.user_id as user_id, placement.estate_id as estate_id, placement.divisi_id as divisi_id, placement.seksi_id as seksi_id, placement.blok_id as blok_id, placement.tph_id as tph_id, t_user.position_id as position_id, position.position_name as position_name")
+                                            ->join('placement', 'placement.user_id = t_user.user_id', 'left')
+                                            ->join('estate', 'estate.estate_id = placement.estate_id', 'left')
+                                            ->join('divisi', 'divisi.divisi_id = placement.divisi_id', 'left')
+                                            ->join('seksi', 'seksi.seksi_id = placement.seksi_id', 'left')
+                                            ->join('blok', 'blok.blok_id = placement.blok_id', 'left')
+                                            ->join('tph', 'tph.tph_id = placement.tph_id', 'left')
+                                            ->join('position', 'position.position_id = t_user.position_id', 'left')
+                                            ->orderBy("t_user.username", "ASC")
+                                            ->groupBy('t_user.user_id')
+                                            ->get();
+                                            foreach($usr->getResult() as $usr){?>
+                                            <option value="<?=$usr->user_id;?>" <?= ($quarry_checkerpengirim == $usr->user_id) ? "selected" : ""; ?>><?=$usr->nama;?> (<?=$usr->position_name;?> - <?=$usr->estate_name;?> - <?=$usr->divisi_name;?>)</option>
+                                            <?php }?>
+                                        </select>
+                                    </div>
+                                </div>        
+                                <div class="form-group">
+                                    <label class="control-label col-sm-12" for="quarry_geo1">Geolocation Pengirim:</label>
+                                    <div class="col-sm-12">
+                                        <input required type="text" class="form-control" id="quarry_geo1" name="quarry_geo1" placeholder="" value="<?= $quarry_geo1; ?>">
+                                    </div>
+                                </div>         
+                                <div class="form-group">
+                                    <label class="control-label col-sm-12" for="quarry_jampergi">Jam Pergi:</label>
+                                    <div class="col-sm-12">
+                                        <input onkeyup="kirimjam()" required type="datetime-local" autofocus class="form-control" id="quarry_jampergi" placeholder="" value="<?= $quarry_date; ?> <?= $quarry_jampergi; ?>">
+                                        <input type="hidden" id="quarry_jampergi" name="quarry_jampergi" value="<?= $quarry_jampergi; ?>" />
                                         <script>
-                                            function rdate(){            
-                                                let datetime = $("#quarry_datetime"). val();
+                                            function kirimjam(){            
+                                                let datetime = $("#quarry_jampergi"). val();
                                                 // Memisahkan tanggal dan waktu
                                                 var parts = datetime.split(" ");
                                                 var tanggal = parts[0];
                                                 var waktu = parts[1];
-                                                $("#quarry_date").val(tanggal);
-                                                $("#quarry_time").val(waktu);
+                                                $("#quarry_jampergi").val(waktu);
                                             }
                                         </script>
                                     </div>
-                                </div>                                                 
+                                </div>    
                                 <div class="form-group">
-                                    <label class="control-label col-sm-2" for="quarry_geo">Geolocation:</label>
-                                    <div class="col-sm-10">
-                                        <input required type="text" autofocus class="form-control" id="quarry_geo" name="quarry_geo" placeholder="" value="<?= $quarry_geo; ?>">
-                                    </div>
-                                </div>                                                     
-                                <div class="form-group">
-                                    <label class="control-label col-sm-2" for="quarry_tp">Name:</label>
-                                    <div class="col-sm-10">
-                                        <?php
-                                        $user = $this->db
-                                        ->table("placement")
-                                        ->join("t_user","t_user.user_id=placement.user_id","left")
-                                        ->join("estate","estate.estate_id=placement.estate_id","left")
-                                        ->join("divisi","divisi.divisi_id=placement.divisi_id","left")
-                                        ->join("position","position.position_id=placement.position_id","left")
-                                        // ->where("placement.position_id","4")
-                                        ->like("position.position_name","checker","BOTH")
-                                        ->orLike("position.position_name","mandor","BOTH")
-                                        ->orLike("position.position_name","tenaga panen","BOTH")
-                                        ->orderBy("t_user.nama", "ASC")
-                                        ->get();
-                                        //echo $this->db->getLastQuery();
-                                        ?>
-                                        <select onchange="tp()" required class="form-control select" id="quarry_user" name="quarry_user">
-                                            <option value="" <?= ($quarry_user == "") ? "selected" : ""; ?>>Pilih User</option>
+                                    <label class="control-label col-sm-12" for="wt_id">Vehicle:</label>
+                                    <div class="col-sm-12">                                        
+                                        <select required class="form-control select" id="wt_id" name="wt_id">
+                                            <option value="" <?= ($wt_id == "") ? "selected" : ""; ?>>Pilih Kendaraan</option>
                                             <?php
-                                            foreach ($user->getResult() as $user) { ?>
-                                                <option estate_id="<?= $user->estate_id; ?>" estate_name="<?= $user->estate_name; ?>" divisi_id="<?= $user->divisi_id; ?>" divisi_name="<?= $user->divisi_name; ?>" quarry_username="<?= $user->nama; ?>" value="<?= $user->user_id; ?>" <?= ($quarry_user == $user->user_id) ? "selected" : ""; ?>><?= $user->placement_name; ?> - <?= $user->nama; ?> (<?= $user->user_nik; ?>)</option>
-                                            <?php } ?>
-                                        </select>                                        
-                                        <input type="hidden" id="estate_id" name="estate_id" value="<?= $estate_id; ?>" />                         
-                                        <input type="hidden" id="estate_name" name="estate_name" value="<?= $estate_name; ?>" />                         
-                                        <input type="hidden" id="divisi_id" name="divisi_id" value="<?= $divisi_id; ?>" />                         
-                                        <input type="hidden" id="divisi_name" name="divisi_name" value="<?= $divisi_name; ?>" />                         
-                                        <input type="hidden" id="quarry_username" name="quarry_username" value="<?= $quarry_username; ?>" />
+                                            $usr = $this->db
+                                            ->table("wt")
+                                            ->get();
+                                            $vendor = array("","PAM","VF","Sewa"); 
+                                            $sewa = array("","Wong Ganteng","VF","Putri Tunggal","Surya Gemilang");   
+                                            foreach($usr->getResult() as $usr){?>
+                                            <option value="<?=$usr->wt_id;?>" <?= ($wt_id == $usr->wt_id) ? "selected" : ""; ?>><?=$usr->wt_name;?> (<?=$usr->wt_jenis;?> <?=$vendor[$usr->wt_vendor];?> <?=$sewa[$usr->wt_sewa];?>)</option>
+                                            <?php }?>
+                                        </select>
+                                    </div>
+                                </div>        
+                                <div class="form-group">
+                                    <label class="control-label col-sm-12" for="quarrytype_id">Jenis:</label>
+                                    <div class="col-sm-12">                                        
+                                        <select required class="form-control select" id="quarrytype_id" name="quarrytype_id">
+                                            <option value="" <?= ($quarrytype_id == "") ? "selected" : ""; ?>>Pilih Jenis</option>
+                                            <?php
+                                            $usr = $this->db
+                                            ->table("quarrytype")
+                                            ->get();
+                                            foreach($usr->getResult() as $usr){?>
+                                            <option value="<?=$usr->quarrytype_id;?>" <?= ($quarrytype_id == $usr->quarrytype_id) ? "selected" : ""; ?>><?=$usr->quarrytype_sumber;?> (<?=$usr->quarrytype_jenis;?>)</option>
+                                            <?php }?>
+                                        </select>
+                                    </div>
+                                </div>        
+                                <div class="form-group">
+                                    <label class="control-label col-sm-12" for="quarry_driver">Driver:</label>
+                                    <div class="col-sm-12">                                        
+                                        <select onchange="drivername()" required class="form-control select" id="quarry_driver" name="quarry_driver">
+                                            <option value="" <?= ($quarry_driver == "") ? "selected" : ""; ?>>Pilih Jenis</option>
+                                            <?php
+                                            $usr = $this->db
+                                            ->table("t_user")
+                                            ->join("position","position.position_id=t_user.position_id","left")
+                                            ->where("t_user.position_id","7")
+                                            ->orWhere("t_user.position_id","59")
+                                            ->orderBy("t_user.nama", "ASC")
+                                            ->get();
+                                            foreach($usr->getResult() as $usr){?>
+                                            <option value="<?=$usr->user_id;?>" <?= ($quarry_driver == $usr->user_id) ? "selected" : ""; ?>><?=$usr->nama;?> (<?=$usr->position_name;?>)</option>
+                                            <?php }?>
+                                        </select>
                                         <script>
-                                            function tp(){            
-                                                let estate_id = $("#quarry_user").find(':selected').attr('estate_id');
-                                                $("#estate_id").val(estate_id);
-
-                                                      
-                                                let estate_name = $("#quarry_user").find(':selected').attr('estate_name');
-                                                $("#estate_name").val(estate_name);
-
-                                                      
-                                                let divisi_id = $("#quarry_user").find(':selected').attr('divisi_id');
-                                                $("#divisi_id").val(divisi_id);
-
-                                                      
-                                                let divisi_name = $("#quarry_user").find(':selected').attr('divisi_name');
-                                                $("#divisi_name").val(divisi_name);
-
-                                                      
-                                                let quarry_username = $("#quarry_user").find(':selected').attr('quarry_username');
-                                                $("#quarry_username").val(quarry_username);
+                                            function drivername(){
+                                                let drivername = $("#quarry_driver :selected").attr("driver_name");
+                                                if (typeof drivername !== "undefined") {
+                                                    $("#quarry_drivername").val(drivername);
+                                                } else {
+                                                    $("#quarry_drivername").val("");
+                                                }
                                             }
                                         </script>
                                     </div>
-                                </div>  
+                                </div>        
+                                <div class="form-group">
+                                    <label class="control-label col-sm-12" for="quarry_blok1">Blok Pengirim:</label>
+                                    <div class="col-sm-12">                                        
+                                        <select onchange="blokname1()" required class="form-control select" id="quarry_blok1" name="quarry_blok1">
+                                            <option value="" <?= ($quarry_blok1 == "") ? "selected" : ""; ?>>Pilih Blok</option>
+                                            <?php
+                                            $usr = $this->db
+                                            ->table("blok")
+                                            ->join("seksi","seksi.seksi_id=blok.seksi_id","left")
+                                            ->join("divisi","divisi.divisi_id=seksi.divisi_id","left")
+                                            ->join("estate","estate.estate_id=divisi.estate_id","left")
+                                            ->orderBy("blok_name", "ASC")
+                                            ->get();
+                                            foreach($usr->getResult() as $usr){?>
+                                            <option blok_name="<?=$usr->blok_name;?>" estate_id="<?=$usr->estate_id;?>" estate_name="<?=$usr->estate_name;?>" divisi_id="<?=$usr->divisi_id;?>" divisi_name="<?=$usr->divisi_name;?>"  value="<?=$usr->blok_id;?>" <?= ($quarry_blok1 == $usr->blok_id) ? "selected" : ""; ?>><?=$usr->blok_name;?> (<?=$usr->estate_name;?> - <?=$usr->divisi_name;?>)</option>
+                                            <?php }?>
+                                        </select>
+                                        
+                                        <input type="hidden" name="quarry_blok1name" value="<?= $quarry_blok1name; ?>" />
+                                        <input type="hidden" name="quarry_estate1" value="<?= $quarry_estate1; ?>" />
+                                        <input type="hidden" name="quarry_estate1name" value="<?= $quarry_estate1name; ?>" />
+                                        <input type="hidden" name="quarry_divisi1" value="<?= $quarry_divisi1; ?>" />
+                                        <input type="hidden" name="quarry_divisi1name" value="<?= $quarry_divisi1name; ?>" />
+
+                                        <script>
+                                            function blokname1(){
+                                                let blok_name = $("#quarry_blok1 :selected").attr("blok_name");
+                                                let estate_id = $("#quarry_blok1 :selected").attr("estate_id");
+                                                let estate_name = $("#quarry_blok1 :selected").attr("estate_name");
+                                                let divisi_id = $("#quarry_blok1 :selected").attr("divisi_id");
+                                                let divisi_name = $("#quarry_blok1 :selected").attr("divisi_name");
+                                                if (typeof blok_name !== "undefined") {
+                                                    $("#quarry_blok1name").val(blok_name);
+                                                    $("#quarry_estate1").val(estate_id);
+                                                    $("#quarry_estate1name").val(estate_name);
+                                                    $("#quarry_divisi1").val(divisi_id);
+                                                    $("#quarry_divisi1name").val(divisi_name);
+                                                } else {
+                                                    // Atau, jika quarry_blok1name undefined, atur nilai input ke string kosong atau sesuai kebutuhan
+                                                    $("#quarry_blok1name").val("");
+                                                    $("#quarry_estate1").val("");
+                                                    $("#quarry_estate1name").val("");
+                                                    $("#quarry_divisi1").val("");
+                                                    $("#quarry_divisi1name").val("");
+                                                }
+                                                // alert(quarry_blok1name);
+                                            }
+                                        </script>
+                                    </div>
+                                </div>    
+                                <h3>Penerima</h3> 
+                                <div class="form-group">
+                                    <label class="control-label col-sm-12" for="quarry_checkerpenerima">Penerima:</label>
+                                    <div class="col-sm-12">                                        
+                                        <select required class="form-control select" id="quarry_checkerpenerima" name="quarry_checkerpenerima">
+                                            <option value="" <?= ($quarry_checkerpenerima == "") ? "selected" : ""; ?>>Pilih Checker</option>
+                                            <?php
+                                            $usr = $this->db->table("t_user")
+                                            // ->select('t_user.*, CASE WHEN (SELECT COUNT(*) FROM placement WHERE placement.user_id = t_user.user_id) > 0 THEN GROUP_CONCAT(placement.divisi_id SEPARATOR ",") ELSE NULL END AS divisiid')
+                                            ->select("*, t_user.user_id as user_id, placement.estate_id as estate_id, placement.divisi_id as divisi_id, placement.seksi_id as seksi_id, placement.blok_id as blok_id, placement.tph_id as tph_id, t_user.position_id as position_id, position.position_name as position_name")
+                                            ->join('placement', 'placement.user_id = t_user.user_id', 'left')
+                                            ->join('estate', 'estate.estate_id = placement.estate_id', 'left')
+                                            ->join('divisi', 'divisi.divisi_id = placement.divisi_id', 'left')
+                                            ->join('seksi', 'seksi.seksi_id = placement.seksi_id', 'left')
+                                            ->join('blok', 'blok.blok_id = placement.blok_id', 'left')
+                                            ->join('tph', 'tph.tph_id = placement.tph_id', 'left')
+                                            ->join('position', 'position.position_id = t_user.position_id', 'left')
+                                            ->orderBy("t_user.username", "ASC")
+                                            ->groupBy('t_user.user_id')
+                                            ->get();
+                                            foreach($usr->getResult() as $usr){?>
+                                            <option value="<?=$usr->user_id;?>" <?= ($quarry_checkerpenerima == $usr->user_id) ? "selected" : ""; ?>><?=$usr->nama;?> (<?=$usr->position_name;?> - <?=$usr->estate_name;?> - <?=$usr->divisi_name;?>)</option>
+                                            <?php }?>
+                                        </select>
+                                    </div>
+                                </div>                                      
+                                <div class="form-group">
+                                    <label class="control-label col-sm-12" for="quarry_geo2">Geolocation Penerima:</label>
+                                    <div class="col-sm-12">
+                                        <input required type="text" class="form-control" id="quarry_geo2" name="quarry_geo2" placeholder="" value="<?= $quarry_geo2; ?>">
+                                    </div>
+                                </div>    
+                                <div class="form-group">
+                                    <label class="control-label col-sm-12" for="quarry_jamtiba">Jam Datang:</label>
+                                    <div class="col-sm-12">
+                                        <input onkeyup="tibajam()" required type="datetime-local" autofocus class="form-control" id="quarry_jamtiba" placeholder="" value="<?= $quarry_date; ?> <?= $quarry_jamtiba; ?>">
+                                        <input type="hidden" id="quarry_jamtiba" name="quarry_jamtiba" value="<?= $quarry_jamtiba; ?>" />
+                                        <script>
+                                            function tibajam(){            
+                                                let datetime = $("#quarry_jamtiba"). val();
+                                                // Memisahkan tanggal dan waktu
+                                                var parts = datetime.split(" ");
+                                                var tanggal = parts[0];
+                                                var waktu = parts[1];
+                                                $("#quarry_jamtiba").val(waktu);
+                                            }
+                                        </script>
+                                    </div>
+                                </div>        
+                                <div class="form-group">
+                                    <label class="control-label col-sm-12" for="quarry_blok2">Blok Penerima:</label>
+                                    <div class="col-sm-12">                                        
+                                        <select onchange="blokname2()" required class="form-control select" id="quarry_blok2" name="quarry_blok2">
+                                            <option value="" <?= ($quarry_blok2 == "") ? "selected" : ""; ?>>Pilih Blok</option>
+                                            <?php
+                                            $usr = $this->db
+                                            ->table("blok")
+                                            ->join("seksi","seksi.seksi_id=blok.seksi_id","left")
+                                            ->join("divisi","divisi.divisi_id=seksi.divisi_id","left")
+                                            ->join("estate","estate.estate_id=divisi.estate_id","left")
+                                            ->orderBy("blok_name", "ASC")
+                                            ->get();
+                                            foreach($usr->getResult() as $usr){?>
+                                            <option blok_name="<?=$usr->blok_name;?>" estate_id="<?=$usr->estate_id;?>" estate_name="<?=$usr->estate_name;?>" divisi_id="<?=$usr->divisi_id;?>" divisi_name="<?=$usr->divisi_name;?>"  value="<?=$usr->blok_id;?>" <?= ($quarry_blok2 == $usr->blok_id) ? "selected" : ""; ?>><?=$usr->blok_name;?> (<?=$usr->estate_name;?> - <?=$usr->divisi_name;?>)</option>
+                                            <?php }?>
+                                        </select>
+                                        
+                                        <input type="hidden" name="quarry_blok2name" value="<?= $quarry_blok2name; ?>" />
+                                        <input type="hidden" name="quarry_estate2" value="<?= $quarry_estate2; ?>" />
+                                        <input type="hidden" name="quarry_estate2name" value="<?= $quarry_estate2name; ?>" />
+                                        <input type="hidden" name="quarry_divisi2" value="<?= $quarry_divisi2; ?>" />
+                                        <input type="hidden" name="quarry_divisi2name" value="<?= $quarry_divisi2name; ?>" />
+
+                                        <script>
+                                            function blokname2(){
+                                                let blok_name = $("#quarry_blok2 :selected").attr("blok_name");
+                                                let estate_id = $("#quarry_blok2 :selected").attr("estate_id");
+                                                let estate_name = $("#quarry_blok2 :selected").attr("estate_name");
+                                                let divisi_id = $("#quarry_blok2 :selected").attr("divisi_id");
+                                                let divisi_name = $("#quarry_blok2 :selected").attr("divisi_name");
+                                                if (typeof blok_name !== "undefined") {
+                                                    $("#quarry_blok2name").val(blok_name);
+                                                    $("#quarry_estate2").val(estate_id);
+                                                    $("#quarry_estate2name").val(estate_name);
+                                                    $("#quarry_divisi2").val(divisi_id);
+                                                    $("#quarry_divisi2name").val(divisi_name);
+                                                } else {
+                                                    // Atau, jika quarry_blok2name undefined, atur nilai input ke string kosong atau sesuai kebutuhan
+                                                    $("#quarry_blok2name").val("");
+                                                    $("#quarry_estate2").val("");
+                                                    $("#quarry_estate2name").val("");
+                                                    $("#quarry_divisi2").val("");
+                                                    $("#quarry_divisi2name").val("");
+                                                }
+                                                // alert(quarry_blok2name);
+                                            }
+                                        </script>
+                                    </div>
+                                </div>                                                  
+                                 
 
                                 <input type="hidden" name="quarry_id" value="<?= $quarry_id; ?>" />
                                 <div class="form-group">
-                                    <div class="col-sm-offset-2 col-sm-10">
+                                    <div class="col-sm-offset-2 col-sm-12">
                                         <button type="submit" id="submit" class="btn btn-primary col-md-5" <?= $namabutton; ?> value="OK">Submit</button>
                                         <a class="btn btn-warning col-md-offset-1 col-md-5" href="<?= base_url("quarry"); ?>">Back</a>
                                     </div>
@@ -223,32 +416,42 @@
                                             <th>Action</th>
                                         <?php } ?>
                                         <!-- <th>No.</th> -->
-                                        <th>Type</th>
                                         <th>Date</th>
-                                        <th>Time</th>
-                                        <th>Estate</th>
-                                        <th>Divisi</th>
-                                        <th>Name</th>
-                                        <th>Geolocation</th>
-                                        <th>Picture</th>
+                                        <th>Detail</th>
+                                        <th>Vehicle</th>
+                                        <th>Jarak</th>
+                                        <th>Pengirim</th>
+                                        <th>Penerima</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     <?php
                                     $usr = $this->db
                                         ->table("quarry")
-                                        ->select("quarry_type,quarry_date,quarry_time,estate_name,divisi_name,quarry_username,quarry_geo,quarry_id")
+                                        ->join("(SELECT user_id as driverid, nama as drivername FROM t_user)AS driver","driver.driverid=quarry.quarry_driver","left")
+                                        ->join("(SELECT user_id as pengirimid, nama as pengirimname FROM t_user)AS pengirim","pengirim.pengirimid=quarry.quarry_checkerpengirim","left")
+                                        ->join("(SELECT user_id as penerimaid, nama as penerimaname FROM t_user)AS penerima","penerima.penerimaid=quarry.quarry_checkerpenerima","left")
+                                        ->join("wt","wt.wt_id=quarry.wt_id","left")
+                                        ->join("quarrytype","quarrytype.quarrytype_id=quarry.quarrytype_id","left")
+
+                                        ->join("(SELECT blok_id as blok1id, blok_name as blok1name FROM blok)AS blok1","blok1.blok1id=quarry.quarry_blok1","left")
+                                        ->join("(SELECT blok_id as blok2id, blok_name as blok2name FROM blok)AS blok2","blok2.blok2id=quarry.quarry_blok2","left")
+
+                                        ->join("(SELECT estate_id as estate1id, estate_name as estate1name FROM estate)AS estate1","estate1.estate1id=quarry.quarry_estate1","left")
+                                        ->join("(SELECT estate_id as estate2id, estate_name as estate2name FROM estate)AS estate2","estate2.estate2id=quarry.quarry_estate2","left")
+
+                                        ->join("(SELECT divisi_id as divisi1id, divisi_name as divisi1name FROM divisi)AS divisi1","divisi1.divisi1id=quarry.quarry_divisi1","left")
+                                        ->join("(SELECT divisi_id as divisi2id, divisi_name as divisi2name FROM divisi)AS divisi2","divisi2.divisi2id=quarry.quarry_divisi2","left")
+
                                         ->where("quarry_date >=",$dari)
                                         ->where("quarry_date <=",$ke)
                                         ->orderBy("quarry_date", "ASC")
-                                        ->orderBy("quarry_time", "ASC")
-                                        ->orderBy("estate_name", "ASC")
-                                        ->orderBy("divisi_name", "ASC")
-                                        ->orderBy("quarry_username", "ASC")
-                                        ->orderBy("quarry_geo", "ASC")
+                                        ->orderBy("quarry_card", "ASC")
                                         ->get();
                                     // echo $this->db->getLastquery();
                                     $no = 1;
+                                    $vendor = array("","PAM","VF","Sewa"); 
+                                    $sewa = array("","Wong Ganteng","VF","Putri Tunggal","Surya Gemilang"); 
                                     foreach ($usr->getResult() as $usr) { ?>
                                         <tr>
                                             <?php if (!isset($_GET["report"])) { ?>
@@ -295,26 +498,49 @@
                                                 </td>
                                             <?php } ?>
                                             <!-- <td><?= $no++; ?></td> -->
-                                            <td><?= $usr->quarry_type; ?></td>
                                             <td><?= $usr->quarry_date; ?></td>
-                                            <td><?= $usr->quarry_time; ?></td>
-                                            <td><?= $usr->estate_name; ?></td>
-                                            <td><?= $usr->divisi_name; ?></td>
-                                            <td><?= $usr->quarry_username; ?></td>
-                                            <td><?= $usr->quarry_geo; ?></td>
-                                            <td><i class="fa fa-camera tunjuk" onclick="tampilgambar('<?= $usr->quarry_id; ?>');"></i></td>
+                                            <td class="text-left">
+                                                <?= $usr->quarry_card; ?><br/>
+                                                <?= $usr->quarry_kubikasi; ?> kubik<br/>
+                                                <?=$usr->quarrytype_sumber;?> (<?=$usr->quarrytype_jenis;?>)
+                                            </td>
+                                            <td class="text-left">
+                                                <?= $usr->drivername; ?><br/>
+                                                <?= $usr->wt_name; ?> (<?= $usr->wt_jenis; ?> <?= $vendor[$usr->wt_vendor]; ?> <?= $sewa[$usr->wt_sewa]; ?>)
+                                            </td>
+                                            <td class="text-left">
+                                                Jarak : 
+                                                <div class="input-group mb-3">
+                                                    <input type="text" id="quarry_jarak<?= $usr->quarry_id ; ?>" name="quarry_jarak" class="form-control" placeholder="" aria-label="" aria-describedby="basic-addon2" value="<?= $usr->quarry_jarak; ?>">
+                                                    <div class="input-group-append">
+                                                        <button class="btn btn-outline-secondary" type="button"><i onclick="jarak(<?= $usr->quarry_id ; ?>)" class="fa fa-check"></i></button>
+                                                    </div>
+                                                </div>   
+                                            </td>
+                                            <td class="text-left">
+                                                <?= $usr->pengirimname; ?><br/>
+                                                <?= $usr->quarry_jampergi; ?><br/>
+                                                <?= $usr->estate1name; ?> <?= $usr->divisi1name; ?> <?= $usr->blok1name; ?><br/>
+                                                <?= $usr->quarry_geo1; ?>
+                                            </td>
+                                            <td class="text-left">
+                                                <?= $usr->penerimaname; ?><br/>
+                                                <?= $usr->quarry_jamtiba; ?><br/>
+                                                <?= $usr->estate2name; ?> <?= $usr->divisi2name; ?> <?= $usr->blok2name; ?><br/>
+                                                <?= $usr->quarry_geo2; ?>
+                                            </td>
                                         </tr>
                                     <?php } ?>
                                 </tbody>
                             </table>
-                            <script>
-                                function tampilgambar(id){
-                                    $("#gambarquarry").hide();
-                                    $("#exampleModal").modal("show");
-                                    $.get("<?=base_url("api/gambarquarry");?>",{id:id})
+                            <script>                                
+                                function jarak(id){
+                                    let quarry_id = id;
+                                    let quarry_jarak = $("#quarry_jarak"+id).val();
+                                    $.get("<?=base_url("api/insertquarry_jarak");?>",{quarry_id:quarry_id,quarry_jarak:quarry_jarak})
                                     .done(function(data){
-                                        $("#gambarquarry").attr("src",data);
-                                        $("#gambarquarry").fadeIn();
+                                        // showmessage("Update jarak berhasil!");
+                                        toast("Info", "Update jarak berhasil!")
                                     });
                                 }
                             </script>
@@ -339,7 +565,7 @@
 </div>
 <script>
     $('.select').select2();
-    var title = "Master quarrysi";
+    var title = "Master Quarry";
     $("title").text(title);
     $(".card-title").text(title);
     $("#page-title").text(title);

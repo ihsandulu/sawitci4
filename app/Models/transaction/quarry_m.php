@@ -21,7 +21,7 @@ class quarry_m extends core_m
             ->getWhere($quarryd);
         /* echo $this->db->getLastquery();
         die; */
-        $larang = array("log_id", "id", "user_id", "action", "data", "quarry_id_dep", "trx_id", "trx_code");
+        $larang = array("action", "data");
         if ($us->getNumRows() > 0) {
             foreach ($us->getResult() as $quarry) {
                 foreach ($this->db->getFieldNames('quarry') as $field) {
@@ -95,8 +95,6 @@ class quarry_m extends core_m
                     $input[$e] = $this->request->getPost($e);
                 }
             }
-            $input["quarry_date"] = date("Y-m-d");
-            $input["user_id"] = session()->get("user_id");
             $builder = $this->db->table('quarry');
             $builder->insert($input);
             /* echo $this->db->getLastQuery();
