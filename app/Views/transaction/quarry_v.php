@@ -408,24 +408,160 @@
                             </form>
                         </div>
                         <div class="table-responsive m-t-40">
-                            <table id="example23" class="display nowrap table table-hover table-striped table-bordered" cellspacing="0" width="100%">
+                            
+                            <?php if (!isset($_GET["report"])) { ?>
+                                <table id="example23" class="display nowrap table table-hover table-striped table-bordered" cellspacing="0" width="100%">
+                                    <!-- <table id="dataTable" class="table table-condensed table-hover w-auto dtable"> -->
+                                    <thead class="">
+                                        <tr>
+                                            <?php if (!isset($_GET["report"])) { ?>
+                                                <th>Action</th>
+                                            <?php } ?>
+                                            <!-- <th>No.</th> -->
+                                            <th>Date</th>
+                                            <th>Jarak</th>
+                                            <th>Detail</th>
+                                            <th>Jenis</th>
+                                            <th>Pengirim</th>
+                                            <th>Penerima</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <?php                                    
+                                        $usr = $this->db
+                                            ->table("quarry")
+                                            ->join("(SELECT user_id as driverid, nama as drivername FROM t_user)AS driver","driver.driverid=quarry.quarry_driver","left")
+                                            ->join("(SELECT user_id as pengirimid, nama as pengirimname FROM t_user)AS pengirim","pengirim.pengirimid=quarry.quarry_checkerpengirim","left")
+                                            ->join("(SELECT user_id as penerimaid, nama as penerimaname FROM t_user)AS penerima","penerima.penerimaid=quarry.quarry_checkerpenerima","left")
+                                            ->join("wt","wt.wt_id=quarry.wt_id","left")
+                                            ->join("quarrytype","quarrytype.quarrytype_id=quarry.quarrytype_id","left")
+
+                                            ->join("(SELECT blok_id as blok1id, blok_name as blok1name FROM blok)AS blok1","blok1.blok1id=quarry.quarry_blok1","left")
+                                            ->join("(SELECT blok_id as blok2id, blok_name as blok2name FROM blok)AS blok2","blok2.blok2id=quarry.quarry_blok2","left")
+
+                                            ->join("(SELECT estate_id as estate1id, estate_name as estate1name FROM estate)AS estate1","estate1.estate1id=quarry.quarry_estate1","left")
+                                            ->join("(SELECT estate_id as estate2id, estate_name as estate2name FROM estate)AS estate2","estate2.estate2id=quarry.quarry_estate2","left")
+
+                                            ->join("(SELECT divisi_id as divisi1id, divisi_name as divisi1name FROM divisi)AS divisi1","divisi1.divisi1id=quarry.quarry_divisi1","left")
+                                            ->join("(SELECT divisi_id as divisi2id, divisi_name as divisi2name FROM divisi)AS divisi2","divisi2.divisi2id=quarry.quarry_divisi2","left")
+
+                                            ->where("quarry_date >=",$dari)
+                                            ->where("quarry_date <=",$ke)
+                                            ->orderBy("quarry_date", "ASC")
+                                            ->orderBy("quarry_card", "ASC")
+                                            ->get();
+                                        // echo $this->db->getLastquery();
+                                        $no = 1;
+                                        $vendor = array("","PAM","VF","Sewa"); 
+                                        $sewa = array("","Wong Ganteng","VF","Putri Tunggal","Surya Gemilang"); 
+                                        foreach ($usr->getResult() as $usr) { ?>
+                                            <tr>
+                                                <?php if (!isset($_GET["report"])) { ?>
+                                                    <td style="padding-left:0px; padding-right:0px;">
+                                                        <?php 
+                                                        if (
+                                                            (
+                                                                isset(session()->get("position_administrator")[0][0]) 
+                                                                && (
+                                                                    session()->get("position_administrator") == "1" 
+                                                                    || session()->get("position_administrator") == "2"
+                                                                )
+                                                            ) ||
+                                                            (
+                                                                isset(session()->get("halaman")['50']['act_update']) 
+                                                                && session()->get("halaman")['50']['act_update'] == "1"
+                                                            )
+                                                        ) { ?>
+                                                            <form method="post" class="btn-action" style="">
+                                                                <button class="btn btn-sm btn-warning " name="edit" value="OK"><span class="fa fa-edit" style="color:white;"></span> </button>
+                                                                <input type="hidden" name="quarry_id" value="<?= $usr->quarry_id; ?>" />
+                                                            </form>
+                                                        <?php }?>
+                                                        
+                                                        <?php 
+                                                        if (
+                                                            (
+                                                                isset(session()->get("position_administrator")[0][0]) 
+                                                                && (
+                                                                    session()->get("position_administrator") == "1" 
+                                                                    || session()->get("position_administrator") == "2"
+                                                                )
+                                                            ) ||
+                                                            (
+                                                                isset(session()->get("halaman")['50']['act_delete']) 
+                                                                && session()->get("halaman")['50']['act_delete'] == "1"
+                                                            )
+                                                        ) { ?>
+                                                            <form method="post" class="btn-action" style="">
+                                                                <button class="btn btn-sm btn-danger delete" onclick="return confirm(' you want to delete?');" name="delete" value="OK"><span class="fa fa-close" style="color:white;"></span> </button>
+                                                                <input type="hidden" name="quarry_id" value="<?= $usr->quarry_id; ?>" />
+                                                            </form>
+                                                        <?php }?>
+                                                    </td>
+                                                <?php } ?>
+                                                <!-- <td><?= $no++; ?></td> -->
+                                                <td><?= $usr->quarry_date; ?></td>
+                                                <td class="text-left">
+                                                    Jarak
+                                                    <div class="input-group mt-2 mb-2">
+                                                        <input type="text" id="quarry_jarak<?= $usr->quarry_id ; ?>" name="quarry_jarak" class="form-control" placeholder="" aria-label="" aria-describedby="basic-addon2" value="<?= $usr->quarry_jarak; ?>">
+                                                        <div class="input-group-append">
+                                                            <button class="btn btn-outline-secondary" type="button"><i onclick="jarak(<?= $usr->quarry_id ; ?>)" class="fa fa-check"></i></button>
+                                                        </div>
+                                                    </div>                                                    
+                                                </td>
+                                                <td class="text-left">
+                                                    <?= $usr->quarry_card; ?><br/>
+                                                    <?= $usr->quarry_kubikasi; ?> Kubik<br/>
+                                                    <?=$usr->quarrytype_sumber;?> (<?=$usr->quarrytype_jenis;?>)
+                                                </td>
+                                                <td class="text-left">
+                                                    <?= $usr->drivername; ?><br/>
+                                                    <?= $usr->wt_name; ?> (<?= $usr->wt_jenis; ?> <?= $vendor[$usr->wt_vendor]; ?> <?= $sewa[$usr->wt_sewa]; ?>)
+                                                </td>
+                                                <td class="text-left">
+                                                    <?= $usr->pengirimname; ?><br/>
+                                                    <?= $usr->quarry_jampergi; ?><br/>
+                                                    <?= $usr->estate1name; ?> <?= $usr->divisi1name; ?> <?= $usr->blok1name; ?><br/>
+                                                    <?= $usr->quarry_geo1; ?>
+                                                </td>
+                                                <td class="text-left"><?= $usr->penerimaname; ?><br/>
+                                                    <?= $usr->quarry_jamtiba; ?><br/>
+                                                    <?= $usr->estate2name; ?> <?= $usr->divisi2name; ?> <?= $usr->blok2name; ?><br/>
+                                                    <?= $usr->quarry_geo2; ?>
+                                                </td>
+                                            </tr>
+                                        <?php } ?>
+                                    </tbody>
+                                </table>
+                            <?php }else{?>
+                                <table id="example23" class="display nowrap table table-hover table-striped table-bordered" cellspacing="0" width="100%">
                                 <!-- <table id="dataTable" class="table table-condensed table-hover w-auto dtable"> -->
                                 <thead class="">
                                     <tr>
                                         <?php if (!isset($_GET["report"])) { ?>
-                                            <th>Action</th>
+                                            <th>Action....</th>
                                         <?php } ?>
                                         <!-- <th>No.</th> -->
-                                        <th>Date</th>
-                                        <th>Detail</th>
+                                        <th>Date.......</th>
+                                        <th>Card</th>
+                                        <th>Jarak (Km)</th>
+                                        <th>Kubik</th>
+                                        <th>JenisQuarry....</th>
+                                        <th>Driver</th>
                                         <th>Vehicle</th>
-                                        <th>Jarak</th>
-                                        <th>Pengirim</th>
-                                        <th>Penerima</th>
+                                        <th>Pengirim....</th>
+                                        <th>JamKirim</th>
+                                        <th>BlokAsal.....</th>
+                                        <th>LokasiKirim</th>
+                                        <th>Penerima....</th>
+                                        <th>JamTiba</th>
+                                        <th>BlokTujuan......</th>
+                                        <th>LokasiTujuan</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <?php
+                                    <?php                                    
                                     $usr = $this->db
                                         ->table("quarry")
                                         ->join("(SELECT user_id as driverid, nama as drivername FROM t_user)AS driver","driver.driverid=quarry.quarry_driver","left")
@@ -470,10 +606,10 @@
                                                             && session()->get("halaman")['50']['act_update'] == "1"
                                                         )
                                                     ) { ?>
-                                                    <form method="post" class="btn-action" style="">
-                                                        <button class="btn btn-sm btn-warning " name="edit" value="OK"><span class="fa fa-edit" style="color:white;"></span> </button>
-                                                        <input type="hidden" name="quarry_id" value="<?= $usr->quarry_id; ?>" />
-                                                    </form>
+                                                        <form method="post" class="btn-action" style="">
+                                                            <button class="btn btn-sm btn-warning " name="edit" value="OK"><span class="fa fa-edit" style="color:white;"></span> </button>
+                                                            <input type="hidden" name="quarry_id" value="<?= $usr->quarry_id; ?>" />
+                                                        </form>
                                                     <?php }?>
                                                     
                                                     <?php 
@@ -490,49 +626,45 @@
                                                             && session()->get("halaman")['50']['act_delete'] == "1"
                                                         )
                                                     ) { ?>
-                                                    <form method="post" class="btn-action" style="">
-                                                        <button class="btn btn-sm btn-danger delete" onclick="return confirm(' you want to delete?');" name="delete" value="OK"><span class="fa fa-close" style="color:white;"></span> </button>
-                                                        <input type="hidden" name="quarry_id" value="<?= $usr->quarry_id; ?>" />
-                                                    </form>
+                                                        <form method="post" class="btn-action" style="">
+                                                            <button class="btn btn-sm btn-danger delete" onclick="return confirm(' you want to delete?');" name="delete" value="OK"><span class="fa fa-close" style="color:white;"></span> </button>
+                                                            <input type="hidden" name="quarry_id" value="<?= $usr->quarry_id; ?>" />
+                                                        </form>
                                                     <?php }?>
+                                                    <div class="input-group mt-2 mb-2">
+                                                        <input type="text" id="quarry_jarak<?= $usr->quarry_id ; ?>" name="quarry_jarak" class="form-control" placeholder="" aria-label="" aria-describedby="basic-addon2" value="<?= $usr->quarry_jarak; ?>">
+                                                        <div class="input-group-append">
+                                                            <button class="btn btn-outline-secondary" type="button"><i onclick="jarak(<?= $usr->quarry_id ; ?>)" class="fa fa-check"></i></button>
+                                                        </div>
+                                                    </div>
                                                 </td>
                                             <?php } ?>
                                             <!-- <td><?= $no++; ?></td> -->
                                             <td><?= $usr->quarry_date; ?></td>
-                                            <td class="text-left">
-                                                <?= $usr->quarry_card; ?><br/>
-                                                <?= $usr->quarry_kubikasi; ?> kubik<br/>
+                                            <td><?= $usr->quarry_card; ?></td>
+                                            <td class="text-left"><?= $usr->quarry_jarak; ?></td>
+                                            <td><?= $usr->quarry_kubikasi; ?> Kubik</td>
+                                            <td>
                                                 <?=$usr->quarrytype_sumber;?> (<?=$usr->quarrytype_jenis;?>)
                                             </td>
-                                            <td class="text-left">
-                                                <?= $usr->drivername; ?><br/>
+                                            <td class="text-left"><?= $usr->drivername; ?></td>
+                                            <td>
                                                 <?= $usr->wt_name; ?> (<?= $usr->wt_jenis; ?> <?= $vendor[$usr->wt_vendor]; ?> <?= $sewa[$usr->wt_sewa]; ?>)
                                             </td>
-                                            <td class="text-left">
-                                                Jarak : 
-                                                <div class="input-group mb-3">
-                                                    <input type="text" id="quarry_jarak<?= $usr->quarry_id ; ?>" name="quarry_jarak" class="form-control" placeholder="" aria-label="" aria-describedby="basic-addon2" value="<?= $usr->quarry_jarak; ?>">
-                                                    <div class="input-group-append">
-                                                        <button class="btn btn-outline-secondary" type="button"><i onclick="jarak(<?= $usr->quarry_id ; ?>)" class="fa fa-check"></i></button>
-                                                    </div>
-                                                </div>   
-                                            </td>
-                                            <td class="text-left">
-                                                <?= $usr->pengirimname; ?><br/>
-                                                <?= $usr->quarry_jampergi; ?><br/>
-                                                <?= $usr->estate1name; ?> <?= $usr->divisi1name; ?> <?= $usr->blok1name; ?><br/>
-                                                <?= $usr->quarry_geo1; ?>
-                                            </td>
-                                            <td class="text-left">
-                                                <?= $usr->penerimaname; ?><br/>
-                                                <?= $usr->quarry_jamtiba; ?><br/>
-                                                <?= $usr->estate2name; ?> <?= $usr->divisi2name; ?> <?= $usr->blok2name; ?><br/>
-                                                <?= $usr->quarry_geo2; ?>
-                                            </td>
+                                            <td><?= $usr->pengirimname; ?></td>
+                                            <td><?= $usr->quarry_jampergi; ?></td>
+                                            <td><?= $usr->estate1name; ?> <?= $usr->divisi1name; ?> <?= $usr->blok1name; ?></td>
+                                            <td><?= $usr->quarry_geo1; ?></td>
+                                            <td><?= $usr->penerimaname; ?></td>
+                                            <td><?= $usr->quarry_jamtiba; ?></td>
+                                            <td><?= $usr->estate2name; ?> <?= $usr->divisi2name; ?> <?= $usr->blok2name; ?></td>
+                                            <td><?= $usr->quarry_geo2; ?></td>
                                         </tr>
                                     <?php } ?>
                                 </tbody>
                             </table>
+                            <?php }?>
+                            
                             <script>                                
                                 function jarak(id){
                                     let quarry_id = id;
