@@ -650,8 +650,21 @@ class api extends baseController
 
         // Mengembalikan respons JSON
         // return $this->response->setContentType('application/json')->setBody($jsonResponse);
-        print_r($input);
-    }
+        // print_r($input);
+        ?>
+        <!DOCTYPE html>
+        <html lang="en">
+            <head>
+                <meta charset="UTF-8">
+                <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                <title>Contoh Tampilan HTML</title>
+            </head>
+            <body>
+                <h1>Ini adalah contoh tampilan HTML</h1>
+                <p>Isi dari halaman web dapat ditambahkan di sini.</p>
+            </body>
+        </html>
+        <?php    }
 
     public function apinetto(){
         $input["sptbs_kgtruk"] = request()->getGet("sptbs_kgtruk");
@@ -664,7 +677,21 @@ class api extends baseController
 
         // Mengembalikan respons JSON
         // return $this->response->setContentType('application/json')->setBody($jsonResponse);
-        print_r($input);
+        // print_r($input);
+        ?>
+            <!DOCTYPE html>
+            <html lang="en">
+                <head>
+                    <meta charset="UTF-8">
+                    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                    <title>Contoh Tampilan HTML</title>
+                </head>
+                <body>
+                    <h1>Ini adalah contoh tampilan HTML</h1>
+                    <p>Isi dari halaman web dapat ditambahkan di sini.</p>
+                </body>
+            </html>
+        <?php
     }
 
     public function gradingtype(){
