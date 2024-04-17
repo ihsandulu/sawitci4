@@ -650,7 +650,7 @@ class api extends baseController
 
         // Mengembalikan respons JSON
         // return $this->response->setContentType('application/json')->setBody($jsonResponse);
-        echo "ok";
+        print_r($input);
     }
 
     public function apinetto(){
@@ -664,7 +664,7 @@ class api extends baseController
 
         // Mengembalikan respons JSON
         // return $this->response->setContentType('application/json')->setBody($jsonResponse);
-        echo "ok";
+        print_r($input);
     }
 
     public function gradingtype(){
