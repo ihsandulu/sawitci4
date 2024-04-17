@@ -646,25 +646,12 @@ class api extends baseController
         $where["sptbs_card"] = request()->getGet("sptbs_card");
         $builder = $this->db->table('sptbs');
         $builder->update($input, $where); 
-        // $jsonResponse = json_encode($input);
+        $jsonResponse = json_encode($input);
 
         // Mengembalikan respons JSON
-        // return $this->response->setContentType('application/json')->setBody($jsonResponse);
-        // print_r($input);
-        ?>
-        <!DOCTYPE html>
-        <html lang="en">
-            <head>
-                <meta charset="UTF-8">
-                <meta name="viewport" content="width=device-width, initial-scale=1.0">
-                <title>Contoh Tampilan HTML</title>
-            </head>
-            <body>
-                <h1>Ini adalah contoh tampilan HTML</h1>
-                <p>Isi dari halaman web dapat ditambahkan di sini.</p>
-            </body>
-        </html>
-        <?php    }
+        return $this->response->setContentType('application/json')
+        ->setBody($jsonResponse);
+    }
 
     public function apinetto(){
         $input["sptbs_kgtruk"] = request()->getGet("sptbs_kgtruk");
@@ -673,25 +660,11 @@ class api extends baseController
         $where["sptbs_card"] = request()->getGet("sptbs_card");
         $builder = $this->db->table('sptbs');
         $builder->update($input, $where); 
-        // $jsonResponse = json_encode($input);
+        $jsonResponse = json_encode($input);
 
         // Mengembalikan respons JSON
-        // return $this->response->setContentType('application/json')->setBody($jsonResponse);
-        // print_r($input);
-        ?>
-            <!DOCTYPE html>
-            <html lang="en">
-                <head>
-                    <meta charset="UTF-8">
-                    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-                    <title>Contoh Tampilan HTML</title>
-                </head>
-                <body>
-                    <h1>Ini adalah contoh tampilan HTML</h1>
-                    <p>Isi dari halaman web dapat ditambahkan di sini.</p>
-                </body>
-            </html>
-        <?php
+        return $this->response->setContentType('application/json')
+        ->setBody($jsonResponse);
     }
 
     public function gradingtype(){
