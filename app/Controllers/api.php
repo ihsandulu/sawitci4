@@ -646,7 +646,7 @@ class api extends baseController
         $where["sptbs_card"] = request()->getGet("sptbs_card");
         $builder = $this->db->table('sptbs');
         $builder->update($input, $where); 
-        $jsonResponse = json_encode($input);
+        // $jsonResponse = json_encode($input);
 
         // Mengembalikan respons JSON
         // return $this->response->setContentType('application/json')->setBody($jsonResponse);
@@ -660,7 +660,7 @@ class api extends baseController
         $where["sptbs_card"] = request()->getGet("sptbs_card");
         $builder = $this->db->table('sptbs');
         $builder->update($input, $where); 
-        $jsonResponse = json_encode($input);
+        // $jsonResponse = json_encode($input);
 
         // Mengembalikan respons JSON
         // return $this->response->setContentType('application/json')->setBody($jsonResponse);
