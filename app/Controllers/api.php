@@ -650,20 +650,7 @@ class api extends baseController
 
         // Mengembalikan respons JSON
         // return $this->response->setContentType('application/json')->setBody($jsonResponse);
-        $json =  $this->response->setContentType('application/json')->setBody($jsonResponse);?>
-        <script>
-            function ExtractJSON() {
-                // Misalkan JSON terletak dalam sebuah elemen dengan id 'data-json'
-                var jsonElement = document.getElementById('data-json');
-                if (jsonElement) {
-                    return jsonElement.innerText;
-                } else {
-                    return null;
-                }
-            }
-        </script>
-        <div id="data-json" style="display:none"><?=$json;?></div>
-        <?php
+        echo "ok";
     }
 
     public function apinetto(){
@@ -676,21 +663,8 @@ class api extends baseController
         $jsonResponse = json_encode($input);
 
         // Mengembalikan respons JSON
-        $json =  $this->response->setContentType('application/json')
-        ->setBody($jsonResponse);?>
-        <script>
-            function ExtractJSON() {
-                // Misalkan JSON terletak dalam sebuah elemen dengan id 'data-json'
-                var jsonElement = document.getElementById('data-json');
-                if (jsonElement) {
-                    return jsonElement.innerText;
-                } else {
-                    return null;
-                }
-            }
-        </script>
-        <div id="data-json" style="display:none"><?=$json;?></div>
-        <?php
+        // return $this->response->setContentType('application/json')->setBody($jsonResponse);
+        echo "ok";
     }
 
     public function gradingtype(){
