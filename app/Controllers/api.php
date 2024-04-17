@@ -649,9 +649,8 @@ class api extends baseController
         $jsonResponse = json_encode($input);
 
         // Mengembalikan respons JSON
-        // return $this->response->setContentType('application/json')
-        // ->setBody($jsonResponse);
-        print_r($input);
+        return $this->response->setContentType('application/json')->setBody($jsonResponse);
+        // print_r($input);
     }
 
     public function apinetto(){
@@ -664,9 +663,8 @@ class api extends baseController
         $jsonResponse = json_encode($input);
 
         // Mengembalikan respons JSON
-        // return $this->response->setContentType('application/json')
-        // ->setBody($jsonResponse);
-        print_r($input);
+        return $this->response->setContentType('application/json')->setBody($jsonResponse);
+        // print_r($input);
 
     }
 
