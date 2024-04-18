@@ -601,7 +601,7 @@ class api extends baseController
             $koma = explode(",", $pisah);
             foreach ($koma as $isikoma) {
                 $data = explode("=", $isikoma);
-                if($data[0]!="sptbs_timbangan"){
+                if($data[0]!="sptbs_timbangan"&&$data[0]!="sptbs_id"){
                     $input[$data[0]] = $data[1];
                 }
             }
