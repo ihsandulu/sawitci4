@@ -582,8 +582,8 @@ class api extends baseController
         $bintang = explode("*", $inpututama);
 
         $whereu["sptbs_card"] = request()->getGet("sptbs_card");
-        $usru = $this->db->table('sptbs')->getWhere($whereu);
-        $rowCountu = $usru->getResultCount();
+        $usru = $this->db->table('sptbs')->where($whereu)->get();
+        $rowCountu = $usru->getNumRows();
         if($rowCountu>0){
             $inputt["sptbs_kgtruk"] = request()->getGet("sptbs_timbangan");
             $wheret["sptbs_card"] = request()->getGet("sptbs_card");
@@ -601,7 +601,9 @@ class api extends baseController
             $koma = explode(",", $pisah);
             foreach ($koma as $isikoma) {
                 $data = explode("=", $isikoma);
-                $input[$data[0]] = $data[1];
+                if($data[0]!="sptbs_timbangan"){
+                    $input[$data[0]] = $data[1];
+                }
             }
             $builder = $this->db->table('sptbs');
             $builder->insert($input);            
