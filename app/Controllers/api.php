@@ -583,7 +583,7 @@ class api extends baseController
 
         $whereu["sptbs_card"] = request()->getGet("sptbs_card");
         $usru = $this->db->table('sptbs')->getWhere($whereu);
-        $rowCountu = $usru->countAll();
+        $rowCountu = $usru->getResultCount();
         if($rowCountu>0){
             $inputt["sptbs_kgtruk"] = request()->getGet("sptbs_timbangan");
             $wheret["sptbs_card"] = request()->getGet("sptbs_card");
