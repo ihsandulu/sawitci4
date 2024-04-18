@@ -581,35 +581,62 @@ class api extends baseController
         $inpututama = request()->getGet("datanya");
         $bintang = explode("*", $inpututama);
 
-        //sptbs
-        $pisah = $bintang[0];
-        $koma = explode(",", $pisah);
-        foreach ($koma as $isikoma) {
-            $data = explode("=", $isikoma);
-            $input[$data[0]] = $data[1];
-        }
-        $builder = $this->db->table('sptbs');
-        $builder->insert($input);            
-        /* echo $this->db->getLastQuery();
-        die; */
-        $sptbs_id = $this->db->insertID();
+        $whereu["sptbs_card"] = request()->getGet("sptbs_card");
+        $usru = $this->db->table('sptbs')->getWhere($whereu);
+        $rowCountu = $usru->countAllResults();
+        if($rowCountu>0){
+            $inputt["sptbs_kgtruk"] = request()->getGet("sptbs_timbangan");
+            $wheret["sptbs_card"] = request()->getGet("sptbs_card");
+            $buildert = $this->db->table('sptbs');
+            $buildert->update($inputt, $wheret); 
+            $jsonResponset = json_encode($inputt);
 
-        //panen
-        $panjangBintang = count($bintang);
-        for ($i = 1; $i < $panjangBintang; $i++) {
-            $pisah = $bintang[$i];
+            // Mengembalikan respons JSON
+            return $this->response->setContentType('application/json')->setBody($jsonResponset);
+            // print_r($input);
+        }else{
+            
+            //sptbs
+            $pisah = $bintang[0];
             $koma = explode(",", $pisah);
             foreach ($koma as $isikoma) {
                 $data = explode("=", $isikoma);
-                $inputpanen[$data[0]] = $data[1];
+                $input[$data[0]] = $data[1];
             }
-            $builder = $this->db->table('panen');
-            $builder->insert($inputpanen);            
+            $builder = $this->db->table('sptbs');
+            $builder->insert($input);            
             /* echo $this->db->getLastQuery();
             die; */
-            $panen_id = $this->db->insertID();
+            $sptbs_id = $this->db->insertID();
+
+            //panen
+            $panjangBintang = count($bintang);
+            for ($i = 1; $i < $panjangBintang; $i++) {
+                $pisah = $bintang[$i];
+                $koma = explode(",", $pisah);
+                foreach ($koma as $isikoma) {
+                    $data = explode("=", $isikoma);
+                    $inputpanen[$data[0]] = $data[1];
+                }
+                $builder = $this->db->table('panen');
+                $builder->insert($inputpanen);            
+                /* echo $this->db->getLastQuery();
+                die; */
+                $panen_id = $this->db->insertID();
+                if($panen_id>0){
+                    $inputt["sptbs_kgbruto"] = request()->getGet("sptbs_timbangan");
+                    $wheret["sptbs_card"] = request()->getGet("sptbs_card");
+                    $buildert = $this->db->table('sptbs');
+                    $buildert->update($inputt, $wheret); 
+                    $jsonResponset = json_encode($inputt);
+
+                    // Mengembalikan respons JSON
+                    return $this->response->setContentType('application/json')->setBody($jsonResponset);
+                    // print_r($input);
+                }
+            }
         }
-        echo "Insert Data Success";
+        // echo "Insert Data Success";
     }
 
     public function datagradingmentah(){
@@ -639,6 +666,28 @@ class api extends baseController
             $panen_id = $this->db->insertID();
         }
         echo "Insert Data Success";
+    }
+
+    public function apitimbangan(){
+        $input["sptbs_timbangan"] = request()->getGet("sptbs_timbangan");
+        $where["sptbs_card"] = request()->getGet("sptbs_card");
+        $usr = $this->db->table('sptbs')->getWhere($where);
+        $rowCount = $query->countAllResults();
+        if($rowCount>0){
+            foreach($usr->getResult() as $usr){
+
+            }
+            $builder->update($input, $where);
+        }else{
+            $this->table("sptbs")->insert($input);
+        }
+        
+         
+        $jsonResponse = json_encode($input);
+
+        // Mengembalikan respons JSON
+        return $this->response->setContentType('application/json')->setBody($jsonResponse);
+        // print_r($input);
     }
 
     public function apibrutto(){
