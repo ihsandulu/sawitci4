@@ -587,8 +587,12 @@ class api extends baseController
         if($rowCountu>0){
             $inputt["sptbs_kgtruk"] = request()->getGet("sptbs_timbangan");
             $wheret["sptbs_card"] = request()->getGet("sptbs_card");
+            $wheret["sptbs_kgbruto"] = request()->getGet("sptbs_kgbruto");
+            $wheret["sptbsid"] = request()->getGet("sptbsid");
+            $wheret["sptbs_date"] = request()->getGet("sptbs_date");
             $buildert = $this->db->table('sptbs');
             $buildert->update($inputt, $wheret); 
+            echo $this->db->getLastQuery();
             $jsonResponset = json_encode($inputt);
 
             // Mengembalikan respons JSON
@@ -605,14 +609,17 @@ class api extends baseController
                     $input[$data[0]] = $data[1];
                 }
             }
+            $input["sptbsid"] = request()->getGet("sptbsid");
             $builder = $this->db->table('sptbs');
             $builder->insert($input);            
-            /* echo $this->db->getLastQuery();
-            die; */
+            // echo $this->db->getLastQuery();
+            // die;
             $sptbs_id = $this->db->insertID();
+           
 
             //panen
             $panjangBintang = count($bintang);
+            // echo $panjangBintang;
             for ($i = 1; $i < $panjangBintang; $i++) {
                 $pisah = $bintang[$i];
                 $koma = explode(",", $pisah);
@@ -625,17 +632,18 @@ class api extends baseController
                 /* echo $this->db->getLastQuery();
                 die; */
                 $panen_id = $this->db->insertID();
-                if($panen_id>0){
-                    $inputt["sptbs_kgbruto"] = request()->getGet("sptbs_timbangan");
-                    $wheret["sptbs_card"] = request()->getGet("sptbs_card");
-                    $buildert = $this->db->table('sptbs');
-                    $buildert->update($inputt, $wheret); 
-                    $jsonResponset = json_encode($inputt);
+                
+            }
+            if($sptbs_id>0 && $i==$panjangBintang){
+                $inputt["sptbs_kgbruto"] = request()->getGet("sptbs_timbangan");
+                $wheret["sptbs_id"] = $sptbs_id;
+                $buildert = $this->db->table('sptbs');
+                $buildert->update($inputt, $wheret); 
+                $jsonResponset = json_encode($inputt);
 
-                    // Mengembalikan respons JSON
-                    return $this->response->setContentType('application/json')->setBody($jsonResponset);
-                    // print_r($input);
-                }
+                // Mengembalikan respons JSON
+                return $this->response->setContentType('application/json')->setBody($jsonResponset);
+                // print_r($input);
             }
         }
         // echo "Insert Data Success";
