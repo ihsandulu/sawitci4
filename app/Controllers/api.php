@@ -591,7 +591,7 @@ class api extends baseController
             $wheret["sptbs_date"] = request()->getGet("sptbs_date");
             $buildert = $this->db->table('sptbs');
             $buildert->update($inputt, $wheret); 
-            echo $this->db->getLastQuery();
+            // echo $this->db->getLastQuery();
             $jsonResponset = json_encode($inputt);
 
             // Mengembalikan respons JSON
