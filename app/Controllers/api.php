@@ -587,7 +587,6 @@ class api extends baseController
         if($rowCountu>0){
             $inputt["sptbs_kgtruk"] = request()->getGet("sptbs_timbangan");
             $wheret["sptbs_card"] = request()->getGet("sptbs_card");
-            $wheret["sptbs_kgbruto"] = request()->getGet("sptbs_kgbruto");
             $wheret["sptbsid"] = request()->getGet("sptbsid");
             $wheret["sptbs_date"] = request()->getGet("sptbs_date");
             $buildert = $this->db->table('sptbs');
