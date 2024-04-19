@@ -918,5 +918,41 @@ class api extends baseController
         $where["quarry_id"] = $this->request->getGet("quarry_id");
         $this->db->table('quarry')->update($input,$where);
     }
+
+    
+
+    public function timbangan(){
+        header('Access-Control-Allow-Origin: *');
+        header('Access-Control-Allow-Headers: Content-Type');
+        $usr = $this->db
+        ->table("timbangan")
+        ->orderBy("timbangan.timbangan_name", "ASC")
+        ->get();
+        //echo $this->db->getLastQuery();  
+        $data=array();      
+        foreach ($usr->getResult() as $usr) {
+            $usrData = array(
+                "timbangan_id" => $usr->timbangan_id,
+                "timbangan_name" => $usr->timbangan_name,
+                "timbangan_value" => $usr->timbangan_value
+            ); 
+            $data[] = $usrData;
+        } 
+        return $this->response->setContentType('application/json')->setJSON($data);
+    }
+
+    public function timbanganisi(){
+        header('Access-Control-Allow-Origin: *');
+        header('Access-Control-Allow-Headers: Content-Type');
+        $usr = $this->db
+        ->table("timbangan")
+        ->where("timbangan.timbangan_name", $this->request->getGet("timbangan_name"))
+        ->get();
+        //echo $this->db->getLastQuery();  
+        foreach ($usr->getResult() as $usr) {
+                echo $usr->timbangan_value;
+        } 
+        
+    }
     
 }
