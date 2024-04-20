@@ -18,10 +18,10 @@ class login_m extends core_m
         $identity = $this->db->table("identity")->get()->getRow();
         // dd($identity->identity_twitter);
 
-        if (isset($_POST["username"]) && isset($_POST["password"])) {
+        if (isset($_POST["user_nik"]) && isset($_POST["password"])) {
             $builder = $this->db->table("t_user")
                 ->join("position", "position.position_id=t_user.position_id", "left")
-                ->where("username", $this->request->getVar("username"));
+                ->where("user_nik", $this->request->getVar("user_nik"));
             $user1 = $builder
                 ->get();
 
@@ -32,7 +32,7 @@ class login_m extends core_m
             // $lastquery = $this->db->getLastQuery();
             // echo $lastquery;
             // die;
-        //    $query = $this->db->query("SELECT * FROM `user`  WHERE `username` = 'ihsan.dulu@gmail.com'");
+        //    $query = $this->db->query("SELECT * FROM `user`  WHERE `user_nik` = 'ihsan.dulu@gmail.com'");
         //     echo $query->getFieldCount();
             // die;
 
@@ -48,6 +48,7 @@ class login_m extends core_m
                         $this->session->set("position_id", $user->position_id);
                         $this->session->set("position_name", $user->position_name);
                         $this->session->set("username", $user->username);
+                        $this->session->set("user_nik", $user->user_nik);
                         $this->session->set("nama", $user->nama);
                         $this->session->set("user_id", $user->user_id);
                         $this->session->set("identity_id", $identity->identity_id);
@@ -80,7 +81,7 @@ class login_m extends core_m
                     }
                 }
             } else {
-                $data["hasil"] = " username Salah !";
+                $data["hasil"] = " NIK Salah !";
             }
         }
 

@@ -129,8 +129,8 @@ foreach($identity->getResult() as $identity){
                         <small>.:: <i><?=$nama;?></i> ::.</small>
                     </span>
 
-                    <div class="wrap-input100 validate-input m-b-16" data-validate="Please enter username">
-                        <input class="input100" type="text" name="username" placeholder="Username">
+                    <div class="wrap-input100 validate-input m-b-16" data-validate="Please enter NIK">
+                        <input class="input100" type="text" name="user_nik" placeholder="NIK">
                         <span class="focus-input100"></span>
                     </div>
 
@@ -151,7 +151,7 @@ foreach($identity->getResult() as $identity){
                         </span>
 
                         <a href="#" class="txt2">
-                            Username / Password?
+                            user_nik / Password?
                         </a>
                     </div>
                     -->
