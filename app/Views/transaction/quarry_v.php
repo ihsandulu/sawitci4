@@ -403,6 +403,9 @@
                                         <label class="text-white">Ke :</label>
                                         <input type="date" class="form-control" placeholder="Ke" name="ke" value="<?=$ke;?>">
                                     </div>
+                                    <?php if(isset($_GET["report"])){?>
+                                        <input type="hidden" name="report" value="OK"/>
+                                    <?php }?>
                                     <button type="submit" class="btn btn-primary">Submit</button>
                                 </div>
                             </form>
@@ -535,7 +538,7 @@
                                     </tbody>
                                 </table>
                             <?php }else{?>
-                                <table id="example23" class="display nowrap table table-hover table-striped table-bordered" cellspacing="0" width="100%">
+                                <table id="example231" class="display nowrap table table-hover table-striped table-bordered" cellspacing="0" width="100%">
                                 <!-- <table id="dataTable" class="table table-condensed table-hover w-auto dtable"> -->
                                 <thead class="">
                                     <tr>
@@ -543,20 +546,24 @@
                                             <th>Action....</th>
                                         <?php } ?>
                                         <!-- <th>No.</th> -->
-                                        <th>Date.......</th>
+                                        <th>Date</th>
                                         <th>Card</th>
                                         <th>Jarak (Km)</th>
                                         <th>Kubik</th>
-                                        <th>JenisQuarry....</th>
+                                        <th>JenisQuarry</th>
                                         <th>Driver</th>
                                         <th>Vehicle</th>
-                                        <th>Pengirim....</th>
+                                        <th>Pengirim</th>
                                         <th>JamKirim</th>
-                                        <th>BlokAsal.....</th>
+                                        <th>EstateAsal</th>
+                                        <th>DivisiAsal</th>
+                                        <th>BlokAsal</th>
                                         <th>LokasiKirim</th>
-                                        <th>Penerima....</th>
+                                        <th>Penerima</th>
                                         <th>JamTiba</th>
-                                        <th>BlokTujuan......</th>
+                                        <th>EstateTujuan</th>
+                                        <th>DivisiTujuan</th>
+                                        <th>BlokTujuan</th>
                                         <th>LokasiTujuan</th>
                                     </tr>
                                 </thead>
@@ -653,11 +660,15 @@
                                             </td>
                                             <td><?= $usr->pengirimname; ?></td>
                                             <td><?= $usr->quarry_jampergi; ?></td>
-                                            <td><?= $usr->estate1name; ?> <?= $usr->divisi1name; ?> <?= $usr->blok1name; ?></td>
+                                            <td><?= $usr->estate1name; ?></td>
+                                            <td><?= $usr->divisi1name; ?></td>
+                                            <td><?= $usr->blok1name; ?></td>
                                             <td><?= $usr->quarry_geo1; ?></td>
                                             <td><?= $usr->penerimaname; ?></td>
                                             <td><?= $usr->quarry_jamtiba; ?></td>
-                                            <td><?= $usr->estate2name; ?> <?= $usr->divisi2name; ?> <?= $usr->blok2name; ?></td>
+                                            <td><?= $usr->estate2name; ?></td>
+                                            <td><?= $usr->divisi2name; ?></td>
+                                            <td><?= $usr->blok2name; ?></td>
                                             <td><?= $usr->quarry_geo2; ?></td>
                                         </tr>
                                     <?php } ?>
