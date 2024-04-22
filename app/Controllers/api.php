@@ -950,8 +950,13 @@ class api extends baseController
         ->get();
         //echo $this->db->getLastQuery();  
         foreach ($usr->getResult() as $usr) {
-                echo $usr->timbangan_value;
+                // echo $usr->timbangan_value;
+                $usrData = array(
+                    "timbangan_value" => $usr->timbangan_value
+                ); 
+                $data[] = $usrData;
         } 
+        return $this->response->setContentType('application/json')->setJSON($data);
         
     }
     
