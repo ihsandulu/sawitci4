@@ -624,8 +624,10 @@ class api extends baseController
                 
                 $this->paneninsert($bintang,$sptbs_id);
                 $message["message"]="Netto di update!";
+                $message["status"]=2;
             }else{
                 $message["message"]="SPTBS telah input sebelumnya!";
+                $message["status"]=0;
             }
         }else{      
             $pisah = $bintang[0];
@@ -645,6 +647,7 @@ class api extends baseController
             $sptbs_id = $this->db->insertID();
             
             $message["message"]="SPTBS berhasil di upload!";
+            $message["status"]=1;
 
             $this->paneninsert($bintang,$sptbs_id);
         }
