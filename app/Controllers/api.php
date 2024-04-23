@@ -596,6 +596,12 @@ class api extends baseController
             // echo $this->db->getLastQuery();
             $jsonResponset = json_encode($inputt);
 
+            //hapus data panen
+            foreach($usru->getResult() as $usru){
+                $sptbs_id = $usru->sptbs_id;
+                $this->db->table("panen")->where("sptbs_id",$sptbs_id)->delete();
+            }
+
             // Mengembalikan respons JSON
             return $this->response->setContentType('application/json')->setBody($jsonResponset);
             // print_r($input);
@@ -628,6 +634,7 @@ class api extends baseController
                     $data = explode("=", $isikoma);
                     $inputpanen[$data[0]] = $data[1];
                 }
+                $inputpanen["sptbs_id"] = $sptbs_id;
                 $builder = $this->db->table('panen');
                 $builder->insert($inputpanen);            
                 /* echo $this->db->getLastQuery();
