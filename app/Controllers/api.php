@@ -622,11 +622,11 @@ class api extends baseController
                 $buildert->update($inputt, $wheret); 
                 // echo $this->db->getLastQuery();
                 
-                $this->paneninsert($bintang,$sptbs_id);
                 $message["message"]="Netto di update!";
                 $message["message"]=$timbangan."<".$sptbs_kgbruto;
                 $message["status"]=2;
             }else{
+                // $this->paneninsert($bintang,$sptbs_id);
                 $message["message"]="SPTBS telah input sebelumnya!";
                 $message["status"]=0;
             }
