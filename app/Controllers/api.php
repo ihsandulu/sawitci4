@@ -627,7 +627,7 @@ class api extends baseController
                 $message["status"]=2;
             }else{
                 // $this->paneninsert($bintang,$sptbs_id);
-                $message["message"]="SPTBS telah input sebelumnya!";
+                $message["message"]="SPTBS telah diinput sebelumnya!";
                 $message["status"]=0;
             }
         }else{      
