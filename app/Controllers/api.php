@@ -624,7 +624,7 @@ class api extends baseController
                 // echo $this->db->getLastQuery();
                 
                 $message["message"]="Netto di update!";
-                $message["message"]=$timbangan."<".$sptbs_kgbruto;
+                // $message["message"]=$timbangan."<".$sptbs_kgbruto;
                 $message["status"]=2;
             }else{
                 // $this->paneninsert($bintang,$sptbs_id);
