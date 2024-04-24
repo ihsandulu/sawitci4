@@ -615,7 +615,8 @@ class api extends baseController
                 $sptbs_id = $usru->sptbs_id;
                 $sptbs_kgbruto = $usru->sptbs_kgbruto;
             }
-            if($timbangan<$sptbs_kgbruto){
+            $selisih = $sptbs_kgbruto-$timbangan;
+            if($selisih>3000){
                 $inputt["sptbs_kgtruk"] = $timbangan;
                 $wheret["sptbs_id"] = $sptbs_id;
                 $buildert = $this->db->table('sptbs');
@@ -672,6 +673,12 @@ class api extends baseController
                     $where[$data[0]] = $data[1];
                 }
                 if($data[0]=="gradingtype_id"){                    
+                    $where[$data[0]] = $data[1];
+                }
+                if($data[0]=="grading_date"){                    
+                    $where[$data[0]] = $data[1];
+                }
+                if($data[0]=="sptbsid"){                    
                     $where[$data[0]] = $data[1];
                 }
             }
