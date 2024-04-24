@@ -935,7 +935,16 @@ class api extends baseController
         $this->db->table('quarry')->update($input,$where);
     }
 
-    
+    public function updatetimbanganvalue(){
+        foreach ($this->request->getGet() as $e => $f) {
+            if ($e != 'create' ) {
+                $input[$e] = $this->request->getGet($e);
+            }
+        }
+        $where["timbangan_name"] = $this->request->getGet("timbangan_name");
+        $this->db->table('timbangan')->update($input,$where);
+        return $this->response->setContentType('application/json')->setJSON($input);
+    }
 
     public function timbangan(){
         header('Access-Control-Allow-Origin: *');
