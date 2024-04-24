@@ -656,7 +656,7 @@
                                             </td>
                                             <td class="text-left"><?= $usr->drivername; ?></td>
                                             <td>
-                                                <?= $usr->wt_name; ?> (<?= $usr->wt_jenis; ?> <?= $vendor[$usr->wt_vendor]; ?> <?= $sewa[$usr->wt_sewa]; ?>)
+                                                <?= $usr->wt_name; ?> (<?= $usr->wt_jenis; ?> <?= ($usr->wt_vendor!="")?$vendor[$usr->wt_vendor]:""; ?> <?= ($usr->wt_sewa!="")?$sewa[$usr->wt_sewa]:""; ?>)
                                             </td>
                                             <td><?= $usr->pengirimname; ?></td>
                                             <td><?= $usr->quarry_jampergi; ?></td>
