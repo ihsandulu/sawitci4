@@ -135,19 +135,7 @@
                                     <div class="col-sm-10">
                                         <input required type="text" autofocus class="form-control" id="blok_populasi" name="blok_populasi" placeholder="" value="<?= $blok_populasi; ?>">
                                     </div>
-                                </div>                                                
-                                <div class="form-group">
-                                    <label class="control-label col-sm-2" for="blok_certificate">Sertifikat:</label>
-                                    <div class="col-sm-10">
-                                        <input required type="text" autofocus class="form-control" id="blok_certificate" name="blok_certificate" placeholder="" value="<?= $blok_certificate; ?>">
-                                    </div>
-                                </div>                                                
-                                <div class="form-group">
-                                    <label class="control-label col-sm-2" for="blok_status">Status Kebun:</label>
-                                    <div class="col-sm-10">
-                                        <input required type="text" autofocus class="form-control" id="blok_status" name="blok_status" placeholder="" value="<?= $blok_status; ?>">
-                                    </div>
-                                </div>  
+                                </div> 
 
                                 <input type="hidden" name="blok_id" value="<?= $blok_id; ?>" />
                                 <div class="form-group">
@@ -182,8 +170,6 @@
                                         <th>Blok</th>
                                         <th>Luas Ha</th>
                                         <th>Populasi</th>
-                                        <th>Sertifikat</th>
-                                        <th>Status</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -250,8 +236,6 @@
                                             <td><?= $usr->blok_name; ?></td>
                                             <td><?= $usr->blok_ha; ?></td>
                                             <td><?= $usr->blok_populasi; ?></td>
-                                            <td><?= $usr->blok_certificate; ?></td>
-                                            <td><?= $usr->blok_status; ?></td>
                                         </tr>
                                     <?php } ?>
                                 </tbody>

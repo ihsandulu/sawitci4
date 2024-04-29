@@ -156,6 +156,18 @@
                                     <div class="col-sm-10">
                                         <input required type="text" autofocus class="form-control" id="tph_rotasi" name="tph_rotasi" placeholder="" value="<?= $tph_rotasi; ?>">
                                     </div>
+                                </div>                                                 
+                                <div class="form-group">
+                                    <label class="control-label col-sm-2" for="tph_certificate">Sertifikat:</label>
+                                    <div class="col-sm-10">
+                                        <input required type="text" autofocus class="form-control" id="tph_certificate" name="tph_certificate" placeholder="" value="<?= $tph_certificate; ?>">
+                                    </div>
+                                </div>                                                
+                                <div class="form-group">
+                                    <label class="control-label col-sm-2" for="tph_status">Status Kebun:</label>
+                                    <div class="col-sm-10">
+                                        <input required type="text" autofocus class="form-control" id="tph_status" name="tph_status" placeholder="" value="<?= $tph_status; ?>">
+                                    </div>
                                 </div>  
 
                                 <input type="hidden" name="tph_id" value="<?= $tph_id; ?>" />
@@ -192,6 +204,8 @@
                                         <th>TPH</th>
                                         <th>Thn Tanam</th>
                                         <th>Rotasi</th>
+                                        <th>Sertifikat</th>
+                                        <th>Status</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -260,6 +274,8 @@
                                             <td><?= $usr->tph_name; ?></td>
                                             <td><?= $usr->tph_thntanam; ?></td>
                                             <td><?= $usr->tph_rotasi; ?></td>
+                                            <td><?= $usr->tph_certificate; ?></td>
+                                            <td><?= $usr->tph_status; ?></td>
                                         </tr>
                                     <?php } ?>
                                 </tbody>

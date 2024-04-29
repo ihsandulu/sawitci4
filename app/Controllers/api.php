@@ -1084,22 +1084,26 @@ class api extends baseController
     }
 
     public function updaterspo(){
-        $blok = $this->db->table("blok")
+        $tph = $this->db->table("tph")
+        ->join("blok","blok.blok_id=tph.blok_id","left")
         ->join("seksi","seksi.seksi_id=blok.seksi_id","left")
         ->join("divisi","divisi.divisi_id=seksi.divisi_id","left")
         ->join("estate","estate.estate_id=divisi.estate_id","left")
         ->get();
-        foreach($blok->getResult() as $blok){
+        foreach($tph->getResult() as $tph){
             $rspo = $this->db->table("t_statusrspoasli")
-            ->where("estate",$blok->estate_name)
-            ->where("divisi",$blok->divisi_name)
-            ->where("blok",$blok->blok_name)
+            ->where("estate",$tph->estate_name)
+            ->where("divisi",$tph->divisi_name)
+            ->where("blok",$tph->blok_name)
+            ->where("tahun_tanam",$tph->tph_thntanam)
+            ->limit(1)
             ->get();
             foreach($rspo->getResult() as $rspo){
-                $update["blok_certificate"]=$rspo->status_certificate;
-                $update["blok_status"]=$rspo->status_kebun;
-                $where["blok_id"]=$blok->blok_id;
-                $this->db->table("blok")->where($where)->update($update);
+                $update["tph_certificate"]=$rspo->status_certificate;
+                $update["tph_status"]=$rspo->status_kebun;
+                $where["tph_id "]=$tph->tph_id ;
+                $this->db->table("tph")->where($where)->update($update);
+                echo $rspo->estate." -> ".$rspo->divisi." -> ".$rspo->blok." -> ".$rspo->tahun_tanam."<br/>";
             }
         }
     }
