@@ -589,8 +589,12 @@ class api extends baseController
             foreach ($koma as $isikoma) {
                 $data = explode("=", $isikoma);
                 $inputpanen[$data[0]] = $data[1];
-                if($data["panen_date"]=="panen_date"){$ir['panen_date']=$data[1];}
-                if($data["panenid"]=="panenid"){$ir['panenid']=$data[1];}
+                if($data[0]=="panen_date"){
+                    $ir['panen_date']=$data[1];
+                }
+                if($data[0]=="panenid"){
+                    $ir['panenid']=$data[1];
+                }
             }
             //cek restand
             $restand = $this->db->table("restand")
