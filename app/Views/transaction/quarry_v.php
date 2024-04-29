@@ -395,18 +395,26 @@
                                         $ke=$_GET["ke"];
                                     }
                                     ?>
-                                    <div class="col">
-                                        <label class="text-white">Dari :</label>
-                                        <input type="date" class="form-control" placeholder="Dari" name="dari" value="<?=$dari;?>">
+                                    <div class="col row">
+                                        <div class="col-2">
+                                            <label class="text-white">Dari :</label>
+                                        </div>
+                                        <div class="col-10">
+                                            <input type="date" class="form-control" placeholder="Dari" name="dari" value="<?=$dari;?>">
+                                        </div>
                                     </div>
-                                    <div class="col">
-                                        <label class="text-white">Ke :</label>
-                                        <input type="date" class="form-control" placeholder="Ke" name="ke" value="<?=$ke;?>">
+                                    <div class="col row">
+                                        <div class="col-2">
+                                            <label class="text-white">Ke :</label>
+                                        </div>
+                                        <div class="col-10">
+                                            <input type="date" class="form-control" placeholder="Ke" name="ke" value="<?=$ke;?>">
+                                        </div>
                                     </div>
                                     <?php if(isset($_GET["report"])){?>
                                         <input type="hidden" name="report" value="OK"/>
                                     <?php }?>
-                                    <button type="submit" class="btn btn-primary">Submit</button>
+                                    <button type="submit" class="btn btn-primary">Cari</button>
                                 </div>
                             </form>
                         </div>

@@ -589,7 +589,20 @@ class api extends baseController
             foreach ($koma as $isikoma) {
                 $data = explode("=", $isikoma);
                 $inputpanen[$data[0]] = $data[1];
+                if($data["panen_date"]=="panen_date"){$ir['panen_date']=$data[1];}
+                if($data["panenid"]=="panenid"){$ir['panenid']=$data[1];}
             }
+            //cek restand
+            $restand = $this->db->table("restand")
+            ->where($ir)
+            ->get();
+            if($restand->getNumRows()>0){
+                foreach($restand->getResult() as $restand){
+                    $inputpanen["panen_picture"] = $restand->panen_picture;
+                    $inputpanen["restand_id"] = $restand->restand_id;
+                }
+            }
+            //input ke table panen
             $inputpanen["sptbs_id"] = $sptbs_id;
             $builder = $this->db->table('panen');
             $builder->insert($inputpanen);            
@@ -601,6 +614,8 @@ class api extends baseController
     }
 
     public function datasptbsmentah(){
+        $time = date("H:i:s");
+        $timbangan_name = request()->getGet("timbangan_name");
         $inpututama = request()->getGet("datanya");
         $timbangan = request()->getGet("sptbs_timbangan");
         $bintang = explode("*", $inpututama);
@@ -617,7 +632,9 @@ class api extends baseController
             }
             $selisih = $sptbs_kgbruto-$timbangan;
             if($selisih>3000){
+                $inputt["timbangan_name"] = $timbangan_name;
                 $inputt["sptbs_kgtruk"] = $timbangan;
+                $inputt["sptbs_timbangankeluar"] = $time;
                 $wheret["sptbs_id"] = $sptbs_id;
                 $buildert = $this->db->table('sptbs');
                 $buildert->update($inputt, $wheret); 
@@ -640,6 +657,8 @@ class api extends baseController
                     $input[$data[0]] = $data[1];
                 }
             }
+            $input["sptbs_timbanganmasuk"] = $time;
+            $input["timbangan_name"] = $timbangan_name;
             $input["sptbs_kgbruto"] = $timbangan;
             $input["sptbsid"] = request()->getGet("sptbsid");
             $builder = $this->db->table('sptbs');
@@ -825,8 +844,9 @@ class api extends baseController
         //cek
         $cek=$this->db->table('panen')
         ->where("panen_date",$inputu["panen_date"])
-        ->where("tph_id",$inputu["tph_id"])
-        ->where("panen_card",$inputu["panen_card"])
+        // ->where("tph_id",$inputu["tph_id"])
+        // ->where("panen_card",$inputu["panen_card"])
+        ->where("panenid",$inputu["panenid"])
         ->get();
         if($cek->getNumRows()==0){
             $this->db->table('restand')->insert($inputu);
@@ -983,6 +1003,101 @@ class api extends baseController
         } 
         return $this->response->setContentType('application/json')->setJSON($data);
         
+    }
+
+    
+
+    public function apisync(){
+        header('Access-Control-Allow-Origin: *');
+        header('Access-Control-Allow-Headers: Content-Type');
+        $usr = $this->db
+        ->table("panen")
+        ->where("panen.panen_card", $this->request->getGet("panen_card"))
+        ->where("panen.sptbs_id", $this->request->getGet("sptbs_id"))
+        ->get();
+        //echo $this->db->getLastQuery();  
+        foreach ($usr->getResult() as $usr) {?>
+            <div class="col-12 row">
+                <div class="col-4 text-primary">Card</div>
+                <div class="col-8"> : <?=$usr->panen_card;?></div>
+            </div>
+            <div class="col-12 row">
+                <div class="col-4 text-primary">Date</div>
+                <div class="col-8"> : <?=$usr->panen_date;?></div>
+            </div>
+            <div class="col-12 row">
+                <div class="col-4 text-primary">Thn Tanam</div>
+                <div class="col-8"> : <?=$usr->tph_thntanam;?></div>
+            </div>
+            <div class="col-12 row">
+                <div class="col-4 text-primary">Jumlah</div>
+                <div class="col-8"> : <?=$usr->panen_jml;?></div>
+            </div>
+            <div class="col-12 row">
+                <div class="col-4 text-primary">Checker</div>
+                <div class="col-8"> : <?=$usr->user_name;?></div>
+            </div>
+            <div class="col-12 row">
+                <div class="col-4 text-primary">Pemanen</div>
+                <div class="col-8"> : <?=$usr->panen_tpname;?></div>
+            </div>
+            <div class="col-12 row">
+                <div class="col-4 text-primary">Estate</div>
+                <div class="col-8"> : <?=$usr->estate_name;?></div>
+            </div>
+            <div class="col-12 row">
+                <div class="col-4 text-primary">Divisi</div>
+                <div class="col-8"> : <?=$usr->divisi_name;?></div>
+            </div>
+            <div class="col-12 row">
+                <div class="col-4 text-primary">Seksi</div>
+                <div class="col-8"> : <?=$usr->seksi_name;?></div>
+            </div>
+            <div class="col-12 row">
+                <div class="col-4 text-primary">Blok</div>
+                <div class="col-8"> : <?=$usr->blok_name;?></div>
+            </div>
+            <div class="col-12 row">
+                <div class="col-4 text-primary">TPH</div>
+                <div class="col-8"> : <?=$usr->tph_name;?></div>
+            </div>
+            <div class="col-12 row">
+                <div class="col-4 text-primary">Brondol</div>
+                <div class="col-8"> : <?=($usr->panen_brondol==1)?"Ya":"Tidak";?></div>
+            </div>
+            <div class="col-12 row">
+                <div class="col-4 text-primary">Geolocation</div>
+                <div class="col-8"> : <?=$usr->panen_geo;?></div>
+            </div>
+            <hr/>
+            <div class="col-12 row">
+                <div class="col-12 text-primary">
+                    <img src="<?=$usr->panen_picture;?>" class="col-12"/>    
+                </div>
+            </div>
+        <?php } 
+        
+    }
+
+    public function updaterspo(){
+        $blok = $this->db->table("blok")
+        ->join("seksi","seksi.seksi_id=blok.seksi_id","left")
+        ->join("divisi","divisi.divisi_id=seksi.divisi_id","left")
+        ->join("estate","estate.estate_id=divisi.estate_id","left")
+        ->get();
+        foreach($blok->getResult() as $blok){
+            $rspo = $this->db->table("t_statusrspoasli")
+            ->where("estate",$blok->estate_name)
+            ->where("divisi",$blok->divisi_name)
+            ->where("blok",$blok->blok_name)
+            ->get();
+            foreach($rspo->getResult() as $rspo){
+                $update["blok_certificate"]=$rspo->status_certificate;
+                $update["blok_status"]=$rspo->status_kebun;
+                $where["blok_id"]=$blok->blok_id;
+                $this->db->table("blok")->where($where)->update($update);
+            }
+        }
     }
     
 }

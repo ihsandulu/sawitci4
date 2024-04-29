@@ -56,6 +56,8 @@ class login_m extends core_m
                         $this->session->set("identity_logo", $identity->identity_logo);
                         $this->session->set("identity_phone", $identity->identity_phone);
                         $this->session->set("identity_address", $identity->identity_address);
+                        $this->session->set("identity_company", $identity->identity_company);
+                        $this->session->set("identity_about", $identity->identity_about);
 
                          //tambahkan modul di sini                         
                         $pages = $this->db->table("positionpages")

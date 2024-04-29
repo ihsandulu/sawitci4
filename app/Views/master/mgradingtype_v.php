@@ -67,6 +67,16 @@
                                         <input required type="text" autofocus class="form-control" id="gradingtype_name" name="gradingtype_name" placeholder="" value="<?= $gradingtype_name; ?>">
                                     </div>
                                 </div>  
+                                <div class="form-group">
+                                    <label class="control-label col-sm-2" for="gradingtype_unit">Unit:</label>
+                                    <div class="col-sm-10">
+                                        <select required class="form-control" id="gradingtype_unit" name="gradingtype_unit">
+                                            <option value="" <?=($gradingtype_unit=="")?"selected":"";?>>Pilih Unit</option>
+                                            <option value="Tandan" <?=($gradingtype_unit=="Tandan")?"selected":"";?>>Tandan</option>
+                                            <option value="Kg" <?=($gradingtype_unit=="Kg")?"selected":"";?>>Kg</option>
+                                        </select>
+                                    </div>
+                                </div>  
 
                                 <input type="hidden" name="gradingtype_id" value="<?= $gradingtype_id; ?>" />
                                 <div class="form-group">
@@ -96,6 +106,7 @@
                                         <!-- <th>No.</th> -->
                                         <th>ID</th>
                                         <th>Grading Type</th>
+                                        <th>Unit</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -154,6 +165,7 @@
                                             <!-- <td><?= $no++; ?></td> -->
                                             <td><?= $usr->gradingtype_id; ?></td>
                                             <td><?= $usr->gradingtype_name; ?></td>
+                                            <td><?= $usr->gradingtype_unit; ?></td>
                                         </tr>
                                     <?php } ?>
                                 </tbody>

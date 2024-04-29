@@ -206,9 +206,45 @@
                                 <strong><?= $message; ?></strong>
                             </div>
                         <?php } ?>
+                        <div class="alert alert-success">
+                            <form>
+                                <div class="row">
+                                    <?php 
+                                    $dari=date("Y-m-d");
+                                    $ke=date("Y-m-d");
+                                    if(isset($_GET["dari"])){
+                                        $dari=$_GET["dari"];
+                                    }
+                                    if(isset($_GET["ke"])){
+                                        $ke=$_GET["ke"];
+                                    }
+                                    ?>
+                                    <div class="col row">
+                                        <div class="col-2">
+                                            <label class="text-white">Dari :</label>
+                                        </div>
+                                        <div class="col-10">
+                                            <input type="date" class="form-control" placeholder="Dari" name="dari" value="<?=$dari;?>">
+                                        </div>
+                                    </div>
+                                    <div class="col row">
+                                        <div class="col-2">
+                                            <label class="text-white">Ke :</label>
+                                        </div>
+                                        <div class="col-10">
+                                            <input type="date" class="form-control" placeholder="Ke" name="ke" value="<?=$ke;?>">
+                                        </div>
+                                    </div>
+                                    <?php if(isset($_GET["report"])){?>
+                                        <input type="hidden" name="report" value="OK"/>
+                                    <?php }?>
+                                    <button type="submit" class="btn btn-primary">Cari</button>
+                                </div>
+                            </form>
+                        </div>
 
                         <div class="table-responsive m-t-40">
-                            <table id="example23" class="display nowrap table table-hover table-striped table-bordered" cellspacing="0" width="100%">
+                            <table id="example231" class="display nowrap table table-hover table-striped table-bordered" cellspacing="0" width="100%">
                                 <!-- <table id="dataTable" class="table table-condensed table-hover w-auto dtable"> -->
                                 <thead class="">
                                     <tr>
@@ -240,6 +276,9 @@
                                         ->join("seksi","seksi.seksi_id=blok.seksi_id","left")
                                         ->join("divisi","divisi.divisi_id=seksi.divisi_id","left")
                                         ->join("estate","estate.estate_id=divisi.estate_id","left")
+                                        ->where("rkh_rdate >=",$dari)
+                                        ->where("rkh_rdate <=",$ke)
+                                        ->orderBy("rkh_rdate", "ASC")
                                         ->orderBy("estate_name", "ASC")
                                         ->orderBy("divisi_name", "ASC")
                                         ->orderBy("seksi_name", "ASC")

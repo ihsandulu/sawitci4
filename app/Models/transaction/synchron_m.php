@@ -112,7 +112,12 @@ class synchron_m extends core_m
 
         //delete
         if ($this->request->getPost("delete") == "OK") { 
-            $sptbs_id = $this->request->getPost("sptbs_id");              
+            $sptbs_id = $this->request->getPost("sptbs_id");
+
+            $this->db
+            ->table("panen")
+            ->delete(array("sptbs_id" =>  $sptbs_id));
+
             $this->db
             ->table("sptbs")
             ->delete(array("sptbs_id" =>  $sptbs_id));

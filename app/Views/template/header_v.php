@@ -145,17 +145,17 @@ foreach($identity->getResult() as $identity){
         .tunjuk{
             cursor:pointer;
         }
-        .nav-item{
+        .navitem{
             padding:0px;
             font-size:30px!important;
         }
-        .nav-link{
+        .navlink{
             margin:0px !important; 
             padding:0px !important;
             padding-left:10px !important;
             font-size:30px!important;
         }
-        .nav-link::after {
+        .navlink::after {
             content: "Menu";
             color: rgba(128, 128, 128, 0.6); 
             font-weight: bold;
