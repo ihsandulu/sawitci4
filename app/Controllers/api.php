@@ -13,6 +13,7 @@ class api extends baseController
     protected $db;
     public function __construct()
     {
+        date_default_timezone_set('Asia/Jakarta');
         $sesi_user = new \App\Models\global_m();
         $sesi_user->ceksesi();
         $this->db = \Config\Database::connect();
@@ -657,7 +658,7 @@ class api extends baseController
             $last = $this->db->table('sptbs')->orderBy("sptbs_id","DESC")->limit(1)->get();
             $rowlast = $last->getNumRows();
             if($rowlast>0 ){
-                $pplast=$last->getRow->sptbs_code;
+                $pplast=$last->getRow()->sptbs_code;
                 $plast = substr($pplast, -6)+1;
             }else{
                 $plast="000001";
