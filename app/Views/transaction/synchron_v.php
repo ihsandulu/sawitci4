@@ -158,8 +158,8 @@
                                         </div>
                                         <?php 
                                         $panen = $this->db->table("panen")
-                                        ->select("SUM(panen_jml)As jmltandan,panen.*,blok.*")
-                                        ->join("blok","blok.blok_id=panen.blok_id","left")
+                                        ->select("SUM(panen_jml)As jmltandan,panen.*,tph.tph_status,tph.tph_certificate")
+                                        ->join("tph","tph.tph_id=panen.tph_id","left")
                                         ->where("sptbs_id", $sptbs->sptbs_id)
                                         ->groupBy("tph_thntanam")
                                         ->get();
@@ -175,10 +175,10 @@
                                                     <?=$panen->tph_thntanam;?>
                                                 </div>
                                                 <div class="col border text-center">
-                                                    <?=$panen->blok_certificate;?>
+                                                    <?=$panen->tph_certificate;?>
                                                 </div>
                                                 <div class="col border text-center">
-                                                    <?=$panen->blok_status;?>
+                                                    <?=$panen->tph_status;?>
                                                 </div>
                                                 <div class="col border text-center">
                                                     <?=$panen->jmltandan;?>

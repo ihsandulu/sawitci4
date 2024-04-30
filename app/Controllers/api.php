@@ -652,7 +652,18 @@ class api extends baseController
                 $message["message"]="SPTBS telah diinput sebelumnya!";
                 $message["status"]=0;
             }
-        }else{      
+        }else{    
+            
+            $last = $this->db->table('sptbs')->orderBy("sptbs_id","DESC")->limit(1)->get();
+            $rowlast = $last->getNumRows();
+            if($rowlast>0 ){
+                $pplast=$last->getRow->sptbs_code;
+                $plast = substr($pplast, -6)+1;
+            }else{
+                $plast="000001";
+            }
+            $code = str_pad($plast, 6, '0', STR_PAD_LEFT);
+
             $pisah = $bintang[0];
             $koma = explode(",", $pisah);
             foreach ($koma as $isikoma) {
@@ -661,6 +672,7 @@ class api extends baseController
                     $input[$data[0]] = $data[1];
                 }
             }
+            $input["sptbs_code"] = "PAMWB/".date("my")."/".$code;
             $input["sptbs_timbanganmasuk"] = $time;
             $input["timbangan_name"] = $timbangan_name;
             $input["sptbs_kgbruto"] = $timbangan;
