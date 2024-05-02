@@ -699,80 +699,11 @@ class api extends baseController
             $message["message"]="SPTBS berhasil di upload!";
             $message["status"]=1;
 
-            // $this->paneninsert($bintang,$sptbs_id);
-            /////////////////////////////////////////hapus data panen
-            $this->db->table("panen")->where("sptbs_id",$sptbs_id)->delete();
-
-            //insert panen
-            $panjangBintang = count($bintang);
-            for ($i = 1; $i < $panjangBintang; $i++) {
-                $pisah = $bintang[$i];
-                $koma = explode(",", $pisah);
-                foreach ($koma as $isikoma) {
-                    $data = explode("=", $isikoma);
-                    $inputpanen[$data[0]] = $data[1];
-                    if($data[0]=="panen_date"){
-                        $ir['panen_date']=$data[1];
-                    }
-                    if($data[0]=="panenid"){
-                        $ir['panenid']=$data[1];
-                    }
-                    if($data[0]=="tph_id"){
-                        $wheret['tph_id ']=$data[1];
-                    }
-                    if($data[0]=="tph_thntanam"){
-                        $inputt['tph_thntanam ']=$data[1];
-                    }
-                }
-                //cek restand
-                $restand = $this->db->table("restand")
-                ->where($ir)
-                ->get(); 
-                $sql = $this->db->getLastQuery();
-                echo " Cari Restand = ".$message["sql"]= $sql ;
-                if($restand->getNumRows()>0){
-                    foreach($restand->getResult() as $restand){
-                        $inputpanen["panen_picture"] = $restand->panen_picture;
-                        $inputpanen["restand_id"] = $restand->restand_id;
-                        //input ke table panen
-                        $inputpanen["sptbs_id"] = $sptbs_id;
-                        $builder = $this->db->table('panen');
-                        $builder->insert($inputpanen);            
-                        $sql = $this->db->getLastQuery();
-                        echo " Insert Panen = ".$message["sql"]= $sql ;
-                        
-                        $panen_id = $this->db->insertID();
-                        if($panen_id>0){
-                            $buildert = $this->db->table('tph');
-                            $buildert->update($inputt, $wheret); 
-                            $sql = " Update TPH = ".$this->db->getLastQuery();
-                            echo $message["sql"]= $sql ;
-                        }
-                    }
-                }else{
-                    //input ke table panen
-                    $inputpanen["sptbs_id"] = $sptbs_id;
-                    $builder = $this->db->table('panen');
-                    $builder->insert($inputpanen);            
-                    $sql = $this->db->getLastQuery();
-                    echo " Insert Panen = ".$message["sql"]= $sql ;
-                    
-                    $panen_id = $this->db->insertID();
-                    if($panen_id>0){
-                        $buildert = $this->db->table('tph');
-                        $buildert->update($inputt, $wheret); 
-                        $sql = " Update TPH = ".$this->db->getLastQuery();
-                        echo $message["sql"]= $sql ;
-                    }
-                }
-                
-                
-                
-            }
+            $this->paneninsert($bintang,$sptbs_id);
         }
 
-        // $jsonResponset = json_encode($message);
-        // return $this->response->setContentType('application/json')->setBody($jsonResponset);       
+        $jsonResponset = json_encode($message);
+        return $this->response->setContentType('application/json')->setBody($jsonResponset);       
     }
 
     public function datagradingmentah(){
