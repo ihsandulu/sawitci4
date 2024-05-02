@@ -1,4 +1,5 @@
 <?php
+date_default_timezone_set('Asia/Jakarta');
 $this->session = \Config\Services::session();
 $this->request = \Config\Services::request();
 

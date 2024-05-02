@@ -640,6 +640,7 @@ class api extends baseController
                 $inputt["timbangan_name"] = $timbangan_name;
                 $inputt["sptbs_kgtruk"] = $timbangan;
                 $inputt["sptbs_timbangankeluar"] = $time;
+                $inputt["sptbs_created"] = date("Y-m-d H:i:s");                
                 $wheret["sptbs_id"] = $sptbs_id;
                 $buildert = $this->db->table('sptbs');
                 $buildert->update($inputt, $wheret); 
@@ -1089,7 +1090,13 @@ class api extends baseController
             <hr/>
             <div class="col-12 row">
                 <div class="col-12 text-primary">
-                    <img src="<?=$usr->panen_picture;?>" class="col-12"/>    
+                    <?php 
+                    $blob_data = $usr->panen_picture;
+                    if (is_numeric($blob_data)) {
+                        $blob_data = base_url("images/identity_logo/no_image.png");
+                    }
+                    ?>
+                    <img src="<?=$blob_data;?>" class="col-12"/>    
                 </div>
             </div>
         <?php } 
