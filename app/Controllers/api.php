@@ -596,6 +596,12 @@ class api extends baseController
                 if($data[0]=="panenid"){
                     $ir['panenid']=$data[1];
                 }
+                if($data[0]=="tph_id"){
+                    $wheret['tph_id ']=$data[1];
+                }
+                if($data[0]=="tph_thntanam"){
+                    $inputt['tph_thntanam ']=$data[1];
+                }
             }
             //cek restand
             $restand = $this->db->table("restand")
@@ -614,6 +620,11 @@ class api extends baseController
             /* echo $this->db->getLastQuery();
             die; */
             $panen_id = $this->db->insertID();
+            if($panen_id>0){
+                $buildert = $this->db->table('tph');
+                $buildert->update($inputt, $wheret); 
+            }
+            
             
         }
     }
