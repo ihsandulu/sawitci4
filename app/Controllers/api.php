@@ -1127,5 +1127,523 @@ class api extends baseController
             }
         }
     }
+
+    public function printtimbangan(){
+        $timbangan_name = $this->request->getGet("timbangan_name");
+        ?>
+        <?php
+        date_default_timezone_set('Asia/Jakarta');
+        $this->session = \Config\Services::session();
+        $this->request = \Config\Services::request();
+
+
+        $icon = "";
+        $nama = "";
+        $identity = $this->db->table("identity")->get();
+        foreach($identity->getResult() as $identity){
+            $icon = $identity->identity_logo;
+            $nama = $identity->identity_name;
+        }
+        ?>
+       
+       <?php if(isset($_GET["print"])){?>
+            <link href="<?=base_url("css/lib/bootstrap/bootstrap.min.4.5.2.css");?>" rel="stylesheet">
+            <link href="<?=base_url("css/helper.css");?>" rel="stylesheet">
+            <link href="<?=base_url("css/style.css");?>" rel="stylesheet">
+            <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+            <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+            <!--Custom JavaScript -->
+            <script src="<?=base_url("js/custom.min.js");?>"></script>
+            <script>tinymce.init({selector:'textarea'});</script>
+
+            <style>
+                .toast {
+                    min-width: 300px;
+                    position: fixed;
+                    bottom: 50px;
+                    right: 50px;
+                    z-index: 1000000000 !important;
+                    display: none;
+                }
+
+                .toast-header {
+                    background-color: aquamarine;
+                }
+
+                .toast-body {
+                    min-height: 100px;
+                }
+
+                .border {
+                    border: black solid 1px !important;
+                }
+
+                th,
+                td {
+                    text-align: center;
+                    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+                }
+
+                td {
+                    font-size: 14px;
+                    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+                    color: black !important;
+                }
+
+                .btn-action {
+                    padding: 0px;
+                    margin: 2px;
+                    display: inline;
+                }
+
+                .bold {
+                    font-weight: bold;
+                }
+
+                .green {
+                    color: olive;
+                }
+                .hidebar{
+                    height:inherit;
+                    overflow: auto;
+                }
+
+            /* Hide scrollbar for Chrome, Safari and Opera */
+                .hidebar::-webkit-scrollbar {
+                    display: none;
+                }
+
+                /* Hide scrollbar for IE, Edge and Firefox */
+                .hidebar {
+                    -ms-overflow-style: none;  /* IE and Edge */
+                    scrollbar-width: none;  /* Firefox */
+                }
+                .hide{display: none !important;}
+                .container-fluid{
+                    padding:5px;
+                    margin:0px;
+                }
+                .page-titles{
+                    margin-bottom:-13px;
+                }
+                .tunjuk{
+                    cursor:pointer;
+                }
+                .navitem{
+                    padding:0px;
+                    font-size:30px!important;
+                }
+                .navlink{
+                    margin:0px !important; 
+                    padding:0px !important;
+                    padding-left:10px !important;
+                    font-size:30px!important;
+                }
+                .navlink::after {
+                    content: "Menu";
+                    color: rgba(128, 128, 128, 0.6); 
+                    font-weight: bold;
+                    font-size:15px!important;
+                    position: absolute; 
+                    top: 50%; 
+                    transform: translate(10px,-50%); 
+                }
+            </style>
+            <script>
+                    window.print();
+                    setTimeout(function() {
+                        window.close();
+                    }, 3000);
+            </script>
+
+        </head>
+
+        <body class="fix-header fix-sidebar">
+        <style>
+        .nl1{font-size:15px!important; padding:20px !important; border:rgba(0,0,0,0.2) solid 1px !important;}
+        .tab-pane{border:rgba(0,0,0,0.2) solid 1px !important; padding:20px !important; margin:0px!important;}
+        .text-bold{font-weight:bold;}
+        .t-10{font-size:12px;}
+        </style>
+        
+        <?php }?>
+        <div class=" p-0 mt-2">
+            <?php $timbangan = $this->db->table("timbangan")
+            ->where("timbangan_name",$timbangan_name)
+            ->get();
+            foreach($timbangan->getResult() as $timbangan){?>
+            <div id="t<?=$timbangan->timbangan_id;?>" class="tab-pane ">
+                
+                <?php 
+                $currentDateTime = date("Y-m-d H:i:s");
+                $fiveMinutesAgo = date("Y-m-d H:i:s", strtotime("-5 minutes", strtotime($currentDateTime)));
+                
+                $sptbs = $this->db->table("sptbs")
+                ->where("timbangan_name",$timbangan->timbangan_name)
+                ->where("sptbs_date",date("Y-m-d"))
+                ->where("sptbs_created >=", $fiveMinutesAgo)
+                ->where("sptbs_created <=", $currentDateTime)
+                ->orderBy("sptbs_id","DESC")
+                ->limit(1)
+                ->get();
+                // echo $this->db->getLastquery();
+                foreach($sptbs->getResult() as $sptbs){?>
+                    <div class="row">                                     
+                        <div class="col-12 row">                              
+                            <div class="col-6">
+                                <h3><?=session()->get("identity_company");?></h3>
+                            </div>                           
+                            <div class="col-6 text-right">
+                                <?php if(!isset($_GET["print"])){?>
+                                    <a target="_blank" href="<?=base_url("api/printtimbangan?print=OK&timbangan_name=".$_GET["timbangan_name"]);?>" class="btn btn-warning"><i class="fa fa-print"></i></a>
+                                <?php }?>
+                            </div> 
+                        </div>
+                        <div class="col-6 row">   
+                            <div class="col-12">
+                                CPO Mill Office
+                            </div>
+                            <div class="col-12">
+                                <?=session()->get("identity_address");?>
+                            </div>
+                            <div class="col-5">
+                                NO POLISI
+                            </div>
+                            <div class="col-7">
+                                : <?=$sptbs->sptbs_plat;?>
+                            </div>
+                            <div class="col-5">
+                                SUPIR
+                            </div>
+                            <div class="col-7">
+                                : <?=$sptbs->sptbs_drivername;?>
+                            </div>
+                        </div>
+                        <div class="col-1"></div> 
+                        <div class="col-5 row">
+                            <div class="col-5">
+                                NO TICKET
+                            </div>
+                            <div class="col-7">
+                                : <?=$sptbs->sptbs_id;?>
+                            </div>
+                            <div class="col-5">
+                                SPTBS Date
+                            </div>
+                            <div class="col-7">
+                                : <?=$sptbs->sptbs_date;?>
+                            </div>
+                            <div class="col-5">
+                                Created Date
+                            </div>
+                            <div class="col-7">
+                                : <?=$sptbs->sptbs_created;?>
+                            </div>
+                            <div class="col-5">
+                                Timbangan
+                            </div>
+                            <div class="col-7">
+                                : <?=$sptbs->timbangan_name;?>
+                            </div>
+                            <div class="col-5">
+                                Masuk
+                            </div>
+                            <div class="col-7">
+                                : <?=$sptbs->sptbs_timbanganmasuk;?>
+                            </div>
+                            <div class="col-5">
+                                Keluar
+                            </div>
+                            <div class="col-7">
+                                : <?=$sptbs->sptbs_timbangankeluar;?>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="row mt-3">                                     
+                        <div class="col-12 row">
+                            <div class="col border text-center">
+                                Divisi
+                            </div>
+                            <div class="col border text-center">
+                                Blok
+                            </div>
+                            <div class="col border text-center">
+                                Thn Tanam
+                            </div>
+                            <div class="col border text-center">
+                                Sertifikasi
+                            </div>
+                            <div class="col border text-center">
+                                Status Kebun
+                            </div>
+                            <div class="col border text-center">
+                                Jml tandan
+                            </div>
+                            <div class="col border text-center">
+                                Loading Ramp
+                            </div>
+                        </div>
+                        <?php 
+                        $panen = $this->db->table("panen")
+                        ->select("SUM(panen_jml)As jmltandan,panen.*,tph.tph_status,tph.tph_certificate")
+                        ->join("tph","tph.tph_id=panen.tph_id","left")
+                        ->where("sptbs_id", $sptbs->sptbs_id)
+                        ->groupBy("tph_thntanam")
+                        ->get();
+                        $jmltandan=0;
+                        foreach($panen->getResult() as $panen){
+                            $jmltandan+=$panen->jmltandan;
+                            ?>      
+                            <div class="col-12 row">
+                                <div class="col border text-center">
+                                    <?=$panen->divisi_name;?>
+                                </div>
+                                <div class="col border text-center">
+                                    <?=$panen->blok_name;?>
+                                </div>
+                                <div class="col border text-center">
+                                    <?=$panen->tph_thntanam;?>
+                                </div>
+                                <div class="col border text-center">
+                                    <?=$panen->tph_certificate;?>
+                                </div>
+                                <div class="col border text-center">
+                                    <?=$panen->tph_status;?>
+                                </div>
+                                <div class="col border text-center">
+                                    <?=$panen->jmltandan;?>
+                                </div>
+                                <div class="col border text-center">
+                                
+                                </div>
+                            </div>
+                        <?php }?>
+                    </div>
+
+                    <div class="row mt-3 mb-5">  
+                        <?php                                        
+                        $brutto = $sptbs->sptbs_kgbruto;
+                        $tarra = $sptbs->sptbs_kgtruk;
+                        $netto = $brutto-$tarra;
+                        ?>
+                        <div class="col-6 row">                                             
+                            <div class="col-12">
+                                <h5 class="text-center">GRADING</h5>
+                            </div>
+                            <?php 
+                            $grading = $this->db->table("grading")
+                            ->join("gradingtype","gradingtype.gradingtype_id=grading.gradingtype_id","left")
+                            ->where("sptbsid",$sptbs->sptbsid)
+                            ->where("grading_date",$sptbs->sptbs_date)
+                            ->get();
+                            $tkg=0;
+                            foreach($grading->getResult() as $grading){
+                                /* 
+                                1 Fraksi 00
+                                2 Fraksi 0 
+                                3 Fraksi 5 
+                                4 Tangkai Panjang 
+                                5 Tandan Kosong 
+                                6 Tandan <3kg 
+                                7 Sampah 
+                                8 Brondolan Lepas 
+                                9 Fraksi 6 
+                                */ 
+                                $a = $grading->gradingtype_id;
+                                $knetto = array(6,7,8);
+                                if (in_array($a, $knetto)) {
+                                    $persen=$grading->grading_qty/$netto*100;
+                                }else{
+                                    $persen=$grading->grading_qty/$jmltandan*100;
+                                }
+                                
+                                $p50 = array(1,2);
+                                $p25 = array(3,9);
+                                $p100 = array(5);
+                                $p1 = array(4);
+                                $p30 = array(8);
+                                $k2 = array(7);
+                                $p70 = array(6);
+                                if (in_array($a, $p50)) {
+                                    $nilai = 50 * $persen / 100 * $netto;
+                                    $kg = round($nilai);
+                                }else  if (in_array($a, $p25)) {
+                                    if ($persen > 5) {
+                                        $nilai = 25/100 * ($persen/100 - 5/100) * $netto;
+                                        $kg = round($nilai);
+                                    } else {
+                                        $kg = 0;
+                                    }
+                                }else  if (in_array($a, $p100)) {
+                                    $nilai = (100/100) * ($persen/100) * $netto;
+                                    $kg = round($nilai);
+                                }else  if (in_array($a, $p1)) {
+                                    $nilai = (1/100) * ($persen/100) * $netto;
+                                    $kg = round($nilai);
+                                }else  if (in_array($a, $p30)) {
+                                    if ($persen <= 0) {
+                                        $kg = 0;
+                                    } else {
+                                        $nilai = 30/100 * (12.5/100 - $persen/100) * $netto;
+                                        if ($nilai < 0) {
+                                            $kg = 0;
+                                        } else {
+                                            $kg = round($nilai);
+                                        }
+                                    }                                                    
+                                }else if (in_array($a, $k2)) {
+                                    $nilai_J18 = $grading->grading_qty; 
+                                    $kg = round($nilai_J18*2);
+                                }else if (in_array($a, $p70)) {
+                                    $kg=$grading->grading_qty/$netto*100;
+                                    $nilai_J19 = $grading->grading_qty;
+                                    $kg = round($nilai_J19 * 1 * 0.70);
+                                }
+                                $tkg+=$kg;
+                                ?>
+                                <div class="col-3 text-bold t-10">
+                                    <?=$grading->gradingtype_name;?>
+                                </div>
+                                <div class="col-3  t-10">
+                                    = <?=$grading->grading_qty;?> <?=$grading->gradingtype_unit;?>
+                                </div>
+                                <div class="col-3  t-10">
+                                    = <?php
+                                    echo number_format($persen,2,",",".");
+                                    ?> %
+                                </div>
+                                <div class="col-3  t-10">
+                                    = <?=number_format($kg,0,",",".");?> Kg
+                                </div>
+                            <?php }?>
+                        </div>
+                        <?php
+                            $tgrading = $tkg;
+                            
+                            //netto diterima
+                            if (is_numeric($netto) && is_numeric($tgrading)) {
+                                $nettoditerima = $netto - $tgrading;
+                            } else {
+                                $nettoditerima = 0;
+                            }
+
+                            //bjr
+                            if (is_numeric($jmltandan) && $jmltandan != 0) {
+                                $bjr = $netto / $jmltandan;
+                            } else {
+                                $bjr = 0;
+                            }
+
+                            //% grading
+                            if ($netto != 0) {
+                                $pgrading = ($tgrading / $netto) * 100;
+                            } else {
+                                $pgrading = 0;
+                            }
+                        ?>
+                        <div class="col-1">&nbsp;</div>  
+                        <div class="col-5 row">   
+                            <div class="col-12 mb-2">
+                                <h5 class="text-center">INFORMASI TIMBANGAN</h5>
+                            </div>                                            
+                            <div class="col-6 t-10 text-bold">
+                                Berat Brutto
+                            </div>
+                            <div class="col-6 t-10">
+                                : <?php 
+                                echo number_format($brutto,0,",",".");
+                                ?> Kg
+                            </div>
+                            <div class="col-6 t-10 text-bold">
+                                Berat Tarra
+                            </div>
+                            <div class="col-6 t-10">
+                                : <?php 
+                                echo number_format($tarra,0,",",".");
+                                ?> Kg
+                            </div>
+                            <div class="col-6 t-10 text-bold">
+                                Berat Netto
+                            </div>
+                            <div class="col-6 t-10">
+                                : <?php 
+                                echo number_format($netto,0,",",".");
+                                ?> Kg
+                            </div>
+                            <div class="col-6 t-10 mb-2 text-bold">
+                                Jumlah Grading
+                            </div>
+                            <div class="col-6 t-10">
+                                : <?=number_format($tgrading,0,",",".");?> Kg
+                            </div>
+                            <div class="col-6 t-10 text-bold">
+                                Netto Diterima
+                            </div>
+                            <div class="col-6 t-10">
+                                : <?=number_format($nettoditerima,0,",",".");?> Kg
+                            </div>
+                            <div class="col-6 t-10 text-bold">
+                                Jumlah Tandan
+                            </div>
+                            <div class="col-6 t-10">
+                                : <?php 
+                                echo number_format($jmltandan,0,",",".");
+                                ?> Tdn
+                            </div>
+                            <div class="col-6 t-10 text-bold">
+                                BJR
+                            </div>
+                            <div class="col-6 t-10">
+                                : <?php 
+                                echo number_format($bjr,0,",",".");
+                                ?> Kg
+                            </div>
+                            <div class="col-6 t-10 text-bold">
+                                % Grading
+                            </div>
+                            <div class="col-6 t-10">
+                                : <?php 
+                                echo number_format($pgrading,0,",",".");
+                                ?> %
+                            </div>
+                        </div>
+                        
+                    </div>
+
+                    
+
+                    
+
+                    <div class="row mt-5 pt-5">
+                        <div class="col-4 row">
+                            <div class="col-12 text-center text-bold"><?=session()->get("nama");?></div>
+                            <div class="col-12 pl-4 pr-4"><div class="border-top text-center">Opt.Timbangan</div></div>
+                        </div>
+                        <div class="col-4 row">
+                            <div class="col-12 text-center text-bold"><?=$sptbs->sptbs_drivername;?></div>
+                            <div class="col-12 pl-4 pr-4"><div class="border-top text-center">DRIVER/SUPIR</div></div>
+                        </div>
+                        <div class="col-4 row">
+                            <div class="col-12 text-center text-bold">SUYANTI</div>
+                            <div class="col-12 pl-4 pr-4"><div class="border-top text-center">KTU MILL</div></div>
+                        </div>
+                    </div>
+
+                    
+
+                <?php }?>
+            </div>
+            
+       <?php if(isset($_GET["print"])){?>
+        </body>
+        </html>
+        <?php }?>
+        <?php 
+    }?>
+    </div>
+    <?php }
     
 }

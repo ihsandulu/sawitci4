@@ -47,12 +47,30 @@
                             <?php $timbangan = $this->db->table("timbangan")->get();
                             foreach($timbangan->getResult() as $timbangan){?>
 
-                            <li class="nav-item"><a class="nav-link nl1" data-toggle="tab" href="#t<?=$timbangan->timbangan_id;?>"><?=$timbangan->timbangan_name;?></a></li>
+                            <li class="nav-item"><a onclick="muncultimbangan('<?=$timbangan->timbangan_name;?>')" class="nav-link nl1" data-toggle="tab" href="#t<?=$timbangan->timbangan_id;?>"><?=$timbangan->timbangan_name;?></a></li>
                             
                             <?php }?>
                         </ul>
-
-                        <div class="tab-content p-0 mt-2">
+                        <script>
+                            function ambildatatimbangan(timbangan_name){
+                                $.get("<?=base_url("api/printtimbangan");?>",{timbangan_name:timbangan_name})
+                                .done(function(data){
+                                    $("#isitabtimbangan").html(data);
+                                });
+                            }
+                            var intervalID = null;
+                            function muncultimbangan(timbangan_name){
+                                ambildatatimbangan(timbangan_name);
+                                
+                                clearInterval(intervalID);
+                                intervalID = setInterval(() => {
+                                    ambildatatimbangan(timbangan_name);
+                                }, 3000); 
+                            }
+                            
+                        </script>
+                        <div id="isitabtimbangan"></div>
+                        <!-- <div class="tab-content p-0 mt-2">
                             <?php $timbangan = $this->db->table("timbangan")->get();
                             foreach($timbangan->getResult() as $timbangan){?>
                             <div id="t<?=$timbangan->timbangan_id;?>" class="tab-pane fade in">
@@ -411,7 +429,7 @@
                                 <?php }?>
                             </div>
                             <?php }?>
-                        </div>
+                        </div> -->
                     </div>
                     <?php if ($message != "") { ?>
                         <div class="alert alert-info alert-dismissable">
