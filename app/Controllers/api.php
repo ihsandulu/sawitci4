@@ -876,6 +876,7 @@ class api extends baseController
         // ->where("tph_id",$inputu["tph_id"])
         // ->where("panen_card",$inputu["panen_card"])
         ->where("panenid",$inputu["panenid"])
+        ->where("restand_id >",0)
         ->get();
         if($cek->getNumRows()==0){
             $this->db->table('restand')->insert($inputu);
