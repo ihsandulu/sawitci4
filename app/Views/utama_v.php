@@ -18,10 +18,10 @@
 								<div class="desc">
 									<?= ucfirst(session()->get("nama")); ?>
 								</div>
-								<div class="text-center mb-5">
+								<div class="text-center mb-5 row">
 									<?php $apk=$this->db->table("apk")->orderBy("apk_id","DESC")->limit("1")->get();
 									foreach($apk->getResult() as $apk){?>
-									<a href="<?=base_url("images/apk_file/".$apk->apk_version.".apk");?>" class="col-12"><img src="<?=base_url("images/download.png");?>"/></a>
+									<a href="<?=base_url("images/apk_file/".$apk->apk_version.".apk");?>" class="col-12"><img src="<?=base_url("images/download.png");?>" class="img-thumbnail"/></a>
 									<?php }?>
 								</div>
 							</div>
