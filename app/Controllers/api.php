@@ -1662,5 +1662,24 @@ class api extends baseController
     }?>
     </div>
     <?php }
+
+    public function apk(){
+        header('Access-Control-Allow-Origin: *');
+        header('Access-Control-Allow-Headers: Content-Type');
+        $usr = $this->db
+        ->table("apk")
+        ->orderBy("apk.apk_id", "DESC")
+        ->limit("1")
+        ->get();
+        //echo $this->db->getLastQuery();  
+        $data=array();      
+        foreach ($usr->getResult() as $usr) {
+            $usrData = array(
+                "apk_version" => $usr->apk_version
+            ); 
+            $data[] = $usrData;
+        } 
+        return $this->response->setContentType('application/json')->setJSON($data);
+    }
     
 }
