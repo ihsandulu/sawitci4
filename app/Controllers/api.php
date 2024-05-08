@@ -1465,11 +1465,19 @@ class api extends baseController
                                 9 Fraksi 6 
                                 */ 
                                 $a = $grading->gradingtype_id;
+                                $gradingqty = $grading->grading_qty;
                                 $knetto = array(6,7,8);
+                                $persen = 0;
                                 if (in_array($a, $knetto)) {
-                                    $persen=$grading->grading_qty/$netto*100;
+                                    $persent=$gradingqty/$netto*100;
+                                    if ($persent > 0) {
+                                        $persen = $persent;
+                                    }
                                 }else{
-                                    $persen=$grading->grading_qty/$jmltandan*100;
+                                    $persent = $gradingqty / $jmltandan * 100;
+                                    if ($persent > 0) {
+                                        $persen = $persent;
+                                    }
                                 }
                                 
                                 $p50 = array(1,2);
@@ -1480,7 +1488,7 @@ class api extends baseController
                                 $k2 = array(7);
                                 $p70 = array(6);
                                 if (in_array($a, $p50)) {
-                                    $nilai = 50 * $persen / 100 * $netto;
+                                    $nilai = 50/100 * $persen / 100 * $netto;
                                     $kg = round($nilai);
                                 }else  if (in_array($a, $p25)) {
                                     if ($persen > 5) {
@@ -1507,12 +1515,9 @@ class api extends baseController
                                         }
                                     }                                                    
                                 }else if (in_array($a, $k2)) {
-                                    $nilai_J18 = $grading->grading_qty; 
-                                    $kg = round($nilai_J18*2);
+                                    $kg = round($gradingqty*2);
                                 }else if (in_array($a, $p70)) {
-                                    $kg=$grading->grading_qty/$netto*100;
-                                    $nilai_J19 = $grading->grading_qty;
-                                    $kg = round($nilai_J19 * 1 * 0.70);
+                                    $kg = round($gradingqty * 1 * 0.70);
                                 }
                                 $tkg+=$kg;
                                 ?>
@@ -1520,7 +1525,7 @@ class api extends baseController
                                     <?=$grading->gradingtype_name;?>
                                 </div>
                                 <div class="col-3  t-10">
-                                    = <?=$grading->grading_qty;?> <?=$grading->gradingtype_unit;?>
+                                    = <?=$gradingqty;?> <?=$grading->gradingtype_unit;?>
                                 </div>
                                 <div class="col-3  t-10">
                                     = <?php
@@ -1618,7 +1623,7 @@ class api extends baseController
                             </div>
                             <div class="col-6 t-10">
                                 : <?php 
-                                echo number_format($pgrading,0,",",".");
+                                echo number_format($pgrading,2,",",".");
                                 ?> %
                             </div>
                         </div>
