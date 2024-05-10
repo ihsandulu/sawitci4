@@ -35,3 +35,4 @@ $routes->add('/mwt', 'master\mwt::index');
 $routes->add('/mquarrytype', 'master\mquarrytype::index');
 $routes->add('/quarry', 'transaction\quarry::index');
 $routes->add('/mapk', 'master\mapk::index');
+$routes->add('/mpositionandroid', 'master\mpositionandroid::index');

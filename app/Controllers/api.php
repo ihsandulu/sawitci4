@@ -110,6 +110,29 @@ class api extends baseController
         }        
     }
 
+    public function hakaksesandroid()
+    {
+        $crud = $this->request->getGET("crud");
+        $val = $this->request->getGET("val");
+        $val = json_decode($val);
+        $position_id = $this->request->getGET("position_id");
+        $android_id = $this->request->getGET("android_id");
+        $where["position_id"]=$this->request->getGET("position_id");
+        $where["android_id"]=$this->request->getGET("android_id");
+        $cek=$this->db->table('positionandroid')->where($where)->get()->getNumRows();
+        if($cek>0){
+            $input1[$crud] = $val;
+            $this->db->table('positionandroid')->update($input1, $where);
+            echo $this->db->getLastQuery();
+        }else{
+            $input2["position_id"] = $position_id;
+            $input2["android_id"] = $android_id;
+            $input2[$crud] = $val;
+            $this->db->table('positionandroid')->insert($input2);
+            echo $this->db->getLastQuery();
+        }        
+    }
+
 
 
 
@@ -1676,6 +1699,27 @@ class api extends baseController
         foreach ($usr->getResult() as $usr) {
             $usrData = array(
                 "apk_version" => $usr->apk_version
+            ); 
+            $data[] = $usrData;
+        } 
+        return $this->response->setContentType('application/json')->setJSON($data);
+    }
+
+    public function positionandroid(){
+        header('Access-Control-Allow-Origin: *');
+        header('Access-Control-Allow-Headers: Content-Type');
+        $usr = $this->db
+        ->table("positionandroid")
+        ->join("android","android.android_id=positionandroid.android_id","left")
+        ->where("position_id",$_GET["position_id"])
+        ->orderBy("positionandroid.positionandroid_id", "DESC")
+        ->get();
+        //echo $this->db->getLastQuery();  
+        $data=array();      
+        foreach ($usr->getResult() as $usr) {
+            $usrData = array(
+                "android_name" => $usr->android_name,
+                "positionandroid_read" => $usr->positionandroid_read
             ); 
             $data[] = $usrData;
         } 

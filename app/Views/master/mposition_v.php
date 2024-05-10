@@ -127,15 +127,20 @@
                                                             && session()->get("halaman")['3']['act_update'] == "1"
                                                         )
                                                     ) { ?>
-                                                    <form method="get" class="btn-action" style="" action="<?= base_url("mpositionpages"); ?>">
-                                                        <button class="btn btn-sm btn-primary "><span class="fa fa-check" style="color:white;"></span> </button>
-                                                        <input type="hidden" name="position_id" value="<?= $usr->position_id; ?>" />
-                                                    </form>
+                                                        <form method="get" class="btn-action" style="" action="<?= base_url("mpositionandroid"); ?>">
+                                                            <button class="btn btn-sm btn-success "><span class="fa fa-android" style="color:white;"></span> </button>
+                                                            <input type="hidden" name="position_id" value="<?= $usr->position_id; ?>" />
+                                                        </form>
 
-                                                    <form method="post" class="btn-action" style="">
-                                                        <button class="btn btn-sm btn-warning " name="edit" value="OK"><span class="fa fa-edit" style="color:white;"></span> </button>
-                                                        <input type="hidden" name="position_id" value="<?= $usr->position_id; ?>" />
-                                                    </form>
+                                                        <form method="get" class="btn-action" style="" action="<?= base_url("mpositionpages"); ?>">
+                                                            <button class="btn btn-sm btn-primary "><span class="fa fa-check" style="color:white;"></span> </button>
+                                                            <input type="hidden" name="position_id" value="<?= $usr->position_id; ?>" />
+                                                        </form>
+
+                                                        <form method="post" class="btn-action" style="">
+                                                            <button class="btn btn-sm btn-warning " name="edit" value="OK"><span class="fa fa-edit" style="color:white;"></span> </button>
+                                                            <input type="hidden" name="position_id" value="<?= $usr->position_id; ?>" />
+                                                        </form>
                                                     <?php }?>
                                                     
                                                     <?php 
