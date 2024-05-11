@@ -95,6 +95,7 @@
                                         <?php } ?>
                                         <!-- <th>No.</th> -->
                                         <th>ID</th>
+                                        <th>Realeas Date</th>
                                         <th>Version</th>
                                     </tr>
                                 </thead>
@@ -153,6 +154,7 @@
                                             <?php } ?>
                                             <!-- <td><?= $no++; ?></td> -->
                                             <td><?= $usr->apk_id; ?></td>
+                                            <td><?= $usr->apk_datetime; ?></td>
                                             <td><a href="<?=base_url("images/apk_file/".$usr->apk_version.".apk");?>"><?= $usr->apk_version; ?>.apk</a></td>
                                         </tr>
                                     <?php } ?>
