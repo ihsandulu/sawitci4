@@ -1721,7 +1721,8 @@ class api extends baseController
         foreach ($usr->getResult() as $usr) {
             $usrData = array(
                 "android_name" => $usr->android_name,
-                "positionandroid_read" => $usr->positionandroid_read
+                "positionandroid_read" => $usr->positionandroid_read,
+                "position_id" => $usr->position_id
             ); 
             $data[] = $usrData;
         } 
