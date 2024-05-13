@@ -1739,7 +1739,8 @@ class api extends baseController
         $data=array();      
         foreach ($usr->getResult() as $usr) {
             $usrData = array(
-                "lr_name" => $usr->lr_name
+                "lr_name" => $usr->lr_name,
+                "lr_geo" => $usr->lr_geo
             ); 
             $data[] = $usrData;
         } 
