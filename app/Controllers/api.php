@@ -670,7 +670,7 @@ class api extends baseController
                 $sptbs_kgbruto = $usru->sptbs_kgbruto;
             }
             $selisih = $sptbs_kgbruto-$timbangan;
-            if($selisih>3000){
+            if($selisih>250){
                 $inputt["timbangan_name"] = $timbangan_name;
                 $inputt["sptbs_kgtruk"] = $timbangan;
                 $inputt["sptbs_timbangankeluar"] = $time;
@@ -1400,6 +1400,9 @@ class api extends baseController
                     <div class="row mt-3">                                     
                         <div class="col-12 row">
                             <div class="col border text-center">
+                                Estate
+                            </div>
+                            <div class="col border text-center">
                                 Divisi
                             </div>
                             <div class="col border text-center">
@@ -1433,6 +1436,9 @@ class api extends baseController
                             $jmltandan+=$panen->jmltandan;
                             ?>      
                             <div class="col-12 row">
+                                <div class="col border text-center">
+                                    <?=$panen->estate_name;?>
+                                </div>
                                 <div class="col border text-center">
                                     <?=$panen->divisi_name;?>
                                 </div>
@@ -1742,6 +1748,24 @@ class api extends baseController
             $usrData = array(
                 "lr_name" => $usr->lr_name,
                 "lr_geo" => $usr->lr_geo
+            ); 
+            $data[] = $usrData;
+        } 
+        return $this->response->setContentType('application/json')->setJSON($data);
+    }
+
+    public function wtnumber(){
+        header('Access-Control-Allow-Origin: *');
+        header('Access-Control-Allow-Headers: Content-Type');
+        $usr = $this->db
+        ->table("wtnumber")
+        ->orderBy("wtnumber.wtnumber_card", "ASC")
+        ->get();
+        //echo $this->db->getLastQuery();  
+        $data=array();      
+        foreach ($usr->getResult() as $usr) {
+            $usrData = array(
+                "wtnumber_card" => $usr->wtnumber_card
             ); 
             $data[] = $usrData;
         } 

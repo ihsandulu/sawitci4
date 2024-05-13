@@ -26,6 +26,7 @@ $routes->add('/rkh', 'transaction\rkh::index');
 $routes->add('/mplacement', 'master\mplacement::index');
 $routes->add('/synchron', 'transaction\synchron::index');
 $routes->add('/mtphnumber', 'master\mtphnumber::index');
+$routes->add('/mwtnumber', 'master\mwtnumber::index');
 $routes->add('/msptbsnumber', 'master\msptbsnumber::index');
 $routes->add('/mquarrynumber', 'master\mquarrynumber::index');
 $routes->add('/mgradingtype', 'master\mgradingtype::index');

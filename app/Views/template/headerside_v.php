@@ -242,6 +242,24 @@
                 <li> 
                     <a class="  " href="<?= base_url("mtphnumber"); ?>" aria-expanded="false"><i class="fa fa-id-card"></i><span class="hide-menu">TPH Card</span></a>
                 </li>
+                <?php }?>     
+                <?php 
+                if (
+                    (
+                        isset(session()->get("position_id")[0][0]) 
+                        && (
+                            session()->get("position_id") == "1" 
+                            || session()->get("position_id") == "2"
+                        )
+                    ) ||
+                    (
+                        isset(session()->get("halaman")['68']['act_read']) 
+                        && session()->get("halaman")['68']['act_read'] == "1"
+                    )
+                ) { ?>
+                <li> 
+                    <a class="  " href="<?= base_url("mwtnumber"); ?>" aria-expanded="false"><i class="fa fa-id-card"></i><span class="hide-menu">WT Card</span></a>
+                </li>
                 <?php }?>    
                 <?php 
                 if (
