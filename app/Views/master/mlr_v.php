@@ -155,7 +155,7 @@
                                 <div class="form-group">
                                     <label class="control-label col-sm-3" for="lr_geo">Geolocation:</label>
                                     <div class="col-sm-9">
-                                        <input required type="text" class="form-control" id="lr_geo" name="lr_geo" placeholder="" value="<?= $lr_geo; ?>">
+                                        <input type="text" class="form-control" id="lr_geo" name="lr_geo" placeholder="" value="<?= $lr_geo; ?>">
                                     </div>
                                 </div>  
 
