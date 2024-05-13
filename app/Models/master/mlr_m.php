@@ -18,6 +18,10 @@ class mlr_m extends core_m
         }
         $us = $this->db
             ->table("lr")
+            ->join("blok","blok.blok_id=lr.blok_id","left")
+            ->join("seksi","seksi.seksi_id=blok.seksi_id","left")
+            ->join("divisi","divisi.divisi_id=seksi.divisi_id","left")
+            ->join("estate","estate.estate_id=divisi.estate_id","left")
             ->getWhere($lrd);
         /* echo $this->db->getLastquery();
         die; */
@@ -29,9 +33,41 @@ class mlr_m extends core_m
                         $data[$field] = $lr->$field;
                     }
                 }
+                foreach ($this->db->getFieldNames('estate') as $field) {
+                    if (!in_array($field, $larang)) {
+                        $data[$field] = $lr->$field;
+                    }
+                }
+                foreach ($this->db->getFieldNames('divisi') as $field) {
+                    if (!in_array($field, $larang)) {
+                        $data[$field] = $lr->$field;
+                    }
+                }
+                foreach ($this->db->getFieldNames('seksi') as $field) {
+                    if (!in_array($field, $larang)) {
+                        $data[$field] = $lr->$field;
+                    }
+                }
+                foreach ($this->db->getFieldNames('blok') as $field) {
+                    if (!in_array($field, $larang)) {
+                        $data[$field] = $lr->$field;
+                    }
+                }
             }
         } else {
             foreach ($this->db->getFieldNames('lr') as $field) {
+                $data[$field] = "";
+            }
+            foreach ($this->db->getFieldNames('estate') as $field) {
+                $data[$field] = "";
+            }
+            foreach ($this->db->getFieldNames('divisi') as $field) {
+                $data[$field] = "";
+            }
+            foreach ($this->db->getFieldNames('seksi') as $field) {
+                $data[$field] = "";
+            }
+            foreach ($this->db->getFieldNames('blok') as $field) {
                 $data[$field] = "";
             }
         }

@@ -60,14 +60,98 @@
                             <div class="lead">
                                 <h3><?= $judul; ?></h3>
                             </div>
-                            <form class="form-horizontal" method="post" enctype="multipart/form-data">                                                      
-                                                                                     
+                            <form class="form-horizontal" method="post" enctype="multipart/form-data"> 
                             <div class="form-group">
+                                    <label class="control-label col-sm-2" for="estate_id">Estate:</label>
+                                    <div class="col-sm-10">
+                                        <?php
+                                        $estate = $this->db->table("estate")
+                                            ->orderBy("estate_name", "ASC")
+                                            ->get();
+                                        //echo $this->db->getLastQuery();
+                                        ?>
+                                        <select onchange="divisi()" required class="form-control select" id="estate_id" >
+                                            <option value="" <?= ($estate_id == "") ? "selected" : ""; ?>>Pilih Estate</option>
+                                            <?php
+                                            foreach ($estate->getResult() as $estate) { ?>
+                                                <option value="<?= $estate->estate_id; ?>" <?= ($estate_id == $estate->estate_id) ? "selected" : ""; ?>><?= $estate->estate_name; ?></option>
+                                            <?php } ?>
+                                        </select>
+                                    </div>
+                                </div>                                                   
+                                <div class="form-group">
+                                    <label class="control-label col-sm-2" for="divisi_id">Divisi:</label>
+                                    <div class="col-sm-10">
+                                        <select onchange="seksi()" required class="form-control select" id="divisi_id">
+                                            
+                                        </select>
+                                        <script>
+                                            function divisi(){
+                                                let estate_id = $("#estate_id").val();
+                                                let divisi_id = "<?=$divisi_id;?>";
+                                                $.get("<?=base_url("api/divisi");?>",{estate_id:estate_id,divisi_id:divisi_id})
+                                                .done(function(data){
+                                                    $("#divisi_id").html(data);
+                                                    seksi();
+                                                });
+                                            }
+                                            divisi();
+                                        </script>
+                                    </div>
+                                </div>                                                             
+                                <div class="form-group">
+                                    <label class="control-label col-sm-2" for="seksi_id">Seksi:</label>
+                                    <div class="col-sm-10">
+                                        <select onchange="blok()" required class="form-control select" id="seksi_id">
+                                            
+                                        </select>
+                                        <script>
+                                            function seksi(){
+                                                let divisi_id = $("#divisi_id").val();
+                                                let seksi_id = "<?=$seksi_id;?>";
+                                                // alert('<?=base_url("api/seksi");?>?divisi_id='+divisi_id+'&seksi_id='+seksi_id);
+                                                $.get("<?=base_url("api/seksi");?>",{divisi_id:divisi_id,seksi_id:seksi_id})
+                                                .done(function(data){
+                                                    $("#seksi_id").html(data);
+                                                    blok();
+                                                });
+                                            }
+                                            seksi();
+                                        </script>
+                                    </div>
+                                </div>                                         
+                                <div class="form-group">
+                                    <label class="control-label col-sm-2" for="blok_id">Blok:</label>
+                                    <div class="col-sm-10">
+                                        <select required class="form-control select" id="blok_id" name="blok_id">
+                                            
+                                        </select>
+                                        <script>
+                                            function blok(){
+                                                let seksi_id = $("#seksi_id").val();
+                                                let blok_id = "<?=$blok_id;?>";
+                                                $.get("<?=base_url("api/blok");?>",{seksi_id:seksi_id,blok_id:blok_id})
+                                                .done(function(data){
+                                                    $("#blok_id").html(data);
+                                                });
+                                            }
+                                            blok();
+                                        </script>
+                                    </div>
+                                </div>                                                          
+                                                                                     
+                                <div class="form-group">
                                     <label class="control-label col-sm-3" for="lr_name">Loading Ramp Code:</label>
                                     <div class="col-sm-9">
                                         <input required type="text" autofocus class="form-control" id="lr_name" name="lr_name" placeholder="" value="<?= $lr_name; ?>">
                                     </div>
                                 </div>                                                      
+                                <div class="form-group">
+                                    <label class="control-label col-sm-3" for="lr_distance">Distance (KM):</label>
+                                    <div class="col-sm-9">
+                                        <input required type="text" class="form-control" id="lr_distance" name="lr_distance" placeholder="" value="<?= $lr_distance; ?>">
+                                    </div>
+                                </div>                                                       
                                 <div class="form-group">
                                     <label class="control-label col-sm-3" for="lr_geo">Geolocation:</label>
                                     <div class="col-sm-9">
@@ -101,7 +185,12 @@
                                             <th>Action</th>
                                         <?php } ?>
                                         <!-- <th>No.</th> -->
+                                        <th>Estate</th>
+                                        <th>Divisi</th>
+                                        <th>Seksi</th>
+                                        <th>Blok</th>
                                         <th>Loading Ramp</th>
+                                        <th>Distance</th>
                                         <th>Geolocation</th>
                                     </tr>
                                 </thead>
@@ -109,6 +198,12 @@
                                     <?php
                                     $usr = $this->db
                                         ->table("lr")
+                                        ->join("blok","blok.blok_id=lr.blok_id","left")
+                                        ->join("seksi","seksi.seksi_id=blok.seksi_id","left")
+                                        ->join("divisi","divisi.divisi_id=seksi.divisi_id","left")
+                                        ->join("estate","estate.estate_id=divisi.estate_id","left")
+                                        ->orderBy("divisi_name", "ASC")
+                                        ->orderBy("blok_name", "ASC")
                                         ->orderBy("lr_name", "ASC")
                                         ->get();
                                     //echo $this->db->getLastquery();
@@ -160,7 +255,12 @@
                                                 </td>
                                             <?php } ?>
                                             <!-- <td><?= $no++; ?></td> -->
+                                            <td><?= $usr->estate_name; ?></td>
+                                            <td><?= $usr->divisi_name; ?></td>
+                                            <td><?= $usr->seksi_name; ?></td>
+                                            <td><?= $usr->blok_name; ?></td>
                                             <td><?= $usr->lr_name; ?></td>
+                                            <td><?= $usr->lr_distance; ?> KM</td>
                                             <td><?= $usr->lr_geo; ?></td>
                                         </tr>
                                     <?php } ?>
