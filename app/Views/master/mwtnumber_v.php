@@ -84,7 +84,7 @@
 
 
                                             // Membentuk string tanggal dengan format 'YYYY-MM-DD'
-                                            var lengkap = 'QR'+year + '' + (month < 10 ? '0' : '') + month + '' + (date < 10 ? '0' : '') + date + hours + minutes+ seconds+randomTwoDigitNumber;
+                                            var lengkap = 'WT'+year + '' + (month < 10 ? '0' : '') + month + '' + (date < 10 ? '0' : '') + date + hours + minutes+ seconds+randomTwoDigitNumber;
 
                                             $("#wtnumber_card").val(lengkap) ;
 
