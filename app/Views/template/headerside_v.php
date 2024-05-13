@@ -314,6 +314,24 @@
                 <li> 
                     <a class="  " href="<?= base_url("mwt"); ?>" aria-expanded="false"><i class="fa fa-truck"></i><span class="hide-menu">Vehicle</span></a>
                 </li>
+                <?php }?>    
+                <?php 
+                if (
+                    (
+                        isset(session()->get("position_id")[0][0]) 
+                        && (
+                            session()->get("position_id") == "1" 
+                            || session()->get("position_id") == "2"
+                        )
+                    ) ||
+                    (
+                        isset(session()->get("halaman")['67']['act_read']) 
+                        && session()->get("halaman")['67']['act_read'] == "1"
+                    )
+                ) { ?>
+                <li> 
+                    <a class="  " href="<?= base_url("mlr"); ?>" aria-expanded="false"><i class="fa fa-shopping-cart"></i><span class="hide-menu">Loading Ramp</span></a>
+                </li>
                 <?php }?>  
                 <?php 
                 if (

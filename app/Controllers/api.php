@@ -1708,11 +1708,13 @@ class api extends baseController
     public function positionandroid(){
         header('Access-Control-Allow-Origin: *');
         header('Access-Control-Allow-Headers: Content-Type');
-        $usr = $this->db
+        $builder = $this->db
         ->table("positionandroid")
-        ->join("android","android.android_id=positionandroid.android_id","left")
-        ->where("position_id",$_GET["position_id"])
-        ->orderBy("positionandroid.positionandroid_id", "DESC")
+        ->join("android","android.android_id=positionandroid.android_id","left");
+        if(isset($_GET["position_id"]) && $_GET["position_id"]!="null" && $_GET["position_id"]!=""){
+            $builder->where("position_id",$_GET["position_id"]);
+        }
+        $usr= $builder->orderBy("positionandroid.positionandroid_id", "DESC")
         ->get();
         //echo $this->db->getLastQuery();  
         $data=array();      
@@ -1720,6 +1722,24 @@ class api extends baseController
             $usrData = array(
                 "android_name" => $usr->android_name,
                 "positionandroid_read" => $usr->positionandroid_read
+            ); 
+            $data[] = $usrData;
+        } 
+        return $this->response->setContentType('application/json')->setJSON($data);
+    }
+
+    public function lr(){
+        header('Access-Control-Allow-Origin: *');
+        header('Access-Control-Allow-Headers: Content-Type');
+        $usr = $this->db
+        ->table("lr")
+        ->orderBy("lr.lr_name", "ASC")
+        ->get();
+        //echo $this->db->getLastQuery();  
+        $data=array();      
+        foreach ($usr->getResult() as $usr) {
+            $usrData = array(
+                "lr_name" => $usr->lr_name
             ); 
             $data[] = $usrData;
         } 
