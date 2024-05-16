@@ -1285,6 +1285,8 @@ class api extends baseController
                     top: 50%; 
                     transform: translate(10px,-50%); 
                 }
+                
+                .tengah{position: fixed!important; right:20px!important; top:20px!important; width:100px; height:auto; }
             </style>
             <script>
                     window.print();
@@ -1314,15 +1316,22 @@ class api extends baseController
                 <?php 
                 $currentDateTime = date("Y-m-d H:i:s");
                 $fiveMinutesAgo = date("Y-m-d H:i:s", strtotime("-5 minutes", strtotime($currentDateTime)));
-                
-                $sptbs = $this->db->table("sptbs")
-                ->where("timbangan_name",$timbangan->timbangan_name)
-                ->where("sptbs_date",date("Y-m-d"))
-                ->where("sptbs_created >=", $fiveMinutesAgo)
-                ->where("sptbs_created <=", $currentDateTime)
-                ->orderBy("sptbs_id","DESC")
-                ->limit(1)
-                ->get();
+                if(isset($_GET["sptbs_id"])){
+                    $sptbs = $this->db->table("sptbs")
+                    ->where("sptbs_id",$_GET["sptbs_id"])
+                    ->orderBy("sptbs_id","DESC")
+                    ->limit(1)
+                    ->get();
+                }else{
+                    $sptbs = $this->db->table("sptbs")
+                    ->where("timbangan_name",$timbangan->timbangan_name)
+                    ->where("sptbs_date",date("Y-m-d"))
+                    ->where("sptbs_created >=", $fiveMinutesAgo)
+                    ->where("sptbs_created <=", $currentDateTime)
+                    ->orderBy("sptbs_id","DESC")
+                    ->limit(1)
+                    ->get();
+                }
                 // echo $this->db->getLastquery();
                 foreach($sptbs->getResult() as $sptbs){?>
                     <div class="row">                                     
@@ -1689,6 +1698,16 @@ class api extends baseController
         <?php }?>
         <?php 
     }?>
+    </div>
+    <div>
+        <?php 
+        if(isset($_GET["sptbs_id"])){
+            $image="copy.png";
+        }else{
+            $image="original.png";
+        }
+        ?>
+        <img src="<?=base_url("images/".$image);?>" class="tengah"/>
     </div>
     <?php }
 

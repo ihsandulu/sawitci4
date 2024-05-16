@@ -533,6 +533,7 @@
                                     <tr>
                                         <?php if (!isset($_GET["report"])) { ?>
                                             <td style="padding-left:0px; padding-right:0px;">
+                                                <a target="_blank" href="<?=base_url("api/printtimbangan?print=OK&timbangan_name=".$usr->timbangan_name."&sptbs_id=".$usr->sptbs_id);?>" class="btn btn-sm btn-warning"><i class="fa fa-print"></i></a>
                                                 <!-- <?php 
                                                 if (
                                                     (
