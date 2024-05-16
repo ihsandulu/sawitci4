@@ -1371,7 +1371,7 @@ class api extends baseController
                                 NO TICKET
                             </div>
                             <div class="col-7">
-                                : <?=$sptbs->sptbs_id;?>
+                                : <?=$sptbs->sptbs_code;?>
                             </div>
                             <div class="col-5">
                                 SPTBS Date

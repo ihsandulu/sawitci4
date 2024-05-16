@@ -577,7 +577,7 @@
                                         <?php } ?>
                                         <td><?= $no++; ?></td>
                                         <td><?= $usr->sptbs_date; ?></td>
-                                        <td>
+                                        <td>(<span class="text-danger"><?= $usr->sptbs_code; ?></span>)
                                             <?php
                                             $sptbs_id=$usr->sptbs_id; 
                                             $listcard=$usr->sptbs_listcard; 
