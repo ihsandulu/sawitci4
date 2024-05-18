@@ -601,7 +601,11 @@ class api extends baseController
         return $this->response->setContentType('application/json')->setJSON($data);
     }
 
-    public function paneninsert($bintang,$sptbs_id){        
+    
+
+    public function paneninsert($inpututama,$sptbs_id){  
+        
+        $bintang = explode("*", $inpututama);      
         //hapus data panen
         $this->db->table("panen")->where("sptbs_id",$sptbs_id)->delete();
 
@@ -640,7 +644,64 @@ class api extends baseController
             $inputpanen["sptbs_id"] = $sptbs_id;
             $builder = $this->db->table('panen');
             $builder->insert($inputpanen);            
-            return $this->db->getLastQuery();
+            // return $this->db->getLastQuery();
+            
+            $panen_id = $this->db->insertID();
+            if($panen_id>0){
+                $buildert = $this->db->table('tph');
+                $buildert->update($inputt, $wheret); 
+            }
+            
+            
+        }
+    }
+
+    public function cpaneninsert(){   
+        
+        $bintang = explode("*", $_GET["datanya"]); 
+        $sptbs_id = $_GET["sptbs_id"];
+        //hapus data panen
+        $this->db->table("panen")->where("sptbs_id",$sptbs_id)->delete();
+
+        //insert panen
+        $panjangBintang = count($bintang);
+        // echo $panjangBintang;
+        for ($i = 1; $i < $panjangBintang; $i++) {
+            $pisah = $bintang[$i];
+            $koma = explode(",", $pisah);
+            foreach ($koma as $isikoma) {
+                $data = explode("=", $isikoma);
+                $inputpanen[$data[0]] = $data[1];
+                if($data[0]=="panen_date"){
+                    $ir['panen_date']=$data[1];
+                }
+                if($data[0]=="panenid"){
+                    $ir['panenid']=$data[1];
+                }
+                if($data[0]=="tph_id"){
+                    $wheret['tph_id ']=$data[1];
+                }
+                if($data[0]=="tph_thntanam"){
+                    $inputt['tph_thntanam ']=$data[1];
+                }
+            }
+            // print_r($koma);
+            // echo $i." < ".$panjangBintang;
+            //cek restand
+            $restand = $this->db->table("restand")
+            ->where($ir)
+            ->get();
+            if($restand->getNumRows()>0){
+                foreach($restand->getResult() as $restand){
+                    $inputpanen["panen_picture"] = $restand->panen_picture;
+                    $inputpanen["restand_id"] = $restand->restand_id;
+                }
+            }
+            //input ke table panen
+            $inputpanen["sptbs_id"] = $sptbs_id;
+            $builder = $this->db->table('panen');
+            $builder->insert($inputpanen);            
+            // return $this->db->getLastQuery();
             
             $panen_id = $this->db->insertID();
             if($panen_id>0){
@@ -722,7 +783,7 @@ class api extends baseController
             $message["message"]="SPTBS berhasil di upload!";
             $message["status"]=1;
 
-            $this->paneninsert($bintang,$sptbs_id);
+            $this->paneninsert($inpututama,$sptbs_id);
         }
 
         $jsonResponset = json_encode($message);
@@ -1289,10 +1350,10 @@ class api extends baseController
                 .tengah{position: fixed!important; right:20px!important; top:20px!important; width:100px; height:auto; }
             </style>
             <script>
-                    window.print();
-                    setTimeout(function() {
-                        window.close();
-                    }, 3000);
+                    // window.print();
+                    // setTimeout(function() {
+                    //     window.close();
+                    // }, 3000);
             </script>
 
         </head>
@@ -1440,6 +1501,7 @@ class api extends baseController
                         ->where("sptbs_id", $sptbs->sptbs_id)
                         ->groupBy("tph_thntanam")
                         ->get();
+                        echo $this->db->getLastquery();
                         $jmltandan=0;
                         foreach($panen->getResult() as $panen){
                             $jmltandan+=$panen->jmltandan;
@@ -1691,6 +1753,16 @@ class api extends baseController
 
                 <?php }?>
             </div>
+            <div>
+                <?php 
+                if(isset($_GET["sptbs_id"])){
+                    $image="copy.png";
+                }else{
+                    $image="original.png";
+                }
+                ?>
+                <img src="<?=base_url("images/".$image);?>" class="tengah"/>
+            </div>
             
        <?php if(isset($_GET["print"])){?>
         </body>
@@ -1699,16 +1771,7 @@ class api extends baseController
         <?php 
     }?>
     </div>
-    <div>
-        <?php 
-        if(isset($_GET["sptbs_id"])){
-            $image="copy.png";
-        }else{
-            $image="original.png";
-        }
-        ?>
-        <img src="<?=base_url("images/".$image);?>" class="tengah"/>
-    </div>
+    
     <?php }
 
     public function apk(){
