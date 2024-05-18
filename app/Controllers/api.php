@@ -1350,10 +1350,10 @@ class api extends baseController
                 .tengah{position: fixed!important; right:20px!important; top:20px!important; width:100px; height:auto; }
             </style>
             <script>
-                    // window.print();
-                    // setTimeout(function() {
-                    //     window.close();
-                    // }, 3000);
+                    window.print();
+                    setTimeout(function() {
+                        window.close();
+                    }, 3000);
             </script>
 
         </head>
@@ -1501,7 +1501,7 @@ class api extends baseController
                         ->where("sptbs_id", $sptbs->sptbs_id)
                         ->groupBy("tph_thntanam")
                         ->get();
-                        echo $this->db->getLastquery();
+                        // echo $this->db->getLastquery();
                         $jmltandan=0;
                         foreach($panen->getResult() as $panen){
                             $jmltandan+=$panen->jmltandan;
