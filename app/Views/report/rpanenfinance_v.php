@@ -111,14 +111,15 @@
                                     ->where("sptbs_date",$tgl)
                                     ->groupBy("panen.divisi_id,panen.seksi_id,panen.blok_id")
                                     ->orderBy("panen.blok_name", "ASC")
+                                    // ->orderBy("panen.tph_thntanam", "DESC")
                                     ->get();
                                 // echo $this->db->getLastquery();
                                 $no = 1;
                                 foreach ($usr->getResult() as $usr) { ?>
                                     <tr>
                                         <td><?= $usr->sptbscode; ?></td>
-                                        <td><?= $usr->estate_name; ?></td>
-                                        <td><?= $usr->divisi_name; ?></td>
+                                        <td><?= substr($usr->estate_name, 1); ?></td>
+                                        <td><?= substr($usr->divisi_name, 0, 1); ?></td>
                                         <td><?= substr($usr->blok_name, 0, 1); ?></td>
                                         <td><?= substr($usr->blok_name, 1); ?></td>
                                         <td>Y<?=  substr($usr->tph_thntanam,-2); ?></td>
