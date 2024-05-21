@@ -60,9 +60,11 @@
                             <div class="row">
                                 <?php
                                 $tgl = date("Y-m-d");
+                                $tanggal = date("d, M-Y");
                                 $ke = date("Y-m-d");
                                 if (isset($_GET["tgl"])) {
                                     $tgl = $_GET["tgl"];
+                                    $tanggal = date("d, M-Y", strtotime($tgl));
                                 }
                                 if (isset($_GET["ke"])) {
                                     $ke = $_GET["ke"];
@@ -85,7 +87,7 @@
                         </form>
                     </div>
                     <div class="table-responsive m-t-40">
-                        <table id="example231" class="display nowrap table table-hover table-striped table-bordered"
+                        <table id="example2310" class="display nowrap table table-hover table-striped table-bordered"
                             cellspacing="0" width="100%">
                             <!-- <table id="dataTable" class="table table-condensed table-hover w-auto dtable"> -->
                             <thead class="">
@@ -103,12 +105,12 @@
                                 <?php
                                 // dd(session()->get("position_id"));
                                 $build = $this->db
-                                ->table("sptbs")
-                                ->select("(panen.panen_jml)AS jenjang, sptbs.sptbs_code as sptbscode, sptbs.*, panen.*")
-                                ->join("panen", "panen.sptbs_id=sptbs.sptbs_id", "left");
+                                    ->table("sptbs")
+                                    ->select("(panen.panen_jml)AS jenjang, sptbs.sptbs_code as sptbscode, sptbs.*, panen.*")
+                                    ->join("panen", "panen.sptbs_id=sptbs.sptbs_id", "left");
 
                                 $usr = $build
-                                    ->where("sptbs_date",$tgl)
+                                    ->where("sptbs_date", $tgl)
                                     ->groupBy("panen.divisi_id,panen.seksi_id,panen.blok_id")
                                     ->orderBy("panen.blok_name", "ASC")
                                     // ->orderBy("panen.tph_thntanam", "DESC")
@@ -122,7 +124,7 @@
                                         <td><?= substr($usr->divisi_name, 0, 1); ?></td>
                                         <td><?= substr($usr->blok_name, 0, 1); ?></td>
                                         <td><?= substr($usr->blok_name, 1); ?></td>
-                                        <td>Y<?=  substr($usr->tph_thntanam,-2); ?></td>
+                                        <td>Y<?= substr($usr->tph_thntanam, -2); ?></td>
                                         <td><?= $usr->panen_jml; ?></td>
                                     </tr>
                                 <?php } ?>
@@ -136,7 +138,7 @@
 </div>
 <script>
     $('.select').select2();
-    var title = "Rincian SPTBS";
+    var title = "Rincian SPTBS <?=$tanggal;?>";
     $("title").text(title);
     $(".card-title").text(title);
     $("#page-title").text(title);
@@ -144,3 +146,48 @@
 </script>
 
 <?php echo $this->include("template/footer_v"); ?>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('#example2310').DataTable({
+            dom: 'Bfrtip',
+            buttons: [
+                {
+                    extend: 'copyHtml5',
+                    title: 'Rincian SPTBS  <?=$tanggal;?>',
+                    filename: 'Rincian SPTBS  <?=$tanggal;?> ',
+                    text: 'Copy'
+                },
+                {
+                    extend: 'csvHtml5',
+                    title: 'Rincian SPTBS  <?=$tanggal;?>',
+                    filename: 'Rincian SPTBS  <?=$tanggal;?> ',
+                    text: 'Export to CSV'
+                },
+                {
+                    extend: 'excelHtml5',
+                    title: 'Rincian SPTBS  <?=$tanggal;?> Excel',
+                    filename: 'Rincian SPTBS  <?=$tanggal;?> ',
+                    text: 'Export to Excel'
+                },
+                {
+                    extend: 'pdfHtml5',
+                    title: 'Rincian SPTBS  <?=$tanggal;?>',
+                    filename: 'Rincian SPTBS  <?=$tanggal;?> ',
+                    text: 'Export to PDF',
+                    customize: function (doc) {
+                        doc.content[1].table.headerRows = 1;
+                        doc.content[1].table.body[0].forEach(function (h) {
+                            h.text = h.text.toUpperCase();
+                            h.fillColor = '#dddddd';
+                        });
+                    }
+                },
+                {
+                    extend: 'print',
+                    title: 'Judul Custom',
+                    text: 'Print'
+                }
+            ]
+        });
+    });
+</script>
