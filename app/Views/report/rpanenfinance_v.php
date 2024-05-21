@@ -135,7 +135,7 @@
 </div>
 <script>
     $('.select').select2();
-    var title = "Data Panen";
+    var title = "Rincian SPTBS";
     $("title").text(title);
     $(".card-title").text(title);
     $("#page-title").text(title);
