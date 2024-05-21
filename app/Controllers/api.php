@@ -829,12 +829,12 @@ class api extends baseController
         $input["sptbs_timbangan"] = request()->getGet("sptbs_timbangan");
         $where["sptbs_card"] = request()->getGet("sptbs_card");
         $usr = $this->db->table('sptbs')->getWhere($where);
-        $rowCount = $query->countAllResults();
+        $rowCount = $usr->countAllResults();
         if($rowCount>0){
             foreach($usr->getResult() as $usr){
 
             }
-            $builder->update($input, $where);
+            $this->table("sptbs")->update($input, $where);
         }else{
             $this->table("sptbs")->insert($input);
         }

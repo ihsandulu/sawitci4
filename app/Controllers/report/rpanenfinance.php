@@ -5,7 +5,7 @@ namespace App\Controllers\report;
 
 use App\Controllers\baseController;
 
-class rtanggungan extends baseController
+class rpanenfinance extends baseController
 {
 
     protected $sesi_user;
@@ -18,8 +18,7 @@ class rtanggungan extends baseController
 
     public function index()
     {
-        $data = new \App\Models\report\rtanggungan_m();
-        $data = $data->data();
-        return view('report/rtanggungan_v', $data);
+        $data["message"]="";
+        return view('report/rpanenfinance_v', $data);
     }
 }

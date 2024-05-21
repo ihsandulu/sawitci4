@@ -38,3 +38,4 @@ $routes->add('/quarry', 'transaction\quarry::index');
 $routes->add('/mapk', 'master\mapk::index');
 $routes->add('/mpositionandroid', 'master\mpositionandroid::index');
 $routes->add('/mlr', 'master\mlr::index');
+$routes->add('/rpanenfinance', 'report\rpanenfinance::index');
