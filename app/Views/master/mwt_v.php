@@ -114,7 +114,13 @@
                                     <div class="col-sm-9">
                                         <input required type="text" autofocus class="form-control" id="wt_name" name="wt_name" placeholder="" value="<?= $wt_name; ?>">
                                     </div>
-                                </div>  
+                                </div>                                                     
+                                <div class="form-group">
+                                    <label class="control-label col-sm-3" for="wt_nopol">Plat:</label>
+                                    <div class="col-sm-9">
+                                        <input type="text" autofocus class="form-control" id="wt_nopol" name="wt_nopol" placeholder="" value="<?= $wt_nopol; ?>">
+                                    </div>
+                                </div>   
 
                                 <input type="hidden" name="wt_id" value="<?= $wt_id; ?>" />
                                 <div class="form-group">
@@ -146,6 +152,7 @@
                                         <th>Vendor</th>
                                         <th>Sewa</th>
                                         <th>Whell Tractor</th>
+                                        <th>Plat</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -209,6 +216,7 @@
                                             <td><?= $vendor[$usr->wt_vendor]; ?></td>
                                             <td><?= $sewa[$usr->wt_sewa]; ?></td>
                                             <td><?= $usr->wt_name; ?></td>
+                                            <td><?= $usr->wt_nopol; ?></td>
                                         </tr>
                                     <?php } ?>
                                 </tbody>

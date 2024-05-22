@@ -1003,7 +1003,8 @@ class api extends baseController
                 "wt_name" => $usr->wt_name,
                 "wt_vendor" => $usr->wt_vendor,
                 "wt_jenis" => $usr->wt_jenis,
-                "wt_sewa" => $usr->wt_sewa
+                "wt_sewa" => $usr->wt_sewa,
+                "wt_nopol" => $usr->wt_nopol
             ); 
             $data[] = $usrData;
         } 
