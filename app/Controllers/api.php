@@ -1830,7 +1830,8 @@ class api extends baseController
         foreach ($usr->getResult() as $usr) {
             $usrData = array(
                 "lr_name" => $usr->lr_name,
-                "lr_geo" => $usr->lr_geo
+                "lr_geo" => $usr->lr_geo,
+                "lr_tipebuah" => $usr->lr_tipebuah
             ); 
             $data[] = $usrData;
         } 
