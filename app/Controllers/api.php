@@ -722,7 +722,7 @@ class api extends baseController
 
         $whereu["sptbs_card"] = request()->getGet("sptbs_card");
         $whereu["sptbs_date"] = request()->getGet("sptbs_date");
-        $whereu["sptbsid"] = request()->getGet("sptbsid");
+        $whereu["lr_name"] = request()->getGet("lr_name");
         $usru = $this->db->table('sptbs')->where($whereu)->get();
         $rowCountu = $usru->getNumRows();
         if($rowCountu>0 ){
