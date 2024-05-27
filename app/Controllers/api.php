@@ -726,7 +726,7 @@ class api extends baseController
         $whereu["lr_name"] = request()->getGet("lr_name");
         $usru = $this->db->table('sptbs')->where($whereu)->get();
         $rowCountu = $usru->getNumRows();  
-        dd( $this->db->getLastQuery());  
+        // dd( $this->db->getLastQuery());  
         if($rowCountu>0 ){
             foreach($usru->getResult() as $usru){                
                 $arnokartu=explode(",",$usru->sptbs_nokartu);
