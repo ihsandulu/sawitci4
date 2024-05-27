@@ -718,39 +718,50 @@ class api extends baseController
         $timbangan_name = request()->getGet("timbangan_name");
         $inpututama = request()->getGet("datanya");
         $timbangan = request()->getGet("sptbs_timbangan");
+        $nokartu = request()->getGet("sptbs_nokartu");
         $bintang = explode("*", $inpututama);
 
         $whereu["sptbs_card"] = request()->getGet("sptbs_card");
         $whereu["sptbs_date"] = request()->getGet("sptbs_date");
         $whereu["lr_name"] = request()->getGet("lr_name");
         $usru = $this->db->table('sptbs')->where($whereu)->get();
-        $rowCountu = $usru->getNumRows();
+        $rowCountu = $usru->getNumRows();  
+        dd( $this->db->getLastQuery());  
         if($rowCountu>0 ){
-            foreach($usru->getResult() as $usru){
+            foreach($usru->getResult() as $usru){                
+                $arnokartu=explode(",",$usru->sptbs_nokartu);
                 $sptbs_id = $usru->sptbs_id;
-                $sptbs_kgbruto = $usru->sptbs_kgbruto;
+                if (in_array($nokartu, $arnokartu)) {
+                    $sptbs_kgbruto = $usru->sptbs_kgbruto;
+                    $selisih = $sptbs_kgbruto-$timbangan;
+                    if($selisih>250){
+                        $inputt["timbangan_name"] = $timbangan_name;
+                        $inputt["sptbs_kgtruk"] = $timbangan;
+                        $inputt["sptbs_timbangankeluar"] = $time;
+                        $inputt["sptbs_created"] = date("Y-m-d H:i:s");                
+                        $wheret["sptbs_id"] = $sptbs_id;
+                        $buildert = $this->db->table('sptbs');
+                        $buildert->update($inputt, $wheret); 
+                        // echo $this->db->getLastQuery();
+                        
+                        $message["message"]="Netto di update!";
+                        // $message["message"]=$timbangan."<".$sptbs_kgbruto;
+                        $message["status"]=2;
+                    }else{
+                        // $this->paneninsert($bintang,$sptbs_id);
+                        $message["message"]="SPTBS telah diinput sebelumnya!";
+                        $message["status"]=0;
+                    }
+                } else {
+                    $this->paneninsert($inpututama,$sptbs_id);
+                    $icard["sptbs_nokartu"]=$usru->sptbs_nokartu.",".$nokartu;
+                    $wcard["sptbs_id"]=$sptbs_id;
+                    $this->db->table("sptbs")->update($icard,$wcard);
+                    $message["message"]="SPTBS berhasil di upload!";
+                    $message["status"]=1;
+                }                
             }
-            $selisih = $sptbs_kgbruto-$timbangan;
-            if($selisih>250){
-                $inputt["timbangan_name"] = $timbangan_name;
-                $inputt["sptbs_kgtruk"] = $timbangan;
-                $inputt["sptbs_timbangankeluar"] = $time;
-                $inputt["sptbs_created"] = date("Y-m-d H:i:s");                
-                $wheret["sptbs_id"] = $sptbs_id;
-                $buildert = $this->db->table('sptbs');
-                $buildert->update($inputt, $wheret); 
-                // echo $this->db->getLastQuery();
-                
-                $message["message"]="Netto di update!";
-                // $message["message"]=$timbangan."<".$sptbs_kgbruto;
-                $message["status"]=2;
-            }else{
-                // $this->paneninsert($bintang,$sptbs_id);
-                $message["message"]="SPTBS telah diinput sebelumnya!";
-                $message["status"]=0;
-            }
-        }else{    
-            
+        }else{                
             $last = $this->db->table('sptbs')->orderBy("sptbs_id","DESC")->limit(1)->get();
             $rowlast = $last->getNumRows();
             if($rowlast>0 ){
