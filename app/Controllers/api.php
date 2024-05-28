@@ -1866,5 +1866,24 @@ class api extends baseController
         } 
         return $this->response->setContentType('application/json')->setJSON($data);
     }
+
+    public function prunningc(){
+        header('Access-Control-Allow-Origin: *');
+        header('Access-Control-Allow-Headers: Content-Type');
+        $usr = $this->db
+        ->table("prunningc")
+        ->orderBy("prunningc_id", "ASC")
+        ->get();
+        //echo $this->db->getLastQuery();  
+        $data=array();      
+        foreach ($usr->getResult() as $usr) {
+            $usrData = array(
+                "prunningc_id" => $usr->prunningc_id,
+                "prunningc_name" => $usr->prunningc_name
+            ); 
+            $data[] = $usrData;
+        } 
+        return $this->response->setContentType('application/json')->setJSON($data);
+    }
     
 }

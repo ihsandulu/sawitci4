@@ -114,7 +114,7 @@
                                 $build = $this->db
                                     ->table("grading")
                                     ->select("sptbs.sptbs_code as sptbscode, sptbs.*, panen.*, grading.*")
-                                    ->join("wt", "wt.wt_id=grading.wt_id", "left");
+                                    ->join("wt", "wt.wt_id=sptbs.wt_id", "left")
                                     ->join("sptbs", "sptbs.sptbs_date=grading.grading_date AND sptbs.sptbs_card=grading.sptbs_card", "left")
                                     ->join("panen", "panen.sptbs_id=sptbs.sptbs_id", "left");
 
