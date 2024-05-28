@@ -601,61 +601,6 @@ class api extends baseController
         return $this->response->setContentType('application/json')->setJSON($data);
     }
 
-    
-
-    public function paneninsert($inpututama,$sptbs_id){  
-        
-        $bintang = explode("*", $inpututama);      
-        //hapus data panen
-        $this->db->table("panen")->where("sptbs_id",$sptbs_id)->delete();
-
-        //insert panen
-        $panjangBintang = count($bintang);
-        for ($i = 1; $i < $panjangBintang; $i++) {
-            $pisah = $bintang[$i];
-            $koma = explode(",", $pisah);
-            foreach ($koma as $isikoma) {
-                $data = explode("=", $isikoma);
-                $inputpanen[$data[0]] = $data[1];
-                if($data[0]=="panen_date"){
-                    $ir['panen_date']=$data[1];
-                }
-                if($data[0]=="panenid"){
-                    $ir['panenid']=$data[1];
-                }
-                if($data[0]=="tph_id"){
-                    $wheret['tph_id ']=$data[1];
-                }
-                if($data[0]=="tph_thntanam"){
-                    $inputt['tph_thntanam ']=$data[1];
-                }
-            }
-            //cek restand
-            $restand = $this->db->table("restand")
-            ->where($ir)
-            ->get();
-            if($restand->getNumRows()>0){
-                foreach($restand->getResult() as $restand){
-                    $inputpanen["panen_picture"] = $restand->panen_picture;
-                    $inputpanen["restand_id"] = $restand->restand_id;
-                }
-            }
-            //input ke table panen
-            $inputpanen["sptbs_id"] = $sptbs_id;
-            $builder = $this->db->table('panen');
-            $builder->insert($inputpanen);            
-            // return $this->db->getLastQuery();
-            
-            $panen_id = $this->db->insertID();
-            if($panen_id>0){
-                $buildert = $this->db->table('tph');
-                $buildert->update($inputt, $wheret); 
-            }
-            
-            
-        }
-    }
-
     public function cpaneninsert(){   
         
         $bintang = explode("*", $_GET["datanya"]); 
@@ -713,6 +658,61 @@ class api extends baseController
         }
     }
 
+    public function paneninsert($inpututama,$sptbs_id){  
+        
+        $bintang = explode("*", $inpututama);      
+        //hapus data panen
+        // $this->db->table("panen")->where("sptbs_id",$sptbs_id)->delete();
+
+        //insert panen
+        $panjangBintang = count($bintang);
+        for ($i = 1; $i < $panjangBintang; $i++) {
+            $pisah = $bintang[$i];
+            $koma = explode(",", $pisah);
+            foreach ($koma as $isikoma) {
+                $data = explode("=", $isikoma);
+                $inputpanen[$data[0]] = $data[1];
+                if($data[0]=="panen_date"){
+                    $ir['panen_date']=$data[1];
+                }
+                if($data[0]=="panenid"){
+                    $ir['panenid']=$data[1];
+                }
+                if($data[0]=="tph_id"){
+                    $wheret['tph_id ']=$data[1];
+                }
+                if($data[0]=="tph_thntanam"){
+                    $inputt['tph_thntanam ']=$data[1];
+                }
+            }
+            //cek restand
+            $restand = $this->db->table("restand")
+            ->where($ir)
+            ->get();
+            if($restand->getNumRows()>0){
+                foreach($restand->getResult() as $restand){
+                    $inputpanen["panen_picture"] = $restand->panen_picture;
+                    $inputpanen["restand_id"] = $restand->restand_id;
+                }
+            }
+            //input ke table panen
+            $inputpanen["sptbs_id"] = $sptbs_id;
+            $builder = $this->db->table('panen');
+            $builder->insert($inputpanen);            
+            // return $this->db->getLastQuery();
+            
+            $panen_id = $this->db->insertID();
+            if($panen_id>0){
+                $buildert = $this->db->table('tph');
+                $buildert->update($inputt, $wheret); 
+            }
+            
+            
+        }
+    }
+
+    
+
     public function datasptbsmentah(){
         $time = date("H:i:s");
         $timbangan_name = request()->getGet("timbangan_name");
@@ -726,7 +726,9 @@ class api extends baseController
         $whereu["lr_name"] = request()->getGet("lr_name");
         $usru = $this->db->table('sptbs')->where($whereu)->get();
         $rowCountu = $usru->getNumRows();  
-        // dd( $this->db->getLastQuery());  
+        // echo $this->db->getLastQuery();
+        // echo "<br/>".$rowCountu;die;
+
         if($rowCountu>0 ){
             foreach($usru->getResult() as $usru){                
                 $arnokartu=explode(",",$usru->sptbs_nokartu);
@@ -794,7 +796,7 @@ class api extends baseController
             $message["message"]="SPTBS berhasil di upload!";
             $message["status"]=1;
 
-            $this->paneninsert($inpututama,$sptbs_id);
+            echo $this->paneninsert($inpututama,$sptbs_id);
         }
 
         $jsonResponset = json_encode($message);
