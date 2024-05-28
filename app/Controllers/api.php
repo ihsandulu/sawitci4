@@ -705,9 +705,7 @@ class api extends baseController
             if($panen_id>0){
                 $buildert = $this->db->table('tph');
                 $buildert->update($inputt, $wheret); 
-            }
-            
-            
+            }    
         }
     }
 
