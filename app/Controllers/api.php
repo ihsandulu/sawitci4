@@ -1071,6 +1071,7 @@ class api extends baseController
         } */
 
     }
+
     public function insertquarry_jarak(){
         foreach ($this->request->getGet() as $e => $f) {
             if ($e != 'create' ) {
@@ -1884,6 +1885,33 @@ class api extends baseController
             $data[] = $usrData;
         } 
         return $this->response->setContentType('application/json')->setJSON($data);
+    }
+
+    public function uploadpruning(){
+        foreach ($this->request->getPost() as $e => $f) {
+            if ($e != 'create' ) {
+                $inputu[$e] = $this->request->getPost($e);
+            }
+        }
+        
+        $this->db->table('pruning')->insert($inputu);
+        //cek
+        /* $cek=$this->db->table('quarry')
+        ->where("quarry_date",$inputu["quarry_date"])
+        ->where("quarry_card",$inputu["quarry_card"])
+        ->get();
+        if($cek->getNumRows()==0){
+            $this->db->table('quarry')->insert($inputu);
+            // echo $this->db->getLastQuery(); die;
+            $data["message"] = "Insert Data Success!";
+        }else{
+            foreach ($cek->getResult() as $cek) {
+                $where["quarry_id"]=$cek->quarry_id;
+                $this->db->table('quarry')->update($input,$where);
+                $data["message"] = "Data Diupdate!";
+            }
+        } */
+
     }
     
 }
