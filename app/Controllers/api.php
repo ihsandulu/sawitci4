@@ -1892,8 +1892,7 @@ class api extends baseController
             if ($e != 'create' ) {
                 $inputu[$e] = $this->request->getPost($e);
             }
-        }
-        
+        }        
         $this->db->table('pruning')->insert($inputu);
         //cek
         /* $cek=$this->db->table('quarry')
@@ -1911,7 +1910,6 @@ class api extends baseController
                 $data["message"] = "Data Diupdate!";
             }
         } */
-
     }
     
 }
