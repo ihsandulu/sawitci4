@@ -40,3 +40,5 @@ $routes->add('/mpositionandroid', 'master\mpositionandroid::index');
 $routes->add('/mlr', 'master\mlr::index');
 $routes->add('/rpanenfinance', 'report\rpanenfinance::index');
 $routes->add('/rgrading', 'report\rgrading::index');
+$routes->add('/rpruning', 'report\rpruning::index');
+$routes->add('/rpruningd', 'report\rpruningd::index');

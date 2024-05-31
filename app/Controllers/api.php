@@ -1911,5 +1911,18 @@ class api extends baseController
             }
         } */
     }
+
+    
+
+    public function gambarpruning(){
+        $id = $this->request->getGet("id");
+        $cek=$this->db->table('pruning')
+        ->where("pruning_id",$id)
+        ->get();
+        // echo $this->db->getLastQuery(); die;
+        foreach($cek->getResult() as $cek){
+            echo $cek->pruning_picture;
+        }
+    }
     
 }

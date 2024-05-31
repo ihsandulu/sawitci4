@@ -331,7 +331,7 @@
                                 <div class="modal-dialog" role="document">
                                     <div class="modal-content">
                                     <div class="modal-body">
-                                       <img id="gambarabsen" src="<?=base_url("images/picture.png");?>" class="gambar"/>
+                                       <img id="gambarabsen" src="<?=base_url("images/picture.png");?>" class="gambar" style="width:100%; height:auto;"/>
                                     </div>
                                     <div class="modal-footer">
                                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
