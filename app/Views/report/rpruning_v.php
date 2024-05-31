@@ -100,14 +100,12 @@
                             <thead class="">
                                 <tr>
                                     <th>Date</th>
-                                    <th><i class="fa fa-camera"></i></th>
                                     <th>Blok</th>
-                                    <th>T.Panen</th>
                                     <th>Thn Tanam</th>
                                     <th>Luas(Ha)</th>
                                     <th>SPH</th>
                                     <?php 
-                                    $pruningc=$this->db->table("pruningc")->get();
+                                    $pruningc=$this->db->table("pruningc")->orderBy("pruningc_id","ASC")->get();
                                     foreach($pruningc->getResult() as $pruningc){?>
                                     <th><?= $pruningc->pruningc_name; ?></th>
                                     <?php }?>
@@ -115,36 +113,43 @@
                             </thead>
                             <tbody>
                                 <?php
-                                // dd(session()->get("position_id"));
                                 $build = $this->db
-                                    ->table("pruning")
-                                    ->select("(SUM pruning_pokok)AS jpokok, pruning.*")
-                                    ->join("pruningc", "pruningc.pruningc_id=pruning.pruningc_id", "left");
+                                ->table("pruning")
+                                ->select("pruning_date, blok_id, pruningc_id, SUM(pruning_jml) AS sjml")
+                                ->where("pruning_date >=", $dari)
+                                ->where("pruning_date <=", $ke)
+                                ->groupBy("pruning_date, blok_id, pruning.pruningc_id")
+                                ->get();                            
+                                $array = [];
+                                foreach ($build->getResult() as $row) {
+                                    $array[$row->pruning_date][$row->blok_id][$row->pruningc_id] = $row->sjml;
+                                }
 
-                                $usr = $build
+                                $usr = $this->db
+                                    ->table("pruning")
+                                    ->select("SUM(pruning_pokok)AS jpokok, pruning.*")
                                     ->where("pruning_date >=",$dari)
                                     ->where("pruning_date <=",$ke)
                                     ->groupBy("pruning_date,blok_id")
-                                    // ->orderBy("panen.blok_name", "ASC")
-                                    // ->orderBy("panen.tph_thntanam", "DESC")
+                                    ->orderBy("pruning.pruning_date", "ASC")
                                     ->get();
-                                // echo $this->db->getLastquery();
+                                // echo $this->db->getLastquery();die;
                                 $no = 1;
                                 foreach ($usr->getResult() as $usr) { ?>
                                     <tr>
                                         <td><?= $usr->pruning_date; ?></td>
-                                        <td><i class="fa fa-camera tunjuk" onclick="tampilgambar('<?= $usr->pruning_id; ?>');"></i></td>
                                         <td><?= $usr->blok_name; ?></td>
-                                        <td><?= $usr->pruning_tpname; ?></td>
                                         <td><?= $usr->pruning_thntanam; ?></td>
                                         <td><?= $usr->pruning_luas; ?></td>
                                         <td><?= $usr->jpokok; ?></td>
                                         <?php 
-                                        $pruningc=$this->db->table("pruningc")->get();
+                                        $pruningc=$this->db->table("pruningc")->orderBy("pruningc_id","ASC")->get();
                                         foreach($pruningc->getResult() as $pruningc){?>
                                         <th><?php
-                                        if($pruningc->pruningc_id==$usr->pruningc_id){
-
+                                         if (isset($array[$usr->pruning_date][$usr->blok_id][$pruningc->pruningc_id])) {
+                                            echo $array[$usr->pruning_date][$usr->blok_id][$pruningc->pruningc_id];
+                                        } else {
+                                            echo '-'; // Atau nilai default jika tidak ada data
                                         }
                                         ?></th>
                                         <?php }?>
@@ -152,29 +157,6 @@
                                 <?php } ?>
                             </tbody>
                         </table>
-                        <script>
-                            function tampilgambar(id){
-                                $("#gambarpruning").hide();
-                                $("#exampleModal").modal("show");
-                                $.get("<?=base_url("api/gambarpruning");?>",{id:id})
-                                .done(function(data){
-                                    $("#gambarpruning").attr("src",data);
-                                    $("#gambarpruning").fadeIn();
-                                });
-                            }
-                        </script>
-                        <!-- Picture -->
-                        <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                                <div class="modal-dialog" role="document">
-                                    <div class="modal-content">
-                                    <div class="modal-body">
-                                       <img id="gambarpruning" src="<?=base_url("images/picture.png");?>" class="gambar" style="width:100%; height:auto;"/>
-                                    </div>
-                                    <div class="modal-footer">
-                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                    </div>
-                                </div>
-                            </div>
                     </div>
                 </div>
             </div>
