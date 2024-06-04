@@ -231,21 +231,22 @@
                                             <th>Action</th>
                                         <?php } ?>
                                         <!-- <th>No.</th> -->
-                                        <th>Type</th>
+                                        <th>Picture</th>
                                         <th>Date</th>
                                         <th>Time</th>
+                                        <th>Type</th>
+                                        <th>Note</th>
                                         <th>Estate</th>
                                         <th>Divisi</th>
                                         <th>Name</th>
                                         <th>Geolocation</th>
-                                        <th>Picture</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     <?php
                                     $usr = $this->db
                                         ->table("absen")
-                                        ->select("absen_type,absen_date,absen_time,estate_name,divisi_name,absen_username,absen_geo,absen_id")
+                                        ->select("absen_type,absen_note,absen_date,absen_time,estate_name,divisi_name,absen_username,absen_geo,absen_id")
                                         ->where("absen_date >=",$dari)
                                         ->where("absen_date <=",$ke)
                                         ->orderBy("absen_date", "ASC")
@@ -303,14 +304,15 @@
                                                 </td>
                                             <?php } ?>
                                             <!-- <td><?= $no++; ?></td> -->
-                                            <td><?= $usr->absen_type; ?></td>
+                                            <td><i class="fa fa-camera tunjuk" onclick="tampilgambar('<?= $usr->absen_id; ?>');"></i></td>
                                             <td><?= $usr->absen_date; ?></td>
                                             <td><?= $usr->absen_time; ?></td>
+                                            <td><?= $usr->absen_type; ?></td>
+                                            <td><?= $usr->absen_note; ?></td>
                                             <td><?= $usr->estate_name; ?></td>
                                             <td><?= $usr->divisi_name; ?></td>
                                             <td><?= $usr->absen_username; ?></td>
                                             <td><?= $usr->absen_geo; ?></td>
-                                            <td><i class="fa fa-camera tunjuk" onclick="tampilgambar('<?= $usr->absen_id; ?>');"></i></td>
                                         </tr>
                                     <?php } ?>
                                 </tbody>
