@@ -113,9 +113,10 @@
                                 // dd(session()->get("position_id"));
                                 $build = $this->db
                                     ->table("grading")
-                                    ->select("sptbs.sptbs_code as sptbscode, sptbs.*, panen.*, grading.*")
-                                    ->join("wt", "wt.wt_id=sptbs.wt_id", "left")
+                                    ->select("t_vendor.nama_vendor,sptbs.sptbs_code as sptbscode, sptbs.*, panen.*, grading.*")
                                     ->join("sptbs", "sptbs.sptbs_date=grading.grading_date AND sptbs.sptbs_card=grading.sptbs_card", "left")
+                                    ->join("wt", "wt.wt_name=sptbs.wt_name", "left")
+                                    ->join("t_vendor", "t_vendor.ID_vendor=wt.wt_vendor", "left")
                                     ->join("panen", "panen.sptbs_id=sptbs.sptbs_id", "left");
 
                                 $usr = $build
@@ -125,12 +126,12 @@
                                     // ->orderBy("panen.blok_name", "ASC")
                                     // ->orderBy("panen.tph_thntanam", "DESC")
                                     ->get();
-                                // echo $this->db->getLastquery();
+                                // echo $this->db->getLastquery();die;
                                 $no = 1;
                                 foreach ($usr->getResult() as $usr) { ?>
                                     <tr>
                                         <td><?= $usr->sptbscode; ?></td>
-                                        <td><?= substr($usr->estate_name, 1); ?></td>
+                                        <td><?= $usr->nama_vendor; ?></td>
                                         <td><?= substr($usr->divisi_name, 0, 1); ?></td>
                                         <td><?= substr($usr->blok_name, 0, 1); ?></td>
                                         <td><?= substr($usr->blok_name, 1); ?></td>

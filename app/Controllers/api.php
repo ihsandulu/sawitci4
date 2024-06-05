@@ -142,14 +142,17 @@ class api extends baseController
 
 
     public function divisi(){
-        $divisi = $this->db->table("divisi")
-            ->where("estate_id",$this->request->getGET("estate_id"))
-            ->orderBy("divisi_name", "ASC")
-            ->get();
+        $build = $this->db->table("divisi");
+        if(isset($_GET["estate_id"]) && $_GET["estate_id"]!=""){
+            $build->where("estate_id",$this->request->getGET("estate_id"));
+        }
+            
+        $divisi = $build->orderBy("divisi_name", "ASC")
+        ->get();
         //echo $this->db->getLastQuery();
         $divisi_id = $this->request->getGET("divisi_id");
         ?>
-        <option value="" <?= ($divisi_id == "") ? "selected" : ""; ?>>Pilih Divisi</option>
+        <option value="" <?= ($divisi_id == "") ? "selected" : ""; ?>>Semua Divisi</option>
         <?php
         foreach ($divisi->getResult() as $divisi) { ?>
             <option value="<?= $divisi->divisi_id; ?>" <?= ($divisi_id == $divisi->divisi_id) ? "selected" : ""; ?>><?= $divisi->divisi_name; ?></option>
@@ -1924,5 +1927,7 @@ class api extends baseController
             echo $cek->pruning_picture;
         }
     }
+
+   
     
 }

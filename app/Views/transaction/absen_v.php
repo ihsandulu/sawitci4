@@ -189,36 +189,100 @@
                                 <strong><?= $message; ?></strong>
                             </div>
                         <?php } ?>
-                        <div class="alert alert-success">
+                        <div class="alert alert-dark">
                             <form>
                                 <div class="row">
                                     <?php 
                                     $dari=date("Y-m-d");
                                     $ke=date("Y-m-d");
+                                    $estate="";
+                                    $divisi="";
                                     if(isset($_GET["dari"])){
                                         $dari=$_GET["dari"];
                                     }
                                     if(isset($_GET["ke"])){
                                         $ke=$_GET["ke"];
                                     }
+                                    if(isset($_GET["estate"])){
+                                        $estate=$_GET["estate"];
+                                    }
+                                    if(isset($_GET["divisi"])){
+                                        $divisi=$_GET["divisi"];
+                                    }
                                     ?>
-                                    <div class="col row">
-                                        <div class="col-2">
-                                            <label class="text-white">Dari :</label>
+                                    <div class="col-4 row mb-2">
+                                        <div class="col-3">
+                                            <label class="text-dark">Estate</label>
                                         </div>
-                                        <div class="col-10">
+                                        <div class="col-9">
+                                            <select onChange="divisid()" class="form-control" id="estate" name="estate">
+                                                <option value="" <?=($estate=="")?"selected":"";?>>
+                                                Semua Estate
+                                                </option>
+                                                <?php
+                                                $estated=$this->db->table("estate")->get();
+                                                foreach($estated->getResult() as $estated){?>
+                                                    <option value="<?=$estated->estate_id;?>" <?=($estated->estate_id==$estate)?"selected":"";?>>
+                                                        <?=$estated->estate_name;?>
+                                                    </option>
+                                                <?php }?>
+                                            </select>
+                                            <script>
+                                                function divisid(){
+                                                    let estaten = $("#estate").val();
+                                                    let divisin = '<?=$divisi;?>';
+                                                    $.get("<?=base_url("api/divisi");?>",{estate_id:estaten,divisi_id:divisin})
+                                                    .done(function(data){
+                                                        $("#divisi").html(data);
+                                                    });
+                                                }
+                                                divisid();
+                                            </script>
+                                        </div>
+                                    </div>
+                                    <div class="col-4 row mb-2">
+                                        <div class="col-3">
+                                            <label class="text-dark">Divisi</label>
+                                        </div>
+                                        <div class="col-9">
+                                            <select class="form-control" id="divisi" name="divisi">
+                                                
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-4 row mb-2">
+                                        <div class="col-3">
+                                           
+                                        </div>
+                                        <div class="col-9">
+                                           
+                                        </div>
+                                    </div>
+                                    <div class="col-4 row mb-2">
+                                        <div class="col-3">
+                                            <label class="text-dark">Dari :</label>
+                                        </div>
+                                        <div class="col-9">
                                             <input type="date" class="form-control" placeholder="Dari" name="dari" value="<?=$dari;?>">
                                         </div>
                                     </div>
-                                    <div class="col row">
-                                        <div class="col-2">
-                                            <label class="text-white">Ke :</label>
+                                    <div class="col-4 row mb-2">
+                                        <div class="col-3">
+                                            <label class="text-dark">Ke :</label>
                                         </div>
-                                        <div class="col-10">
+                                        <div class="col-9">
                                             <input type="date" class="form-control" placeholder="Ke" name="ke" value="<?=$ke;?>">
                                         </div>
                                     </div>
-                                    <button type="submit" class="btn btn-primary">Cari</button>
+                                    <div class="col-4 row mb-2">
+                                        <div class="col-3">
+                                            <label class="text-dark"></label>
+                                        </div>
+                                        <div class="col-9">
+                                            <button type="submit" class="btn btn-block btn-primary">Cari</button>
+                                        </div>
+                                        
+                                    </div>
                                 </div>
                             </form>
                         </div>
@@ -244,12 +308,18 @@
                                 </thead>
                                 <tbody>
                                     <?php
-                                    $usr = $this->db
+                                    $build = $this->db
                                         ->table("absen")
-                                        ->select("absen_type,absen_note,absen_date,absen_time,estate_name,divisi_name,absen_username,absen_geo,absen_id")
+                                        ->select("estate_id,divisi_id,absen_type,absen_note,absen_date,absen_time,estate_name,divisi_name,absen_username,absen_geo,absen_id")
                                         ->where("absen_date >=",$dari)
-                                        ->where("absen_date <=",$ke)
-                                        ->orderBy("absen_date", "ASC")
+                                        ->where("absen_date <=",$ke);
+                                        if($estate>0){
+                                            $build->where("estate_id",$estate);
+                                        }
+                                        if($divisi>0){
+                                            $build->where("divisi_id",$divisi);
+                                        }
+                                        $usr = $build->orderBy("absen_date", "ASC")
                                         ->orderBy("absen_time", "ASC")
                                         ->orderBy("estate_name", "ASC")
                                         ->orderBy("divisi_name", "ASC")
