@@ -99,13 +99,14 @@
                             <!-- <table id="dataTable" class="table table-condensed table-hover w-auto dtable"> -->
                             <thead class="">
                                 <tr>
-                                    <th>NO TIKET</th>
+                                    <th>No. Tiket</th>
+                                    <th>ID</th>
                                     <th>Vendor Name</th>
-                                    <th>DIVISI</th>
-                                    <th>BLOK(1)</th>
-                                    <th>BLOK(2)</th>
-                                    <th>TT</th>
-                                    <th>JENJANG</th>
+                                    <th>Area</th>
+                                    <th>Tanggal</th>
+                                    <th>IN</th>
+                                    <th>OUT</th>
+                                    <th>Blok</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -113,10 +114,11 @@
                                 // dd(session()->get("position_id"));
                                 $build = $this->db
                                     ->table("grading")
-                                    ->select("t_vendor.nama_vendor,sptbs.sptbs_code as sptbscode, sptbs.*, panen.*, grading.*")
+                                    ->select("t_vendor.nama_vendor,t_vendor.ket,lr.lr_name,sptbs.sptbs_code as sptbscode, panen.blok_name")
                                     ->join("sptbs", "sptbs.sptbs_date=grading.grading_date AND sptbs.sptbs_card=grading.sptbs_card", "left")
                                     ->join("wt", "wt.wt_name=sptbs.wt_name", "left")
-                                    ->join("t_vendor", "t_vendor.ID_vendor=wt.wt_vendor", "left")
+                                    ->join("lr", "lr.lr_name=sptbs.lr_name", "left")
+                                    ->join("t_vendor", "t_vendor.ID_vendor=sptbs.sptbs_vendor", "left")
                                     ->join("panen", "panen.sptbs_id=sptbs.sptbs_id", "left");
 
                                 $usr = $build
@@ -131,12 +133,13 @@
                                 foreach ($usr->getResult() as $usr) { ?>
                                     <tr>
                                         <td><?= $usr->sptbscode; ?></td>
-                                        <td><?= $usr->nama_vendor; ?></td>
-                                        <td><?= substr($usr->divisi_name, 0, 1); ?></td>
-                                        <td><?= substr($usr->blok_name, 0, 1); ?></td>
-                                        <td><?= substr($usr->blok_name, 1); ?></td>
-                                        <td>Y<?= substr($usr->tph_thntanam, -2); ?></td>
-                                        <td><?= $usr->panen_jml; ?></td>
+                                        <td><?= (isset($usr->nama_vendor))?$usr->nama_vendor:$usr->divisi_name; ?></td>
+                                        <td><?= (isset($usr->ket))?$usr->ket:$usr->estate_name." ".$usr->divisi_name; ?></td>
+                                        <td><?= $usr->lr_name; ?></td>
+                                        <td><?= $usr->sptbs_date; ?></td>
+                                        <td><?= $usr->sptbs_timbanganmasuk; ?></td>
+                                        <td><?= $usr->sptbs_timbangankeluar; ?></td>
+                                        <td><?= $usr->blok_name; ?></td>
                                     </tr>
                                 <?php } ?>
                             </tbody>
