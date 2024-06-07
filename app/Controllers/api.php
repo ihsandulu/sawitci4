@@ -710,6 +710,18 @@ class api extends baseController
                 $buildert->update($inputt, $wheret); 
             }    
         }
+
+        //update total jml tandan
+        $jmltandan=$this->db->table("panen")
+        ->select("SUM(panen_jml)as tjtandan")
+        ->where("sptbs_id",$sptbs_id)
+        ->get();
+        foreach($jmltandan->getResult() as $jmltandan){
+            $inputjtan["sptbs_jmltandan"] = $jmltandan->tjtandan;
+            $wherejtan["sptbs_id"] = $sptbs_id;
+            $sptbsj = $this->db->table('sptbs');
+            $sptbsj->update($inputjtan, $wherejtan); 
+        }
     }
 
     
@@ -740,6 +752,7 @@ class api extends baseController
                     if($selisih>250){
                         $inputt["timbangan_name"] = $timbangan_name;
                         $inputt["sptbs_kgtruk"] = $timbangan;
+                        $inputt["sptbs_kgnetto"] = $selisih;
                         $inputt["sptbs_timbangankeluar"] = $time;
                         $inputt["sptbs_created"] = date("Y-m-d H:i:s");                
                         $wheret["sptbs_id"] = $sptbs_id;
