@@ -73,8 +73,7 @@
                                         <label class="text-white">Dari :</label>
                                     </div>
                                     <div class="col-10">
-                                        <input type="date" class="form-control" placeholder="Dari" name="dari"
-                                            value="<?= $dari; ?>">
+                                        <input type="date" class="form-control" placeholder="Dari" name="dari" value="<?= $dari; ?>">
                                     </div>
                                 </div>
                                 <div class="col row">
@@ -82,8 +81,7 @@
                                         <label class="text-white">Ke :</label>
                                     </div>
                                     <div class="col-10">
-                                        <input type="date" class="form-control" placeholder="Ke" name="ke"
-                                            value="<?= $ke; ?>">
+                                        <input type="date" class="form-control" placeholder="Ke" name="ke" value="<?= $ke; ?>">
                                     </div>
                                 </div>
                                 <?php if (isset($_GET["report"])) { ?>
@@ -94,8 +92,7 @@
                         </form>
                     </div>
                     <div class="table-responsive m-t-40">
-                        <table id="example2310" class="display nowrap table table-hover table-striped table-bordered"
-                            cellspacing="0" width="100%">
+                        <table id="example2310" class="display nowrap table table-hover table-striped table-bordered" cellspacing="0" width="100%">
                             <!-- <table id="dataTable" class="table table-condensed table-hover w-auto dtable"> -->
                             <thead class="">
                                 <tr>
@@ -120,8 +117,8 @@
                                     ->join("pruningc", "pruningc.pruningc_id=pruning.pruningc_id", "left");
 
                                 $usr = $build
-                                    ->where("pruning_date >=",$dari)
-                                    ->where("pruning_date <=",$ke)
+                                    ->where("pruning_date >=", $dari)
+                                    ->where("pruning_date <=", $ke)
                                     // ->groupBy("panen.divisi_id,panen.seksi_id,panen.blok_id")
                                     // ->orderBy("panen.blok_name", "ASC")
                                     // ->orderBy("panen.tph_thntanam", "DESC")
@@ -145,86 +142,91 @@
                             </tbody>
                         </table>
                         <script>
-                            function tampilgambar(id){
-                                $("#gambarpruning").hide();
-                                $("#exampleModal").modal("show");
-                                $.get("<?=base_url("api/gambarpruning");?>",{id:id})
-                                .done(function(data){
-                                    $("#gambarpruning").attr("src",data);
-                                    $("#gambarpruning").fadeIn();
-                                });
+                            function tampilgambar(id) {
+                                $.get("<?= base_url("api/gambarpruning"); ?>", {
+                                        id: id
+                                    })
+                                    .done(function(data) {
+                                        if (data != "") {
+                                            $("#gambarpruning").hide();
+                                            $("#exampleModal").modal("show");
+                                            $("#gambarpruning").attr("src", data);
+                                            $("#gambarpruning").fadeIn();
+                                        } else {
+                                            toast("Loading Gambar", "Maaf, tidak ada gambar!");
+                                        }
+                                    });
                             }
                         </script>
                         <!-- Picture -->
                         <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                                <div class="modal-dialog" role="document">
-                                    <div class="modal-content">
+                            <div class="modal-dialog" role="document">
+                                <div class="modal-content">
                                     <div class="modal-body">
-                                       <img id="gambarpruning" src="<?=base_url("images/picture.png");?>" class="gambar" style="width:100%; height:auto;"/>
+                                        <img id="gambarpruning" src="<?= base_url("images/picture.png"); ?>" class="gambar" style="width:100%; height:auto;" />
                                     </div>
                                     <div class="modal-footer">
                                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                                     </div>
                                 </div>
                             </div>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-</div>
-<script>
-    $('.select').select2();
-    var title = "Inspeksi Panen Detail";
-    $("title").text(title);
-    $(".card-title").text(title);
-    $("#page-title").text(title);
-    $("#page-title-link").text(title);
-</script>
+    <script>
+        $('.select').select2();
+        var title = "Inspeksi Panen Detail";
+        $("title").text(title);
+        $(".card-title").text(title);
+        $("#page-title").text(title);
+        $("#page-title-link").text(title);
+    </script>
 
-<?php echo $this->include("template/footer_v"); ?>
-<script type="text/javascript">
-    $(document).ready(function () {
-        $('#example2310').DataTable({
-            dom: 'Bfrtip',
-            buttons: [
-                {
-                    extend: 'copyHtml5',
-                    title: 'Inspeksi Panen Detail',
-                    filename: 'Inspeksi Panen Detail ',
-                    text: 'Copy'
-                },
-                {
-                    extend: 'csvHtml5',
-                    title: 'Inspeksi Panen Detail',
-                    filename: 'Inspeksi Panen Detail ',
-                    text: 'Export to CSV'
-                },
-                {
-                    extend: 'excelHtml5',
-                    title: 'Inspeksi Panen Detail Excel',
-                    filename: 'Inspeksi Panen Detail ',
-                    text: 'Export to Excel'
-                },
-                {
-                    extend: 'pdfHtml5',
-                    title: 'Inspeksi Panen Detail',
-                    filename: 'Inspeksi Panen Detail ',
-                    text: 'Export to PDF',
-                    customize: function (doc) {
-                        doc.content[1].table.headerRows = 1;
-                        doc.content[1].table.body[0].forEach(function (h) {
-                            h.text = h.text.toUpperCase();
-                            h.fillColor = '#dddddd';
-                        });
+    <?php echo $this->include("template/footer_v"); ?>
+    <script type="text/javascript">
+        $(document).ready(function() {
+            $('#example2310').DataTable({
+                dom: 'Bfrtip',
+                buttons: [{
+                        extend: 'copyHtml5',
+                        title: 'Inspeksi Panen Detail',
+                        filename: 'Inspeksi Panen Detail ',
+                        text: 'Copy'
+                    },
+                    {
+                        extend: 'csvHtml5',
+                        title: 'Inspeksi Panen Detail',
+                        filename: 'Inspeksi Panen Detail ',
+                        text: 'Export to CSV'
+                    },
+                    {
+                        extend: 'excelHtml5',
+                        title: 'Inspeksi Panen Detail Excel',
+                        filename: 'Inspeksi Panen Detail ',
+                        text: 'Export to Excel'
+                    },
+                    {
+                        extend: 'pdfHtml5',
+                        title: 'Inspeksi Panen Detail',
+                        filename: 'Inspeksi Panen Detail ',
+                        text: 'Export to PDF',
+                        customize: function(doc) {
+                            doc.content[1].table.headerRows = 1;
+                            doc.content[1].table.body[0].forEach(function(h) {
+                                h.text = h.text.toUpperCase();
+                                h.fillColor = '#dddddd';
+                            });
+                        }
+                    },
+                    {
+                        extend: 'print',
+                        title: 'Judul Custom',
+                        text: 'Print'
                     }
-                },
-                {
-                    extend: 'print',
-                    title: 'Judul Custom',
-                    text: 'Print'
-                }
-            ]
+                ]
+            });
         });
-    });
-</script>
+    </script>

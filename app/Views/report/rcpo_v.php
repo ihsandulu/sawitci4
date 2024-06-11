@@ -150,15 +150,15 @@
                                         ->where("sptbs_id", $sptbs->sptbs_id)
                                         ->get();
                                         // echo $this->db->getLastquery();
-                                        $jmltotaltbs=0;
+                                        $jmltbs=0;
                                         $jmltandan=0;
                                         $jmlbrondol=0;
                                         foreach($panen->getResult() as $panen){
-                                            $jmltotaltbs+=$panen->panen_jml;
+                                            $jmltandan+=$panen->panen_jml;
                                             if($panen->panen_brondol==1){
                                                 $jmlbrondol+=$panen->panen_jml;
                                             }else{
-                                                $jmltandan+=$panen->panen_jml;
+                                                $jmltbs+=$panen->panen_jml;
                                             }
                                         }
                                     }
