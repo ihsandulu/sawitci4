@@ -128,7 +128,7 @@
                                 // dd(session()->get("position_id"));
                                 $build = $this->db
                                     ->table("sptbs")
-                                    ->select("t_vendor.nama_vendor, t_vendor.ket, lr.lr_name, sptbs.sptbsid, sptbs.sptbs_code as sptbscode, sptbs.estate_name, sptbs.divisi_name,sptbs.sptbs_timbanganmasuk, sptbs.sptbs_timbangankeluar, sptbs.sptbs_date, sptbs.sptbs_drivername, sptbs.sptbs_kgbruto, sptbs.sptbs_kgtruk, sptbs.sptbs_kgnetto, sptbs.sptbs_jmltandan,  wt.wt_name")
+                                    ->select("t_vendor.nama_vendor, t_vendor.ket, lr.lr_name, sptbs.sptbs_id, sptbs.sptbsid, sptbs.sptbs_code as sptbscode, sptbs.estate_name, sptbs.divisi_name,sptbs.sptbs_timbanganmasuk, sptbs.sptbs_timbangankeluar, sptbs.sptbs_date, sptbs.sptbs_drivername, sptbs.sptbs_kgbruto, sptbs.sptbs_kgtruk, sptbs.sptbs_kgnetto, sptbs.sptbs_jmltandan,  wt.wt_name")
                                     // ->join("sptbs", "sptbs.sptbs_date=grading.grading_date AND sptbs.sptbs_card=grading.sptbs_card", "left")
                                     ->join("wt", "wt.wt_name=sptbs.wt_name", "left")
                                     ->join("lr", "lr.lr_name=sptbs.lr_name", "left")
@@ -145,6 +145,18 @@
                                     $tarra = $sptbs->sptbs_kgtruk;
                                     $netto = $brutto-$tarra;                                    
                                     $jmltandan=$sptbs->sptbs_jmltandan;
+                                    if($jmltandan==0){
+                                        $panen = $this->db->table("panen")
+                                        ->select("SUM(panen_jml)As jmltandan")
+                                        ->where("sptbs_id", $sptbs->sptbs_id)
+                                        ->groupBy("tph_thntanam")
+                                        ->get();
+                                        // echo $this->db->getLastquery();
+                                        $jmltandan=0;
+                                        foreach($panen->getResult() as $panen){
+                                            $jmltandan+=$panen->jmltandan;
+                                        }
+                                    }
                                     $grading = $this->db->table("grading")
                                     ->join("gradingtype","gradingtype.gradingtype_id=grading.gradingtype_id","left")
                                     ->where("sptbsid",$sptbs->sptbsid)

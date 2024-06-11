@@ -650,6 +650,24 @@
                     <a class="  " href="<?= base_url("rabsend"); ?>" aria-expanded="false"><i class="fa fa-users"></i><span class="hide-menu">Rangkuman Absensi</span></a>
                 </li>
                 <?php }?>
+                <?php 
+                if (
+                    (
+                        isset(session()->get("position_id")[0][0]) 
+                        && (
+                            session()->get("position_id") == "1" 
+                            || session()->get("position_id") == "2"
+                        )
+                    ) ||
+                    (
+                        isset(session()->get("halaman")['75']['act_read']) 
+                        && session()->get("halaman")['75']['act_read'] == "1"
+                    )
+                ) { ?>
+                <li> 
+                    <a class="  " href="<?= base_url("rcpo"); ?>" aria-expanded="false"><i class="fa fa-tree"></i><span class="hide-menu">TBS ke CPO Mill</span></a>
+                </li>
+                <?php }?>
 
 
                 

@@ -43,3 +43,4 @@ $routes->add('/rgrading', 'report\rgrading::index');
 $routes->add('/rpruning', 'report\rpruning::index');
 $routes->add('/rpruningd', 'report\rpruningd::index');
 $routes->add('/rabsend', 'report\rabsend::index');
+$routes->add('/rcpo', 'report\rcpo::index');
