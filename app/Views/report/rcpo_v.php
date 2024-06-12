@@ -122,9 +122,10 @@
                                 
                                 $build = $this->db
                                     ->table("sptbs")
-                                    ->select("t_vendor.nama_vendor, t_vendor.ket, lr.lr_name, sptbs.sptbs_id, sptbs.sptbsid, sptbs.sptbs_code as sptbscode, sptbs.estate_name, sptbs.divisi_name,sptbs.sptbs_timbanganmasuk, sptbs.sptbs_timbangankeluar, sptbs.sptbs_date, sptbs.sptbs_drivername, sptbs.sptbs_kgbruto, sptbs.sptbs_kgtruk, sptbs.sptbs_kgnetto, sptbs.sptbs_jmltandan,  wt.wt_name, panen.blok_name, panen.tph_thntanam, panen.panen_jml, panen.panen_brondol")
+                                    ->select("t_vendor.nama_vendor, t_vendor.ket, lr.lr_name, sptbs.sptbs_id, sptbs.sptbsid, sptbs.sptbs_code as sptbscode, sptbs.estate_name, sptbs.divisi_name,sptbs.sptbs_timbanganmasuk, sptbs.sptbs_timbangankeluar, sptbs.sptbs_date, sptbs.sptbs_drivername, sptbs.sptbs_kgbruto, sptbs.sptbs_kgtruk, sptbs.sptbs_kgnetto, sptbs.sptbs_jmltandan,  wt.wt_name, panen.blok_name, panen.tph_thntanam, panen.panen_jml, panen.panen_brondol, jmlpanen.totalpanen")
                                     // ->join("sptbs", "sptbs.sptbs_date=grading.grading_date AND sptbs.sptbs_card=grading.sptbs_card", "left")
                                     ->join("panen", "panen.sptbs_id=sptbs.sptbs_id", "left")
+                                    ->join("jmlpanen", "jmlpanen.sptbs_id=sptbs.sptbs_id", "left")
                                     ->join("wt", "wt.wt_name=sptbs.wt_name", "left")
                                     ->join("lr", "lr.lr_name=sptbs.lr_name", "left")
                                     ->join("t_vendor", "t_vendor.ID_vendor=sptbs.sptbs_vendor", "left");
@@ -139,29 +140,12 @@
                                     $brutto = $sptbs->sptbs_kgbruto;
                                     $tarra = $sptbs->sptbs_kgtruk;
                                     $netto = $brutto-$tarra;                                    
-                                    $jmltandan=$sptbs->sptbs_jmltandan;
+                                    $totalpanen=$sptbs->totalpanen;
                                     $panen_jml=$sptbs->panen_jml;
                                     $sptbscode=$sptbs->sptbscode;
                                     // $jmlbrondol=$sptbs->jmlbrondol;
                                     if($sptbs->panen_brondol==0){$tb="B";}else{$tb="T";}
-                                    if($jmltandan==0){
-                                        $panen = $this->db->table("panen")
-                                        ->select("panen_jml")
-                                        ->where("sptbs_id", $sptbs->sptbs_id)
-                                        ->get();
-                                        // echo $this->db->getLastquery();
-                                        $jmltbs=0;
-                                        $jmltandan=0;
-                                        $jmlbrondol=0;
-                                        foreach($panen->getResult() as $panen){
-                                            $jmltandan+=$panen->panen_jml;
-                                            if($panen->panen_brondol==1){
-                                                $jmlbrondol+=$panen->panen_jml;
-                                            }else{
-                                                $jmltbs+=$panen->panen_jml;
-                                            }
-                                        }
-                                    }
+                                    
                                     $grading = $this->db->table("grading")
                                     ->join("gradingtype","gradingtype.gradingtype_id=grading.gradingtype_id","left")
                                     ->where("sptbsid",$sptbs->sptbsid)
@@ -191,10 +175,10 @@
                                                 $persen = $persent;
                                             }
                                         }else{
-                                            if($jmltandan==0){
+                                            if($totalpanen==0){
                                                 $persen = 0;
                                             }else{
-                                                $persent = $gradingqty / $jmltandan * 100;
+                                                $persent = $gradingqty / $totalpanen * 100;
                                                 if ($persent > 0) {
                                                     $persen = $persent;
                                                 }
@@ -257,8 +241,8 @@
                                     }
 
                                     //bjr
-                                    if (is_numeric($jmltandan) && $jmltandan != 0) {
-                                        $bjr = $netto / $jmltandan;
+                                    if (is_numeric($totalpanen) && $totalpanen != 0) {
+                                        $bjr = $netto / $totalpanen;
                                     } else {
                                         $bjr = 0;
                                     }

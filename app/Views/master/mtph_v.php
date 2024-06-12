@@ -168,6 +168,12 @@
                                     <div class="col-sm-10">
                                         <input required type="text" autofocus class="form-control" id="tph_status" name="tph_status" placeholder="" value="<?= $tph_status; ?>">
                                     </div>
+                                </div>                                                 
+                                <div class="form-group">
+                                    <label class="control-label col-sm-2" for="tph_bjr">BJR:</label>
+                                    <div class="col-sm-10">
+                                        <input type="text" autofocus class="form-control" id="tph_bjr" name="tph_bjr" placeholder="" value="<?= $tph_bjr; ?>">
+                                    </div>
                                 </div>  
 
                                 <input type="hidden" name="tph_id" value="<?= $tph_id; ?>" />
@@ -206,6 +212,7 @@
                                         <th>Rotasi</th>
                                         <th>Sertifikat</th>
                                         <th>Status</th>
+                                        <th>BJR</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -276,6 +283,7 @@
                                             <td><?= $usr->tph_rotasi; ?></td>
                                             <td><?= $usr->tph_certificate; ?></td>
                                             <td><?= $usr->tph_status; ?></td>
+                                            <td><?= $usr->tph_bjr; ?></td>
                                         </tr>
                                     <?php } ?>
                                 </tbody>
