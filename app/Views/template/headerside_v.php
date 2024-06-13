@@ -434,7 +434,7 @@
                     )
                 ) { ?>
                 <li> 
-                    <a class="  " href="<?= base_url("synchron"); ?>" aria-expanded="false"><i class="fa fa-pagelines"></i><span class="hide-menu">Synchronization</span></a>
+                    <a class="  " href="<?= base_url("synchron"); ?>" aria-expanded="false"><i class="fa fa-pagelines"></i><span class="hide-menu">Timbangan</span></a>
                 </li>
                 <?php }?>
                 <?php 
