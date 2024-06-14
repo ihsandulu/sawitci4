@@ -1896,7 +1896,7 @@ class api extends baseController
                                             <?= $panen->jmltandan; ?>
                                         </div>
                                         <div class="col border text-center">
-
+                                            <?= $panen->lr_name; ?>
                                         </div>
                                     </div>
                                 <?php } ?>
