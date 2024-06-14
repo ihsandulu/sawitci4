@@ -754,6 +754,13 @@ class api extends baseController
         }
     }
 
+    public function thitungbruto(){
+        $sptbs_id=$_GET["sptbs_id"];
+        $netto=$_GET["netto"];
+        $isbrondol=$_GET["isbrondol"];
+        $istbs=$_GET["istbs"];
+        $this->hitungbruto($sptbs_id, $netto, $isbrondol, $istbs);
+    }
 
     public function hitungbruto($sptbs_id, $netto, $isbrondol, $istbs)
     {
@@ -781,13 +788,24 @@ class api extends baseController
 
         if ($isbrondol == 0 && $istbs == 1) {
             foreach ($arrttontbs as $panenid => $ton) {
-                $inputbrutotbs["panen_bruto"] = $netto / $ttontbs * $ton;
+                // echo $netto." / ".$ttontbs." * ".$ton;die;
+                if($ton>0){
+                    $a=$netto / $ttontbs * $ton;
+                }else{
+                    $a=0;
+                }                
+                $inputbrutotbs["panen_bruto"] = $a;
                 $wherebrutotbs["panen_id"] = $panenid;
                 $this->db->table("panen")->update($inputbrutotbs, $wherebrutotbs);
             }
         } else if ($isbrondol == 1 && $istbs == 0) {
             foreach ($arrttonbrondol as $panenid => $ton) {
-                $inputbrutobrondol["panen_bruto"] = $netto / $ttonbrondol * $ton;
+                if($ton>0){
+                    $a= $netto / $ttonbrondol * $ton;
+                }else{
+                    $a=0;
+                }                
+                $inputbrutobrondol["panen_bruto"] = $a;
                 $wherebrutobrondol["panen_id"] = $panenid;
                 $this->db->table("panen")->update($inputbrutobrondol, $wherebrutobrondol);
             }
@@ -802,27 +820,36 @@ class api extends baseController
                 if ($tipeb == 0) {
                     $tton = $ttontbs;
                 }
-                $inputbrutocampur["panen_bruto"] = $netto / $tton * $ton;
+                if($ton>0){
+                    $a= $netto / $tton * $ton;
+                }else{
+                    $a=0;
+                }                
+                $inputbrutocampur["panen_bruto"] = $a;
                 $wherebrutocampur["panen_id"] = $panenid;
                 $this->db->table("panen")->update($inputbrutocampur, $wherebrutocampur);
             }
         }
     }
-
+    public function thitunggrading()
+    {   
+        $sptbs_id=$_GET["sptbs_id"];
+        $this->hitunggrading($sptbs_id);
+    }
     public function hitunggrading($sptbs_id)
     {
         $subpanen=$this->db->table("panen")
-        ->select("SUM(panen_bruto)AS tbruto")
+        ->select("SUM(panen_bruto)AS tbruto, sptbs_id")
         ->groupBy("sptbs_id")
-        ->get();
+        ->getCompiledSelect();
         $build = $this->db
             ->table("sptbs")
             ->select("sptbs.sptbs_id, sptbs.sptbsid, sptbs.sptbs_code as sptbscode, sptbs.estate_name, sptbs.divisi_name,sptbs.sptbs_timbanganmasuk, sptbs.sptbs_timbangankeluar, sptbs.sptbs_date, sptbs.sptbs_drivername, sptbs.sptbs_kgbruto, sptbs.sptbs_kgtruk, sptbs.sptbs_kgnetto, sptbs.sptbs_jmltandan,  jmlpanen.totalpanen, panen.tbruto")
             ->join("jmlpanen", "jmlpanen.sptbs_id=sptbs.sptbs_id", "left")
-            ->join("(".$subpanen.")as panen)", "panen.sptbs_id=sptbs.sptbs_id", "left");
+            ->join("($subpanen)as panen", "panen.sptbs_id=sptbs.sptbs_id", "left");
 
         $sptbs = $build
-            ->where("sptbs_id", $sptbs_id)
+            ->where("sptbs.sptbs_id", $sptbs_id)
             ->get();
         // echo $this->db->getLastquery();die;
         $no = 1;
@@ -920,6 +947,8 @@ class api extends baseController
                 $gradingtype_name[$grading->gradingtype_id]["persen"] = $persen;
                 $gradingtype_name[$grading->gradingtype_id]["kg"] = $kg;
 
+                // echo $grading->grading_id."=".$kg; die;
+
                 $inputgrading["grading_persen"]=$persen;
                 $inputgrading["grading_kg"]=$kg;
                 $wheregrading["grading_id"]=$grading->grading_id;
@@ -956,6 +985,8 @@ class api extends baseController
             $inputsptbs["sptbs_bjr"]=$bjr;
             $wheresptbs["sptbs_id"]=$sptbs->sptbs_id;
             $this->db->table("sptbs")->update($inputsptbs,$wheresptbs);
+
+            // echo $sptbs->sptbs_id;die;
 
             $panen=$this->db->table("panen")
             ->where("sptbs_id",$sptbs_id)
@@ -1010,12 +1041,16 @@ class api extends baseController
                         $buildert->update($inputt, $wheret);
                         // echo $this->db->getLastQuery();
 
+
+                        //////masukkan bruto per tph setelah mendapatkan netto dari timbangan////////
+                        // $message["message"]= "sptbs_id=".$sptbs_id.", selisih=".$selisih.", isbrondol=".$isbrondol.", istbs=".$istbs;
+                        $this->hitungbruto($sptbs_id, $selisih, $isbrondol, $istbs);
+                        $this->hitunggrading($sptbs_id);
+
+                        
                         $message["message"] = "Netto di update!";
                         // $message["message"]=$timbangan."<".$sptbs_kgbruto;
                         $message["status"] = 2;
-                        //masukkan bruto per tph setelah mendapatkan netto dari timbangan
-                        $this->hitungbruto($sptbs_id, $selisih, $isbrondol, $istbs);
-                        $this->hitunggrading($sptbs_id);
                     } else {
                         // $this->paneninsert($bintang,$sptbs_id);
                         $message["message"] = "SPTBS telah diinput sebelumnya!";
