@@ -1745,15 +1745,14 @@ class api extends baseController
                         <?php
                         $currentDateTime = date("Y-m-d H:i:s");
                         $fiveMinutesAgo = date("Y-m-d H:i:s", strtotime("-5 minutes", strtotime($currentDateTime)));
+                        $builder = $this->db->table("sptbs");
                         if (isset($_GET["sptbs_id"])) {
-                            $sptbs = $this->db->table("sptbs")
-                                ->where("sptbs_id", $_GET["sptbs_id"])
+                            $sptbs=$builder->where("sptbs_id", $_GET["sptbs_id"])
                                 ->orderBy("sptbs_id", "DESC")
                                 ->limit(1)
                                 ->get();
                         } else {
-                            $sptbs = $this->db->table("sptbs")
-                                ->where("timbangan_name", $timbangan->timbangan_name)
+                            $sptbs=$builder->where("timbangan_name", $timbangan->timbangan_name)
                                 ->where("sptbs_date", date("Y-m-d"))
                                 ->where("sptbs_created >=", $fiveMinutesAgo)
                                 ->where("sptbs_created <=", $currentDateTime)
@@ -1785,7 +1784,7 @@ class api extends baseController
                                         NO POLISI
                                     </div>
                                     <div class="col-7">
-                                        : <?= $sptbs->sptbs_plat; ?>
+                                        : <?= $sptbs->wt_name; ?>
                                     </div>
                                     <div class="col-5">
                                         SUPIR
