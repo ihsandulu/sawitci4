@@ -591,7 +591,7 @@
                                         <td><?= $usr->divisi_name; ?></td>
                                         <td><?= $usr->sptbs_card; ?></td>
                                         <td>
-                                            <?= $usr->no_polisi; ?><br/>
+                                            <?= $usr->wt_name; ?><br/>
                                             <?= $usr->nama_driver; ?><br/>
                                         </td>
                                         <td>
