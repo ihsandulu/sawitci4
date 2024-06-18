@@ -546,7 +546,7 @@
                                     </tbody>
                                 </table>
                             <?php }else{?>
-                                <table id="example231" class="display nowrap table table-hover table-striped table-bordered" cellspacing="0" width="100%">
+                                <table id="example2310" class="display nowrap table table-hover table-striped table-bordered" cellspacing="0" width="100%">
                                 <!-- <table id="dataTable" class="table table-condensed table-hover w-auto dtable"> -->
                                 <thead class="">
                                     <tr>
@@ -724,3 +724,48 @@
 </script>
 
 <?php echo  $this->include("template/footer_v"); ?>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('#example2310').DataTable({
+            dom: 'Bfrtip',
+            buttons: [
+                {
+                    extend: 'copyHtml5',
+                    title: 'Requirement Reports  (<?=$dari;?> to <?=$ke;?>)',
+                    filename: 'Requirement Reports  (<?=$dari;?> to <?=$ke;?>) ',
+                    text: 'Copy'
+                },
+                {
+                    extend: 'csvHtml5',
+                    title: 'Requirement Reports  (<?=$dari;?> to <?=$ke;?>)',
+                    filename: 'Requirement Reports  (<?=$dari;?> to <?=$ke;?>) ',
+                    text: 'Export to CSV'
+                },
+                {
+                    extend: 'excelHtml5',
+                    title: 'Requirement Reports  (<?=$dari;?> to <?=$ke;?>) Excel',
+                    filename: 'Requirement Reports  (<?=$dari;?> to <?=$ke;?>) ',
+                    text: 'Export to Excel'
+                },
+                {
+                    extend: 'pdfHtml5',
+                    title: 'Requirement Reports  (<?=$dari;?> to <?=$ke;?>)',
+                    filename: 'Requirement Reports  (<?=$dari;?> to <?=$ke;?>) ',
+                    text: 'Export to PDF',
+                    customize: function (doc) {
+                        doc.content[1].table.headerRows = 1;
+                        doc.content[1].table.body[0].forEach(function (h) {
+                            h.text = h.text.toUpperCase();
+                            h.fillColor = '#dddddd';
+                        });
+                    }
+                },
+                {
+                    extend: 'print',
+                    title: 'Judul Custom',
+                    text: 'Print'
+                }
+            ]
+        });
+    });
+</script>
