@@ -163,7 +163,7 @@
                                             <th>Action</th>
                                         <?php } ?>
                                         <!-- <th>No.</th> -->
-                                        <!-- <th>ID</th> -->
+                                        <th>ID</th>
                                         <th>Estate</th>
                                         <th>Divisi</th>
                                         <th>Seksi</th>
@@ -229,7 +229,7 @@
                                                 </td>
                                             <?php } ?>
                                             <!-- <td><?= $no++; ?></td> -->
-                                            <!-- <td><?= $usr->blok_id; ?></td> -->
+                                            <td><?= $usr->blok_id; ?></td>
                                             <td><?= $usr->estate_name; ?></td>
                                             <td><?= $usr->divisi_name; ?></td>
                                             <td><?= $usr->seksi_name; ?></td>
