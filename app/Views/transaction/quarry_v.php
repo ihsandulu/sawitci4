@@ -716,7 +716,7 @@
 </div>
 <script>
     $('.select').select2();
-    var title = "Master Quarry";
+    var title = "Quarry";
     $("title").text(title);
     $(".card-title").text(title);
     $("#page-title").text(title);
