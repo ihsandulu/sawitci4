@@ -59,29 +59,22 @@
                         <form>
                             <div class="row">
                                 <?php
-                                $dari = date("Y-m-d");
-                                $ke = date("Y-m-d");
-                                if (isset($_GET["dari"])) {
-                                    $dari = $_GET["dari"];
-                                }
-                                if (isset($_GET["ke"])) {
-                                    $ke = $_GET["ke"];
+                                $thn = date("Y");
+                                if (isset($_GET["thn"])) {
+                                    $thn = $_GET["thn"];
                                 }
                                 ?>
                                 <div class="col row">
                                     <div class="col-2">
-                                        <label class="text-white">Dari :</label>
+                                        <label class="text-white">Tahun :</label>
                                     </div>
                                     <div class="col-10">
-                                        <input type="date" class="form-control" placeholder="Dari" name="dari" value="<?= $dari; ?>">
-                                    </div>
-                                </div>
-                                <div class="col row">
-                                    <div class="col-2">
-                                        <label class="text-white">Ke :</label>
-                                    </div>
-                                    <div class="col-10">
-                                        <input type="date" class="form-control" placeholder="Ke" name="ke" value="<?= $ke; ?>">
+                                        <select class="form-control" name="thn">
+                                            <?php
+                                            for ($y = 2010; $y <= date("Y"); $y++) { ?>
+                                                <option value="<?= $y; ?>" <?= ($thn == $y) ? "selected" : ""; ?>><?= $y; ?></option>
+                                            <?php } ?>
+                                        </select>
                                     </div>
                                 </div>
                                 <?php if (isset($_GET["report"])) { ?>
@@ -96,58 +89,197 @@
                             <!-- <table id="dataTable" class="table table-condensed table-hover w-auto dtable"> -->
                             <thead class="">
                                 <tr>
-                                    <th>Tanggal</th>
-                                    <th>NIK</th>
-                                    <th>Nama Pemanen</th>
-                                    <th>No.Tiket</th>
+                                    <th>Estate</th>
                                     <th>Divisi</th>
-                                    <th>Blok</th>
-                                    <th>Thn Tanam</th>
-                                    <th>JJG</th>
-                                    <th>BRNDL</th>
-                                    <th>JJG KG</th>
-                                    <th>BRNDL KG</th>
+                                    <th>Hektar</th>
+                                    <th>Pokok</th>
+                                    <th>Uraian</th>
+                                    <?php
+                                    $pastelColors = [
+                                        "",
+                                        "rgba(255, 182, 193, 0.5)", // Pastel Red
+                                        "rgba(255, 160, 122, 0.5)", // Pastel Orange
+                                        "rgba(255, 255, 224, 0.5)", // Pastel Yellow
+                                        "rgba(144, 238, 144, 0.5)", // Pastel Green
+                                        "rgba(173, 216, 230, 0.5)", // Pastel Blue
+                                        "rgba(221, 160, 221, 0.5)", // Pastel Purple
+                                        "rgba(255, 182, 193, 0.5)", // Pastel Pink
+                                        "rgba(222, 184, 135, 0.5)", // Pastel Brown
+                                        "rgba(211, 211, 211, 0.5)", // Pastel Gray
+                                        "rgba(175, 238, 238, 0.5)", // Pastel Turquoise
+                                        "rgba(230, 230, 250, 0.5)", // Pastel Lavender
+                                        "rgba(152, 251, 152, 0.5)"  // Pastel Mint
+                                    ];
+                                    $pColors = [
+                                        "",
+                                        "black", // Pastel Red
+                                        "black", // Pastel Orange
+                                        "black", // Pastel Yellow
+                                        "black", // Pastel Green
+                                        "black", // Pastel Blue
+                                        "black", // Pastel Purple
+                                        "black", // Pastel Pink
+                                        "black", // Pastel Brown
+                                        "black", // Pastel Gray
+                                        "black", // Pastel Turquoise
+                                        "black", // Pastel Lavender
+                                        "black" // Pastel Mint
+                                    ];
+                                    for ($x = 1; $x <= 12; $x++) { ?>
+                                        <th style="background-color:<?= $pastelColors[$x]; ?>; color:<?= $pColors[$x]; ?>;>"><?= date("F", strtotime($thn . "-" . $x)); ?></th>
+                                    <?php } ?>
+
                                     <th>Total KG</th>
+                                    <th>Total TON/HA</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 <?php
-
-                                $jjg =
-
-                                    /* $build = $this->db
+                                $tmonth=array();
+                                for ($x = 1; $x <= 12; $x++) { 
+                                    $tmonth[$x]=0;
+                                }
+                                
+                                
+                                $target=$this->db->table("t_target")->where("tahun",$thn)->get();
+                                $ttarget=0;
+                                foreach($target->getResult() as $target){
+                                    for ($x = 1; $x <= 12; $x++) { 
+                                        $bulan=date("F", strtotime($thn . "-" . $x));
+                                        $tmonth[$x]=$target->$bulan;
+                                        $ttarget+=$target->$bulan;
+                                    }
+                                }
+                                $panen = $this->db
                                     ->table("panen")
-                                    ->select("panen.panen_date, panen.panen_tpname, panen.divisi_name, panen.blok_name, panen.tph_thntanam, SUM(IF(panen_brondol=0, panen_jml, 0))as jjg, SUM(IF(panen_brondol=1, panen_jml, 0))as brd,  sptbs.sptbs_code,  SUM(IF(panen_brondol=0, panen_netto, 0))as jjgkg, SUM(IF(panen_brondol=1, panen_netto, 0))as brdkg, (jjgkg+brdkg)as tkg, t_user.user_nik", "left")
-                                    ->join("sptbs","sptbs.sptbs_id=panen.sptbs_id","left")
-                                    ->join("t_user","t_user.user_id=panen.user_id","left");
+                                    ->select("
+                                    SUBSTRING(panen.panen_date,1,7) as bln, 
+                                    panen.estate_name, 
+                                    panen.divisi_name, 
+                                    panen.tph_thntanam, 
+                                    blok.blok_ha, 
+                                    blok.blok_populasi, 
+                                    (blok.blok_populasi/blok.blok_ha) as sph, 
 
-                                $panen = $build
-                                    ->where("sptbs_date >=",$dari)
-                                    ->where("sptbs_date <=",$ke)
-                                    ->group_by("sptbs_id,panen_tp")
-                                    ->get(); */
-                                    $kerja = $this->db
-                                    ->table("hasil_kerja_panen")
-                                    ->where("panen_date >=",$dari)
-                                    ->where("panen_date <=",$ke)
+                                    
+                                    SUM(IF(SUBSTRING(panen.panen_date,1,7)='" . $thn . "-01', panen.panen_netto, 0)) as tnetto1, 
+
+                                  
+                                    SUM(IF(SUBSTRING(panen.panen_date,1,7)='" . $thn . "-02', panen.panen_netto, 0)) as tnetto2, 
+
+                                  
+                                    SUM(IF(SUBSTRING(panen.panen_date,1,7)='" . $thn . "-03', panen.panen_netto, 0)) as tnetto3, 
+
+                                    SUM(IF(SUBSTRING(panen.panen_date,1,7)='" . $thn . "-04', panen.panen_netto, 0)) as tnetto4, 
+                                  
+                                    SUM(IF(SUBSTRING(panen.panen_date,1,7)='" . $thn . "-05', panen.panen_netto, 0)) as tnetto5, 
+
+                                    SUM(IF(SUBSTRING(panen.panen_date,1,7)='" . $thn . "-06', panen.panen_netto, 0)) as tnetto6, 
+                                 
+                                    SUM(IF(SUBSTRING(panen.panen_date,1,7)='" . $thn . "-07', panen.panen_netto, 0)) as tnetto7, 
+
+                                    SUM(IF(SUBSTRING(panen.panen_date,1,7)='" . $thn . "-08', panen.panen_netto, 0)) as tnetto8, 
+
+                                    SUM(IF(SUBSTRING(panen.panen_date,1,7)='" . $thn . "-09', panen.panen_netto, 0)) as tnetto9, 
+            
+                                    SUM(IF(SUBSTRING(panen.panen_date,1,7)='" . $thn . "-10', panen.panen_netto, 0)) as tnetto10, 
+                            
+                                    SUM(IF(SUBSTRING(panen.panen_date,1,7)='" . $thn . "-11', panen.panen_netto, 0)) as tnetto11, 
+                               
+                                    SUM(IF(SUBSTRING(panen.panen_date,1,7)='" . $thn . "-12', panen.panen_netto, 0)) as tnetto12
+
+                                    ")
+                                    ->join("blok", "blok.blok_id=panen.blok_id", "left")
+                                    ->where("SUBSTRING(panen_date,1,4)", $thn)
+                                    ->groupBy("panen.divisi_id, panen.tph_thntanam")
                                     ->get();
                                 // echo $this->db->getLastquery();die;
                                 $no = 1;
-                                foreach ($kerja->getResult() as $kerja) {
+                                $arpan = array();                                
+                                $realisasi=array();
+                                foreach ($panen->getResult() as $panen) {
+                                    // $arpan[][]
+
                                 ?>
                                     <tr>
-                                        <td><?= date("Y-m-d", strtotime($kerja->panen_date)); ?></td>
-                                        <td><?= $kerja->user_nik; ?></td>
-                                        <td><?= $kerja->panen_tpname; ?></td>
-                                        <td><?= $kerja->sptbs_code; ?></td>
-                                        <td><?= $kerja->divisi_name; ?></td>
-                                        <td><?= $kerja->blok_name; ?></td>
-                                        <td><?= $kerja->tph_thntanam; ?></td>
-                                        <td><?= number_format($kerja->jjg, 0, ",", "."); ?></td>
-                                        <td><?= number_format($kerja->brd, 0, ",", "."); ?></td>
-                                        <td><?= number_format($kerja->jjgkg, 0, ",", "."); ?></td>
-                                        <td><?= number_format($kerja->brdkg, 0, ",", "."); ?></td>
-                                        <td><?= number_format($kerja->tkg, 0, ",", "."); ?></td>
+                                        <th><?= $panen->estate_name; ?></th>
+                                        <th><?= $panen->divisi_name; ?></th>
+                                        <th><?= $panen->blok_ha; ?></th>
+                                        <th><?= $panen->blok_populasi; ?></th>
+                                        <th>Rencana</th>
+                                        <?php
+                                        
+                                        $tonharealisasi = $ttarget/$panen->blok_ha/1000;
+                                        for ($x = 1; $x <= 12; $x++) {0;
+                                        ?>                                            
+                                            <th style="background-color:<?= $pastelColors[$x]; ?>; color:<?= $pColors[$x]; ?>;>"><?= number_format($tmonth[$x], 0, ",", "."); ?></th>
+                                        <?php } ?>
+                                       
+                                        
+                                        <th><?= number_format($ttarget, 0, ",", "."); ?></th>
+                                        <th><?= number_format($tonharealisasi, 2, ",", "."); ?></th>
+                                    </tr>
+                                    <tr>
+                                        <th><?= $panen->estate_name; ?></th>
+                                        <th><?= $panen->divisi_name; ?></th>
+                                        <th><?= $panen->blok_ha; ?></th>
+                                        <th><?= $panen->blok_populasi; ?></th>
+                                        <th>Realisasi</th>
+                                        <?php
+                                        $tottnetto = 0;
+                                        $tonharencana = 0;
+                                        for ($x = 1; $x <= 12; $x++) {
+                                            $tnetto = "tnetto" . $x;
+                                            $ttnetto = 0;
+                                            if (isset($panen->$tnetto)) {
+                                                $ttnetto = $panen->$tnetto;
+                                                $realisasi[$x]=$ttnetto;
+                                                $tottnetto +=$ttnetto;
+                                            }
+                                            $tonharencana = $tottnetto/$panen->blok_ha/1000;
+                                        ?>                                            
+                                            <th style="background-color:<?= $pastelColors[$x]; ?>; color:<?= $pColors[$x]; ?>;>"><?= number_format($ttnetto, 0, ",", "."); ?></th>
+                                        <?php } ?>
+                                       
+                                        
+                                        <th><?= number_format($tottnetto, 0, ",", "."); ?></th>
+                                        <th><?= number_format($tonharencana, 2, ",", "."); ?></th>
+                                    </tr>
+                                    <tr>
+                                        <th><?= $panen->estate_name; ?></th>
+                                        <th><?= $panen->divisi_name; ?></th>
+                                        <th><?= $panen->blok_ha; ?></th>
+                                        <th><?= $panen->blok_populasi; ?></th>
+                                        <th>%BI</th>
+                                        <?php
+                                        
+                                        for ($x = 1; $x <= 12; $x++) {
+                                            $bi=$realisasi[$x]/$tmonth[$x];
+                                        ?>                                            
+                                            <th style="background-color:<?= $pastelColors[$x]; ?>; color:<?= $pColors[$x]; ?>;>"><?= number_format($bi, 3, ",", "."); ?> %</th>
+                                        <?php } ?>
+                                       
+                                        
+                                        <th></th>
+                                        <th></th>
+                                    </tr>
+                                    <tr>
+                                        <th><?= $panen->estate_name; ?></th>
+                                        <th><?= $panen->divisi_name; ?></th>
+                                        <th><?= $panen->blok_ha; ?></th>
+                                        <th><?= $panen->blok_populasi; ?></th>
+                                        <th>%SDBI</th>
+                                        <?php
+                                        
+                                        for ($x = 1; $x <= 12; $x++) {
+                                            $sdbi=$realisasi[$x]/$ttarget;
+                                        ?>                                            
+                                            <th style="background-color:<?= $pastelColors[$x]; ?>; color:<?= $pColors[$x]; ?>;>"><?= number_format($sdbi, 3, ",", "."); ?> %</th>
+                                        <?php } ?>
+                                       
+                                        
+                                        <th></th>
+                                        <th></th>
                                     </tr>
                                 <?php } ?>
                             </tbody>
@@ -160,7 +292,7 @@
 </div>
 <script>
     $('.select').select2();
-    var title = "Daftar Hasil Kerja Pemanen";
+    var title = "Rencana dan Realisasi Produksi";
     $("title").text(title);
     $(".card-title").text(title);
     $("#page-title").text(title);
@@ -174,26 +306,26 @@
             dom: 'Bfrtip',
             buttons: [{
                     extend: 'copyHtml5',
-                    title: 'Daftar Hasil Kerja Pemanen',
-                    filename: 'Daftar Hasil Kerja Pemanen ',
+                    title: 'Rencana dan Realisasi Produksi',
+                    filename: 'Rencana dan Realisasi Produksi ',
                     text: 'Copy'
                 },
                 {
                     extend: 'csvHtml5',
-                    title: 'Daftar Hasil Kerja Pemanen',
-                    filename: 'Daftar Hasil Kerja Pemanen ',
+                    title: 'Rencana dan Realisasi Produksi',
+                    filename: 'Rencana dan Realisasi Produksi ',
                     text: 'Export to CSV'
                 },
                 {
                     extend: 'excelHtml5',
-                    title: 'Daftar Hasil Kerja Pemanen Excel',
-                    filename: 'Daftar Hasil Kerja Pemanen ',
+                    title: 'Rencana dan Realisasi Produksi Excel',
+                    filename: 'Rencana dan Realisasi Produksi ',
                     text: 'Export to Excel'
                 },
                 {
                     extend: 'pdfHtml5',
-                    title: 'Daftar Hasil Kerja Pemanen',
-                    filename: 'Daftar Hasil Kerja Pemanen ',
+                    title: 'Rencana dan Realisasi Produksi',
+                    filename: 'Rencana dan Realisasi Produksi ',
                     text: 'Export to PDF',
                     customize: function(doc) {
                         doc.content[1].table.headerRows = 1;
