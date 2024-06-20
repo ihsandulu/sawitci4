@@ -96,58 +96,68 @@
                             <!-- <table id="dataTable" class="table table-condensed table-hover w-auto dtable"> -->
                             <thead class="">
                                 <tr>
-                                    <th>Tanggal</th>
-                                    <th>NIK</th>
-                                    <th>Nama Pemanen</th>
-                                    <th>No.Tiket</th>
-                                    <th>Divisi</th>
-                                    <th>Blok</th>
-                                    <th>Thn Tanam</th>
-                                    <th>JJG</th>
-                                    <th>BRNDL</th>
-                                    <th>JJG KG</th>
-                                    <th>BRNDL KG</th>
-                                    <th>Total KG</th>
+                                    <th>Tgl</th>
+                                    <?php
+
+                                    $arrcolor = array();
+                                    $arrdivisi = array();
+                                    $divisi = $this->db->table("divisi")
+                                        ->where("estate_id<", "7")
+                                        ->orderBy("divisi_id", "ASC")->get();
+                                    foreach ($divisi->getResult() as $divisi) {
+                                        $arrdivisi[] = $divisi->divisi_id;
+
+                                        $r = rand(0, 255);
+                                        $g = rand(0, 255);
+                                        $b = rand(0, 255);
+                                        $a = 0.1;
+                                        $arrcolor[$divisi->divisi_id] = "rgba($r, $g, $b, $a)";
+                                    ?>
+                                        <th style="background-color:<?= $arrcolor[$divisi->divisi_id]; ?>">Bruto <?= $divisi->divisi_name; ?></th>
+                                        <th style="background-color:<?= $arrcolor[$divisi->divisi_id]; ?>">Netto <?= $divisi->divisi_name; ?></th>
+                                    <?php } ?>
+                                    <th>Total Bruto</th>
+                                    <th>Total Netto</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 <?php
-
-                                $jjg =
-
-                                    /* $build = $this->db
+                                $build = $this->db
                                     ->table("panen")
-                                    ->select("panen.panen_date, panen.panen_tpname, panen.divisi_name, panen.blok_name, panen.tph_thntanam, SUM(IF(panen_brondol=0, panen_jml, 0))as jjg, SUM(IF(panen_brondol=1, panen_jml, 0))as brd,  sptbs.sptbs_code,  SUM(IF(panen_brondol=0, panen_netto, 0))as jjgkg, SUM(IF(panen_brondol=1, panen_netto, 0))as brdkg, (jjgkg+brdkg)as tkg, t_user.user_nik", "left")
-                                    ->join("sptbs","sptbs.sptbs_id=panen.sptbs_id","left")
-                                    ->join("t_user","t_user.user_id=panen.user_id","left");
+                                    ->select("panen.divisi_id, panen.divisi_name, panen.panen_date, panen.panen_jml, panen.panen_bruto, panen.panen_netto");
+
+                                foreach ($arrdivisi as $adivisi) {
+                                    $build->select("SUM(IF(panen.divisi_id=$adivisi,panen.panen_bruto,0))AS brutto$adivisi");
+                                    $build->select("SUM(IF(panen.divisi_id=$adivisi,panen.panen_netto,0))AS netto$adivisi");
+                                }
 
                                 $panen = $build
-                                    ->where("sptbs_date >=",$dari)
-                                    ->where("sptbs_date <=",$ke)
-                                    ->group_by("sptbs_id,panen_tp")
-                                    ->get(); */
-                                    $kerja = $this->db
-                                    ->table("hasil_kerja_panen")
-                                    ->where("panen_date >=",$dari)
-                                    ->where("panen_date <=",$ke)
+                                    ->where("panen_date >=", $dari)
+                                    ->where("panen_date <=", $ke)
+                                    ->groupBy("panen_date")
                                     ->get();
                                 // echo $this->db->getLastquery();die;
                                 $no = 1;
-                                foreach ($kerja->getResult() as $kerja) {
+                                $tbruto = 0;
+                                $tnetto = 0;
+                                foreach ($panen->getResult() as $panen) {
                                 ?>
                                     <tr>
-                                        <td><?= date("Y-m-d", strtotime($kerja->panen_date)); ?></td>
-                                        <td><?= $kerja->user_nik; ?></td>
-                                        <td><?= $kerja->panen_tpname; ?></td>
-                                        <td><?= $kerja->sptbs_code; ?></td>
-                                        <td><?= $kerja->divisi_name; ?></td>
-                                        <td><?= $kerja->blok_name; ?></td>
-                                        <td><?= $kerja->tph_thntanam; ?></td>
-                                        <td><?= number_format($kerja->jjg, 0, ",", "."); ?></td>
-                                        <td><?= number_format($kerja->brd, 0, ",", "."); ?></td>
-                                        <td><?= number_format($kerja->jjgkg, 0, ",", "."); ?></td>
-                                        <td><?= number_format($kerja->brdkg, 0, ",", "."); ?></td>
-                                        <td><?= number_format($kerja->tkg, 0, ",", "."); ?></td>
+                                        <td><?= date("Y-m-d", strtotime($panen->panen_date)); ?></td>
+                                        <?php foreach ($arrdivisi as $adivisi) {
+                                            $panen_bruto = "brutto" . $adivisi;
+                                            $panen_netto = "netto" . $adivisi;
+                                            $pbruto = $panen->$panen_bruto;
+                                            $pnetto = $panen->$panen_netto;
+
+                                            $tbruto += $pbruto;
+                                            $tnetto += $pnetto;
+                                        ?>
+                                            <td style="background-color:<?= $arrcolor[$adivisi]; ?>"><?= number_format($pbruto, 0, ",", "."); ?></td>
+                                            <td style="background-color:<?= $arrcolor[$adivisi]; ?>"><?= number_format($pnetto, 0, ",", "."); ?></td>
+                                        <?php } ?>
+                                            <td><?= number_format($tbruto, 0, ",", "."); ?></td>
+                                            <td><?= number_format($tnetto, 0, ",", "."); ?></td>
                                     </tr>
                                 <?php } ?>
                             </tbody>
@@ -160,7 +170,7 @@
 </div>
 <script>
     $('.select').select2();
-    var title = "Daftar Hasil Kerja Pemanen";
+    var title = "Monitoring Pertanggal Pengiriman TBS";
     $("title").text(title);
     $(".card-title").text(title);
     $("#page-title").text(title);
@@ -174,26 +184,26 @@
             dom: 'Bfrtip',
             buttons: [{
                     extend: 'copyHtml5',
-                    title: 'Daftar Hasil Kerja Pemanen',
-                    filename: 'Daftar Hasil Kerja Pemanen ',
+                    title: 'Monitoring Pertanggal Pengiriman TBS',
+                    filename: 'Monitoring Pertanggal Pengiriman TBS ',
                     text: 'Copy'
                 },
                 {
                     extend: 'csvHtml5',
-                    title: 'Daftar Hasil Kerja Pemanen',
-                    filename: 'Daftar Hasil Kerja Pemanen ',
+                    title: 'Monitoring Pertanggal Pengiriman TBS',
+                    filename: 'Monitoring Pertanggal Pengiriman TBS ',
                     text: 'Export to CSV'
                 },
                 {
                     extend: 'excelHtml5',
-                    title: 'Daftar Hasil Kerja Pemanen Excel',
-                    filename: 'Daftar Hasil Kerja Pemanen ',
+                    title: 'Monitoring Pertanggal Pengiriman TBS Excel',
+                    filename: 'Monitoring Pertanggal Pengiriman TBS ',
                     text: 'Export to Excel'
                 },
                 {
                     extend: 'pdfHtml5',
-                    title: 'Daftar Hasil Kerja Pemanen',
-                    filename: 'Daftar Hasil Kerja Pemanen ',
+                    title: 'Monitoring Pertanggal Pengiriman TBS',
+                    filename: 'Monitoring Pertanggal Pengiriman TBS ',
                     text: 'Export to PDF',
                     customize: function(doc) {
                         doc.content[1].table.headerRows = 1;

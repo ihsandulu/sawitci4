@@ -113,7 +113,7 @@
                             <tbody>
                                 <?php
 
-                                $jjg =
+                              
 
                                     /* $build = $this->db
                                     ->table("panen")

@@ -96,58 +96,41 @@
                             <!-- <table id="dataTable" class="table table-condensed table-hover w-auto dtable"> -->
                             <thead class="">
                                 <tr>
-                                    <th>Tanggal</th>
-                                    <th>NIK</th>
-                                    <th>Nama Pemanen</th>
-                                    <th>No.Tiket</th>
                                     <th>Divisi</th>
                                     <th>Blok</th>
-                                    <th>Thn Tanam</th>
-                                    <th>JJG</th>
-                                    <th>BRNDL</th>
-                                    <th>JJG KG</th>
-                                    <th>BRNDL KG</th>
-                                    <th>Total KG</th>
+                                    <th>TT</th>
+                                    <th>HA</th>
+                                    <th>POKOK</th>
+                                    <th>Total JJG</th>
+                                    <th>JJG/PKK</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 <?php
-
-                                $jjg =
-
-                                    /* $build = $this->db
+                                    $panen = $this->db
                                     ->table("panen")
-                                    ->select("panen.panen_date, panen.panen_tpname, panen.divisi_name, panen.blok_name, panen.tph_thntanam, SUM(IF(panen_brondol=0, panen_jml, 0))as jjg, SUM(IF(panen_brondol=1, panen_jml, 0))as brd,  sptbs.sptbs_code,  SUM(IF(panen_brondol=0, panen_netto, 0))as jjgkg, SUM(IF(panen_brondol=1, panen_netto, 0))as brdkg, (jjgkg+brdkg)as tkg, t_user.user_nik", "left")
-                                    ->join("sptbs","sptbs.sptbs_id=panen.sptbs_id","left")
-                                    ->join("t_user","t_user.user_id=panen.user_id","left");
-
-                                $panen = $build
-                                    ->where("sptbs_date >=",$dari)
-                                    ->where("sptbs_date <=",$ke)
-                                    ->group_by("sptbs_id,panen_tp")
-                                    ->get(); */
-                                    $kerja = $this->db
-                                    ->table("hasil_kerja_panen")
+                                    ->select("panen.divisi_name, panen.blok_name, panen.tph_thntanam, blok.blok_ha, blok.blok_populasi, SUM(panen.panen_jml)AS jml")
+                                    ->join("blok","blok.blok_id=panen.blok_id","left")
                                     ->where("panen_date >=",$dari)
                                     ->where("panen_date <=",$ke)
+                                    ->groupBy("panen.blok_id, panen.tph_thntanam")
                                     ->get();
                                 // echo $this->db->getLastquery();die;
                                 $no = 1;
-                                foreach ($kerja->getResult() as $kerja) {
+                                foreach ($panen->getResult() as $panen) {
+                                    $jjgpkk=0;
+                                    if(isset($panen->blok_populasi)){
+                                        $jjgpkk=$panen->jml/$panen->blok_populasi;
+                                    }
                                 ?>
                                     <tr>
-                                        <td><?= date("Y-m-d", strtotime($kerja->panen_date)); ?></td>
-                                        <td><?= $kerja->user_nik; ?></td>
-                                        <td><?= $kerja->panen_tpname; ?></td>
-                                        <td><?= $kerja->sptbs_code; ?></td>
-                                        <td><?= $kerja->divisi_name; ?></td>
-                                        <td><?= $kerja->blok_name; ?></td>
-                                        <td><?= $kerja->tph_thntanam; ?></td>
-                                        <td><?= number_format($kerja->jjg, 0, ",", "."); ?></td>
-                                        <td><?= number_format($kerja->brd, 0, ",", "."); ?></td>
-                                        <td><?= number_format($kerja->jjgkg, 0, ",", "."); ?></td>
-                                        <td><?= number_format($kerja->brdkg, 0, ",", "."); ?></td>
-                                        <td><?= number_format($kerja->tkg, 0, ",", "."); ?></td>
+                                    <td><?= $panen->divisi_name; ?></td>
+                                    <td><?= $panen->blok_name; ?></td>
+                                    <td><?= $panen->tph_thntanam; ?></td>
+                                    <td><?= $panen->blok_ha; ?></td>
+                                    <td><?= $panen->blok_populasi; ?></td>
+                                    <td><?= $panen->jml; ?></td>
+                                    <td><?= number_format($jjgpkk,2,",","."); ?></td>
                                     </tr>
                                 <?php } ?>
                             </tbody>
@@ -160,7 +143,7 @@
 </div>
 <script>
     $('.select').select2();
-    var title = "Daftar Hasil Kerja Pemanen";
+    var title = "Daftar Hasil panen Pemanen";
     $("title").text(title);
     $(".card-title").text(title);
     $("#page-title").text(title);
@@ -174,26 +157,26 @@
             dom: 'Bfrtip',
             buttons: [{
                     extend: 'copyHtml5',
-                    title: 'Daftar Hasil Kerja Pemanen',
-                    filename: 'Daftar Hasil Kerja Pemanen ',
+                    title: 'Daftar Hasil panen Pemanen',
+                    filename: 'Daftar Hasil panen Pemanen ',
                     text: 'Copy'
                 },
                 {
                     extend: 'csvHtml5',
-                    title: 'Daftar Hasil Kerja Pemanen',
-                    filename: 'Daftar Hasil Kerja Pemanen ',
+                    title: 'Daftar Hasil panen Pemanen',
+                    filename: 'Daftar Hasil panen Pemanen ',
                     text: 'Export to CSV'
                 },
                 {
                     extend: 'excelHtml5',
-                    title: 'Daftar Hasil Kerja Pemanen Excel',
-                    filename: 'Daftar Hasil Kerja Pemanen ',
+                    title: 'Daftar Hasil panen Pemanen Excel',
+                    filename: 'Daftar Hasil panen Pemanen ',
                     text: 'Export to Excel'
                 },
                 {
                     extend: 'pdfHtml5',
-                    title: 'Daftar Hasil Kerja Pemanen',
-                    filename: 'Daftar Hasil Kerja Pemanen ',
+                    title: 'Daftar Hasil panen Pemanen',
+                    filename: 'Daftar Hasil panen Pemanen ',
                     text: 'Export to PDF',
                     customize: function(doc) {
                         doc.content[1].table.headerRows = 1;

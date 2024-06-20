@@ -99,14 +99,9 @@
                                     <th>Tanggal</th>
                                     <th>NIK</th>
                                     <th>Nama Pemanen</th>
-                                    <th>No.Tiket</th>
                                     <th>Divisi</th>
                                     <th>Blok</th>
                                     <th>Thn Tanam</th>
-                                    <th>JJG</th>
-                                    <th>BRNDL</th>
-                                    <th>JJG KG</th>
-                                    <th>BRNDL KG</th>
                                     <th>Total KG</th>
                                 </tr>
                             </thead>
@@ -139,14 +134,9 @@
                                         <td><?= date("Y-m-d", strtotime($kerja->panen_date)); ?></td>
                                         <td><?= $kerja->user_nik; ?></td>
                                         <td><?= $kerja->panen_tpname; ?></td>
-                                        <td><?= $kerja->sptbs_code; ?></td>
                                         <td><?= $kerja->divisi_name; ?></td>
                                         <td><?= $kerja->blok_name; ?></td>
                                         <td><?= $kerja->tph_thntanam; ?></td>
-                                        <td><?= number_format($kerja->jjg, 0, ",", "."); ?></td>
-                                        <td><?= number_format($kerja->brd, 0, ",", "."); ?></td>
-                                        <td><?= number_format($kerja->jjgkg, 0, ",", "."); ?></td>
-                                        <td><?= number_format($kerja->brdkg, 0, ",", "."); ?></td>
                                         <td><?= number_format($kerja->tkg, 0, ",", "."); ?></td>
                                     </tr>
                                 <?php } ?>
