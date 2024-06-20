@@ -150,7 +150,7 @@
 </div>
 <script>
     $('.select').select2();
-    var title = "Daftar Hasil Kerja Pemanen";
+    var title = "Hasil Pemanen Terbanyak";
     $("title").text(title);
     $(".card-title").text(title);
     $("#page-title").text(title);
@@ -164,26 +164,26 @@
             dom: 'Bfrtip',
             buttons: [{
                     extend: 'copyHtml5',
-                    title: 'Daftar Hasil Kerja Pemanen',
-                    filename: 'Daftar Hasil Kerja Pemanen ',
+                    title: 'Hasil Pemanen Terbanyak',
+                    filename: 'Hasil Pemanen Terbanyak ',
                     text: 'Copy'
                 },
                 {
                     extend: 'csvHtml5',
-                    title: 'Daftar Hasil Kerja Pemanen',
-                    filename: 'Daftar Hasil Kerja Pemanen ',
+                    title: 'Hasil Pemanen Terbanyak',
+                    filename: 'Hasil Pemanen Terbanyak ',
                     text: 'Export to CSV'
                 },
                 {
                     extend: 'excelHtml5',
-                    title: 'Daftar Hasil Kerja Pemanen Excel',
-                    filename: 'Daftar Hasil Kerja Pemanen ',
+                    title: 'Hasil Pemanen Terbanyak Excel',
+                    filename: 'Hasil Pemanen Terbanyak ',
                     text: 'Export to Excel'
                 },
                 {
                     extend: 'pdfHtml5',
-                    title: 'Daftar Hasil Kerja Pemanen',
-                    filename: 'Daftar Hasil Kerja Pemanen ',
+                    title: 'Hasil Pemanen Terbanyak',
+                    filename: 'Hasil Pemanen Terbanyak ',
                     text: 'Export to PDF',
                     customize: function(doc) {
                         doc.content[1].table.headerRows = 1;

@@ -143,7 +143,7 @@
 </div>
 <script>
     $('.select').select2();
-    var title = "Daftar Hasil panen Pemanen";
+    var title = "Blok Langsir";
     $("title").text(title);
     $(".card-title").text(title);
     $("#page-title").text(title);
@@ -157,26 +157,26 @@
             dom: 'Bfrtip',
             buttons: [{
                     extend: 'copyHtml5',
-                    title: 'Daftar Hasil panen Pemanen',
-                    filename: 'Daftar Hasil panen Pemanen ',
+                    title: 'Blok Langsir',
+                    filename: 'Blok Langsir ',
                     text: 'Copy'
                 },
                 {
                     extend: 'csvHtml5',
-                    title: 'Daftar Hasil panen Pemanen',
-                    filename: 'Daftar Hasil panen Pemanen ',
+                    title: 'Blok Langsir',
+                    filename: 'Blok Langsir ',
                     text: 'Export to CSV'
                 },
                 {
                     extend: 'excelHtml5',
-                    title: 'Daftar Hasil panen Pemanen Excel',
-                    filename: 'Daftar Hasil panen Pemanen ',
+                    title: 'Blok Langsir Excel',
+                    filename: 'Blok Langsir ',
                     text: 'Export to Excel'
                 },
                 {
                     extend: 'pdfHtml5',
-                    title: 'Daftar Hasil panen Pemanen',
-                    filename: 'Daftar Hasil panen Pemanen ',
+                    title: 'Blok Langsir',
+                    filename: 'Blok Langsir ',
                     text: 'Export to PDF',
                     customize: function(doc) {
                         doc.content[1].table.headerRows = 1;
