@@ -205,54 +205,7 @@
 				});
 				</script>
 			</div>
-			<div class="row">
-				<canvas id="hariansptbs" style="width:100%;"></canvas>				
-				
-				<script>
-				const dataharianpesanan = [
-					<?php		
-					$from = date("Y-01-01");
-					$to = date("Y-12-31");
-					$builder = $this->db
-						->table("t_ttpenerimaan");
-					$builder->select("COUNT(t_ttpenerimaan.t_ttpenerimaan_id)as jmlpesanan,tanggal_masuk");
-					$builder->where("t_ttpenerimaan.tanggal_masuk <=", $to);
-					$builder->groupBy("t_ttpenerimaan.tanggal_masuk");
-					$tahunanpesanan = $builder->get();
-					// echo $this->db->getLastquery();
-					$no=0;
-					foreach($tahunanpesanan->getResult() as $bulan){
-					?>
-					<?php if($no==0){?>						
-						{ hari: '<?=date("Y-m-d",strtotime("-1 days", strtotime($bulan->tanggal_masuk)));?>', count: 0 },
-					<?php }?>
-					{ hari: '<?=$bulan->tanggal_masuk;?>', count: <?=number_format($bulan->jmlpesanan,0,",",".");?> },
-					<?php 
-					$no++;
-					}?>
-				];
-
-				new Chart("hariansptbs", {
-				type: "line",
-				data: {
-					labels: dataharianpesanan.map(row => row.hari),
-					datasets: [{
-						label: 'Acquisitions by month',
-            			data: dataharianpesanan.map(row => row.count),
-						borderColor: "#8BD4D9",
-						fill: false
-					}]
-				},
-				options: {
-					legend: {display: false},
-					title: {
-					display: true,
-					text: "Jumlah SPTBS Tahun <?=date("Y");?>"
-					}
-				}
-				});
-				</script>
-			</div>
+			
 		</div>
 	</div>
 </div>
