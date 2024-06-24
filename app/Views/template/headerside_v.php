@@ -796,6 +796,24 @@
                     <a class="  " href="<?= base_url("rlangsir"); ?>" aria-expanded="false"><i class="fa fa-tree"></i><span class="hide-menu">Blok Langsir</span></a>
                 </li>
                 <?php }?>
+                <?php 
+                if (
+                    (
+                        isset(session()->get("position_id")[0][0]) 
+                        && (
+                            session()->get("position_id") == "1" 
+                            || session()->get("position_id") == "2"
+                        )
+                    ) ||
+                    (
+                        isset(session()->get("halaman")['82']['act_read']) 
+                        && session()->get("halaman")['82']['act_read'] == "1"
+                    )
+                ) { ?>
+                <li> 
+                    <a class="  " href="<?= base_url("rschedule"); ?>" aria-expanded="false"><i class="fa fa-tree"></i><span class="hide-menu">Schedule Panen</span></a>
+                </li>
+                <?php }?>
 
 
                 
