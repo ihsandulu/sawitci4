@@ -30,7 +30,7 @@
 				</div>
 			</div>
 			<?php //print_r(session()->get("position_administrator"));?>
-			<div class="row">
+			<!-- <div class="row">
 				
 				<?php
 				$from = date("Y-m-d");
@@ -156,8 +156,8 @@
 						</div>
 					</div>
 				</div>
-			</div>
-			<div class="row">
+			</div> -->
+			<!-- <div class="row">
 				<canvas id="hariantbs" style="width:100%;"></canvas>				
 				
 				<script>
@@ -204,7 +204,7 @@
 				}
 				});
 				</script>
-			</div>
+			</div> -->
 			
 		</div>
 	</div>
