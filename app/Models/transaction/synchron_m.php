@@ -112,7 +112,17 @@ class synchron_m extends core_m
 
         //delete
         if ($this->request->getPost("delete") == "OK") { 
-            $sptbs_id = $this->request->getPost("sptbs_id");
+            $sptbs_id = $this->request->getPost("sptbs_id"); 
+            $sptbs_card = $this->request->getPost("sptbs_card"); 
+            $grading_date = $this->request->getPost("sptbs_date"); 
+            $sptbsid = $this->request->getPost("sptbsid");            
+
+            $wgrading["sptbs_card"]=$sptbs_card;
+            $wgrading["grading_date"]=$grading_date;
+            $wgrading["sptbsid"]=$sptbsid;
+            $this->db
+            ->table("grading")
+            ->delete($wgrading);
 
             $this->db
             ->table("panen")

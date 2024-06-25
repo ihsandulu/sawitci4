@@ -571,6 +571,9 @@
                                                 <form method="post" class="btn-action" style="">
                                                     <button class="btn btn-sm btn-danger delete" onclick="return confirm(' you want to delete?');" name="delete" value="OK"><span class="fa fa-close" style="color:white;"></span> </button>
                                                     <input type="hidden" name="sptbs_id" value="<?= $usr->sptbs_id; ?>" />
+                                                    <input type="hidden" name="sptbs_card" value="<?= $usr->sptbs_card; ?>" />
+                                                    <input type="hidden" name="sptbs_date" value="<?= $usr->sptbs_date; ?>" />
+                                                    <input type="hidden" name="sptbsid" value="<?= $usr->sptbsid; ?>" />
                                                 </form>
                                                 <?php }?>
                                             </td>
