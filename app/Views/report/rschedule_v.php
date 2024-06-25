@@ -1,5 +1,17 @@
 <?php echo $this->include("template/header_v"); ?>
+<style>
+    .merah {
+        background-color: rgba(255, 0, 0, 0.1);
+    }
 
+    .hijau {
+        background-color: rgba(0, 255, 0, 0.1);
+    }
+
+    .putih {
+        background-color: rgba(255, 255, 255, 0.1);
+    }
+</style>
 <div class='container-fluid'>
     <div class='row'>
         <div class='col-12'>
@@ -120,7 +132,7 @@
                                     <th>Pokok</th>
                                     <th>TT</th>
                                     <?php
-                                    $ybulan = date("Y-" . $bln);
+                                    $ybulan = date("Y-m", strtotime(date("Y-" . $bln)));
                                     $date = new DateTime($ybulan . "-01");
                                     $dmonth = $date->format('t');
                                     for ($x = 1; $x <= $dmonth; $x++) {
@@ -131,6 +143,7 @@
                             </thead>
                             <tbody>
                                 <?php
+                                $arrgabungan = [];
                                 // Query untuk tabel restand
                                 $restandQuery = $this->db
                                     ->table("restand")
@@ -141,22 +154,29 @@
                                         restand.seksi_name, 
                                         restand.blok_name, 
                                         restand.tph_name, 
+                                        restand.tph_id, 
                                         blok.blok_ha, 
                                         blok.blok_populasi, 
                                         restand.tph_thntanam
                                     ")
                                     ->join("blok", "blok.blok_id=restand.blok_id", "left")
-                                    ->where("SUBSTRING(panen_date,1,7)",  $ybulan) // Anda mungkin ingin menggunakan $restand->panen_date di sini
+                                    ->where("SUBSTRING(panen_date,1,7)",  $ybulan)
                                     ->get();
-
-                                // Menginisialisasi array untuk menyimpan data restand
                                 $arrrestand = [];
-
-                                // Mengambil hasil query dan memasukkannya ke dalam array
                                 foreach ($restandQuery->getResult() as $row) {
-                                    $arrrestand[] = $row;
+                                    $arrrestand[$row->tph_id]["panen_date"] = $row->panen_date;
+                                    $arrrestand[$row->tph_id]["tph_id"] = $row->tph_id;
+                                    $arrrestand[$row->tph_id]["tph_name"] = $row->tph_name;
+                                    $arrgabungan[$row->tph_id]["tph_id"] = $row->tph_id;
+                                    $arrgabungan[$row->tph_id]["estate_name"] = $row->estate_name;
+                                    $arrgabungan[$row->tph_id]["divisi_name"] = $row->divisi_name;
+                                    $arrgabungan[$row->tph_id]["seksi_name"] = $row->seksi_name;
+                                    $arrgabungan[$row->tph_id]["blok_name"] = $row->blok_name;
+                                    $arrgabungan[$row->tph_id]["tph_name"] = $row->tph_name;
+                                    $arrgabungan[$row->tph_id]["blok_ha"] = $row->blok_ha;
+                                    $arrgabungan[$row->tph_id]["blok_populasi"] = $row->blok_populasi;
+                                    $arrgabungan[$row->tph_id]["tph_thntanam"] = $row->tph_thntanam;
                                 }
-
                                 // Query untuk tabel panen
                                 $panenQuery = $this->db
                                     ->table("panen")
@@ -167,41 +187,34 @@
                                         panen.seksi_name, 
                                         panen.blok_name, 
                                         panen.tph_name, 
+                                        panen.tph_id, 
                                         blok.blok_ha, 
                                         blok.blok_populasi, 
                                         panen.tph_thntanam
                                     ")
                                     ->join("blok", "blok.blok_id=panen.blok_id", "left")
-                                    ->where("SUBSTRING(panen_date,1,7)",  $ybulan) // Anda mungkin ingin menggunakan $panen->panen_date di sini
+                                    ->where("SUBSTRING(panen_date,1,7)",  $ybulan)
                                     ->get();
-
-                                // Menginisialisasi array untuk menyimpan data panen
+                                // echo $this->db->getLastQuery();
                                 $arrpanen = [];
-
-                                // Mengambil hasil query dan memasukkannya ke dalam array
                                 foreach ($panenQuery->getResult() as $row) {
-                                    $arrpanen[] = $row;
+                                    $arrpanen[$row->tph_id]["panen_date"] = $row->panen_date;
+                                    $arrpanen[$row->tph_id]["tph_id"] = $row->tph_id;
+                                    $arrpanen[$row->tph_id]["tph_name"] = $row->tph_name;
+                                    $arrgabungan[$row->tph_id]["tph_id"] = $row->tph_id;
+                                    $arrgabungan[$row->tph_id]["estate_name"] = $row->estate_name;
+                                    $arrgabungan[$row->tph_id]["divisi_name"] = $row->divisi_name;
+                                    $arrgabungan[$row->tph_id]["seksi_name"] = $row->seksi_name;
+                                    $arrgabungan[$row->tph_id]["blok_name"] = $row->blok_name;
+                                    $arrgabungan[$row->tph_id]["tph_name"] = $row->tph_name;
+                                    $arrgabungan[$row->tph_id]["blok_ha"] = $row->blok_ha;
+                                    $arrgabungan[$row->tph_id]["blok_populasi"] = $row->blok_populasi;
+                                    $arrgabungan[$row->tph_id]["tph_thntanam"] = $row->tph_thntanam;
                                 }
 
-                                // Menggabungkan hasil dari tabel restand dan panen
-                                $fjoin = array_merge($arrrestand, $arrpanen);
-
-                                // Menghapus duplikat berdasarkan panen_date
-                                $uniqueResults = [];
-                                $seenDates = [];
-
-                                foreach ($fjoin as $result) {
-                                    $panenDate = $result->panen_date; // Menggunakan -> untuk mengakses properti dari objek stdClass
-                                    if (!in_array($panenDate, $seenDates)) {
-                                        $uniqueResults[] = (array) $result; // Mengonversi objek stdClass ke array jika diperlukan
-                                        $seenDates[] = $panenDate;
-                                    }
-                                }
-                                dd($uniqueResults);
                                 
-
-                                // Melanjutkan foreach setelah penghapusan duplikat
-                                foreach ($uniqueResults as $a => $b) {
+                                foreach ($arrgabungan as $a => $b) {
+                                    $mulai=0;
                                 ?>
                                     <tr>
                                         <th><?= $b["estate_name"]; ?></th>
@@ -215,24 +228,58 @@
                                         <?php
                                         $date = new DateTime($ybulan . "-01");
                                         $dmonth = $date->format('t');
+                                        $bpanen = false;
+                                        $brestand = false;
+                                        $angka = 0;
+                                        $bwarna = "putih";
                                         for ($x = 1; $x <= $dmonth; $x++) {
-                                            $cmd = date($bln . "-" . $x);
+                                            $cmd = date("Y-m-d", strtotime(date("Y-" . $bln . "-" . $x)));
+                                            $tph_id = $b["tph_id"];
 
-                                            $panenDate = $b["panen_date"];
-                                            $md = date("m-d", strtotime($panenDate));
-                                            $modifiedDate = strtotime('-1 day', strtotime($panenDate));
-                                            $md1 = date('m-d', $modifiedDate);
-                                            if ($md1 > 0) {
-                                                $arrrestand[$md] = 0;
+
+                                            if (isset($arrpanen[$tph_id]) && $arrpanen[$tph_id]["tph_id"] == $tph_id && $arrpanen[$tph_id]["panen_date"] == $cmd) {
+                                                $bpanen = true;
+                                                if($mulai==0){$mulai=$x;}
                                             } else {
-                                                $arrtgl[$md] = 1;
-                                                $arrrestand[$md] = 1;
+                                                $bpanen = false;
                                             }
 
-                                            $backcolor = "rgba(255,255,255,0.5)";
-                                            $color = "rgba(0,0,0,1)";
+                                            if (isset($arrrestand[$tph_id]) && $arrrestand[$tph_id]["tph_id"] == $tph_id && $arrrestand[$tph_id]["panen_date"] == $cmd) {
+                                                $brestand = true;
+                                                if($mulai==0){$mulai=$x;}
+                                            } else {
+                                                $brestand = false;
+                                            }
+
+                                            
+                                            if(date("Y-m-d")<$cmd){$bwarna = "putih";}
+                                            if ($bpanen == true && $brestand == true) {
+                                                $angka = 1;
+                                                $bwarna = "hijau";
+                                            } else  if ($bpanen == false && $brestand == true) {
+                                                $angka = 1;
+                                                $bwarna = "merah";
+                                            } else  if ($bpanen == true && $brestand == false) {
+                                                $angka++;
+                                                $bwarna = "hijau";
+                                            } else {
+                                                if ($angka > 0) {
+                                                    $angka++;
+                                                }
+                                                if ($bwarna == "hijau") {
+                                                    $bwarna = "putih";
+                                                }
+                                            }
+
+
+                                            // echo $bpanen . "==" . $brestand . "<br/>";
+                                            // echo $angka . "==" . $bwarna;
+
+                                            //echo $md . "=>" . $md1; 
                                         ?>
-                                            <th style="background-color:<?= $backcolor; ?>; color:<?= $color; ?>;>"><?= $md . "=>" . $md1; ?></th>
+                                            <th class="<?= $bwarna; ?>">
+                                                <?=($angka>0)?$angka:""; ?>
+                                            </th>
                                         <?php } ?>
                                     </tr>
                                 <?php } ?>
