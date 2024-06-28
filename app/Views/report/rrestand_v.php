@@ -114,17 +114,13 @@
                             <tbody>
                                 <?php
                                 // dd(session()->get("position_id"));
-                                $build = $this->db
-                                    ->table("restand");
-                                // ->select("t_vendor.nama_vendor, t_vendor.ket, lr.lr_name, panen.panen_id, panen.panenid, panen.panen_code as panencode, panen.estate_name, panen.divisi_name,panen.panen_timbanganmasuk, panen.panen_timbangankeluar, panen.panen_date, panen.panen_drivername, panen.panen_kgbruto, panen.panen_kgtruk, panen.panen_kgnetto, panen.panen_jmltandan,  wt.wt_name")
-                                // ->join("panen", "panen.panen_date=panen.panen_date AND panen.panen_card=panen.panen_card", "left")
-                                // ->join("wt", "wt.wt_name=panen.wt_name", "left")
-                                // ->join("lr", "lr.lr_name=panen.lr_name", "left")
-                                // ->join("t_vendor", "t_vendor.ID_vendor=panen.panen_vendor", "left");
-
-                                $panen = $build
-                                    ->where("panen_date >=", $dari)
-                                    ->where("panen_date <=", $ke)
+                                $panen = $this->db
+                                    ->table("restand")
+                                    ->select('restand.*')
+                                    ->join('panen', 'panen.restand_id = restand.restand_id', 'left')
+                                    ->where('panen.restand_id IS NULL')
+                                    ->where("restand.panen_date >=", $dari)
+                                    ->where("restand.panen_date <=", $ke)
                                     ->get();
                                 // echo $this->db->getLastquery();die;
                                 $no = 1;

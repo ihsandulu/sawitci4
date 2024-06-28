@@ -1,4 +1,13 @@
-<?php echo $this->include("template/header_v"); ?>
+<?php
+
+use PHPUnit\Framework\Constraint\IsNull;
+
+ echo $this->include("template/header_v"); ?>
+ <style>
+ .merah{background-color: rgba(255, 0, 0, 0.1)!important;}
+ .putih{background-color: rgba(255, 255, 255, 0.8)!important;}
+
+ </style>
 
 <div class='container-fluid'>
     <div class='row'>
@@ -123,22 +132,47 @@
                                 <?php
                                 // dd(session()->get("position_id"));
                                 $build = $this->db
-                                    ->table("panen");
-                                // ->select("t_vendor.nama_vendor, t_vendor.ket, lr.lr_name, panen.panen_id, panen.panenid, panen.panen_code as panencode, panen.estate_name, panen.divisi_name,panen.panen_timbanganmasuk, panen.panen_timbangankeluar, panen.panen_date, panen.panen_drivername, panen.panen_kgbruto, panen.panen_kgtruk, panen.panen_kgnetto, panen.panen_jmltandan,  wt.wt_name")
-                                // ->join("panen", "panen.panen_date=panen.panen_date AND panen.panen_card=panen.panen_card", "left")
-                                // ->join("wt", "wt.wt_name=panen.wt_name", "left")
-                                // ->join("lr", "lr.lr_name=panen.lr_name", "left")
-                                // ->join("t_vendor", "t_vendor.ID_vendor=panen.panen_vendor", "left");
+                                    ->table("restand")
+                                    ->select("
+                                    restand.panen_date as panen_date,
+                                    restand.estate_name as estate_name,
+                                    restand.divisi_name as divisi_name,
+                                    restand.seksi_name as seksi_name,
+                                    restand.blok_name as blok_name,
+                                    restand.tph_name as tph_name,
+                                    panen.sptbs_card as sptbs_card,
+                                    panen.wt_card as wt_card,
+                                    restand.panen_card as panen_card,
+                                    restand.tph_thntanam as tph_thntanam,
+                                    restand.panen_tpname as panen_tpname,
+                                    panen.lr_name as lr_name,
+                                    restand.user_name as user_name,
+                                    restand.panen_brondol as panen_brondol,
+                                    restand.panen_geo as panen_geo,
+                                    panen.wt_drivername as wt_drivername,
+                                    restand.panen_jml as panen_jml,
+                                    panen.panen_bruto as panen_bruto,
+                                    panen.panen_grading as panen_grading,
+                                    panen.panen_netto as panen_netto,
+                                    panen.panen_bjr as panen_bjr,
+                                    ")
+                                    ->join('panen', 'panen.restand_id = restand.restand_id', 'left');
 
                                 $panen = $build
-                                    ->where("panen_date >=", $dari)
-                                    ->where("panen_date <=", $ke)
+                                    ->where("restand.panen_date >=", $dari)
+                                    ->where("restand.panen_date <=", $ke)
+                                    ->groupBy("restand.restand_id")
                                     ->get();
                                 // echo $this->db->getLastquery();die;
                                 $no = 1;
                                 foreach ($panen->getResult() as $panen) {
+                                    if(is_null($panen->sptbs_card) || $panen->sptbs_card === ''){
+                                        $bck="merah";
+                                    }else{
+                                        $bck="putih";
+                                    }
                                 ?>
-                                    <tr>
+                                    <tr class="<?=$bck;?>">
                                         <td><?= $panen->panen_date; ?></td>
                                         <td><?= $panen->estate_name; ?></td>
                                         <td><?= $panen->divisi_name; ?></td>
