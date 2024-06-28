@@ -104,6 +104,7 @@
                                     <th>No.Polisi</th>  
                                     <th>Supir</th>
                                     <th>No. Tiket</th>  
+                                    <th>No. SPTBS</th>  
                                     <th>Total Kg</th>
                                     <th>Tara</th>
                                     <th>Bruto</th>
@@ -126,7 +127,7 @@
                                 
                                 $build = $this->db
                                     ->table("sptbs")
-                                    ->select("t_vendor.nama_vendor, sptbs.sptbs_id,sptbs.sptbs_code as sptbscode, sptbs.divisi_name,  sptbs.sptbs_date, sptbs.sptbs_drivername, sptbs.sptbs_kgbruto, sptbs.sptbs_kgtruk, sptbs.sptbs_kgnetto, sptbs.sptbs_jmltandan,  sptbs.sptbs_kgsampah, sptbs.sptbs_kgnettostlgrading, sptbs.sptbs_pgrading, sptbs.sptbs_pgrading,  sptbs.wt_name, panen.blok_name, panen.tph_thntanam, panen.panen_jml, panen.panen_brondol, panen.panen_bjr, panen.panen_bruto, panen.panen_grading, panen.panen_netto")
+                                    ->select("t_vendor.nama_vendor, sptbs.sptbs_card, sptbs.sptbs_id,sptbs.sptbs_code as sptbscode, sptbs.divisi_name,  sptbs.sptbs_date, sptbs.sptbs_drivername, sptbs.sptbs_kgbruto, sptbs.sptbs_kgtruk, sptbs.sptbs_kgnetto, sptbs.sptbs_jmltandan,  sptbs.sptbs_kgsampah, sptbs.sptbs_kgnettostlgrading, sptbs.sptbs_pgrading, sptbs.sptbs_pgrading,  sptbs.wt_name, panen.blok_name, panen.tph_thntanam, panen.panen_jml, panen.panen_brondol, panen.panen_bjr, panen.panen_bruto, panen.panen_grading, panen.panen_netto")
                                     ->join("panen", "panen.sptbs_id=sptbs.sptbs_id", "left")
                                     ->join("t_vendor", "t_vendor.ID_vendor=sptbs.sptbs_vendor", "left");
 
@@ -157,6 +158,7 @@
                                         <td><?= $sptbs->wt_name; ?></td>
                                         <td><?= $sptbs->sptbs_drivername; ?></td>
                                         <td><?= $sptbs->sptbscode; ?></td>
+                                        <td><?= $sptbs->sptbs_card; ?></td>
                                         <td><?= number_format($brutto,0,",","."); ?></td>
                                         <td><?= number_format($tarra,0,",","."); ?></td>
                                         <td><?= number_format($netto,0,",","."); ?></td>
