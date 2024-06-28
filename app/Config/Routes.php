@@ -52,3 +52,5 @@ $routes->add('/rrekapdu', 'report\rrekapdu::index');
 $routes->add('/rtanggal', 'report\rtanggal::index');
 $routes->add('/rlangsir', 'report\rlangsir::index');
 $routes->add('/rschedule', 'report\rschedule::index');
+$routes->add('/rpanen', 'report\rpanen::index');
+$routes->add('/rrestand', 'report\rrestand::index');
