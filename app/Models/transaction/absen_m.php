@@ -95,7 +95,12 @@ class absen_m extends core_m
                     $input[$e] = $this->request->getPost($e);
                 }
             }
-            $input["absen_date"] = date("Y-m-d");
+            $absen_datetime=$input["absen_datetime"];
+            $date=substr($absen_datetime,0,10);
+            $time=substr($absen_datetime,12,5);
+            $input["absen_date"] = $date;
+            $input["absen_time"] = $time;
+            // echo $input["absen_time"];die;
             $input["user_id"] = session()->get("user_id");
             $builder = $this->db->table('absen');
             $builder->insert($input);
@@ -114,6 +119,11 @@ class absen_m extends core_m
                     $input[$e] = $this->request->getPost($e);
                 }
             }
+            $absen_datetime=$input["absen_datetime"];
+            $date=substr($absen_datetime,0,10);
+            $time=substr($absen_datetime,12,5);
+            $input["absen_date"] = $date;
+            $input["absen_time"] = $time;
             $this->db->table('absen')->update($input, array("absen_id" => $this->request->getPost("absen_id")));
             $data["message"] = "Update Success";
             // echo $this->db->getLastQuery();die;
